@@ -563,12 +563,10 @@ static struct socket *sock_alloc(void)
 	inode->i_gid = current_fsgid();
 	// FIXME: inode->i_op = &sockfs_inode_ops;
 
-	this_cpu_add(sockets_in_use, 1);
+	// FIXME: this_cpu_add(sockets_in_use, 1);  // set_signals
 	return sock;
 }
 
-#if 0
-{
 /**
  *	sock_release	-	close a socket
  *	@sock: socket to close
@@ -591,7 +589,7 @@ void sock_release(struct socket *sock)
 	if (rcu_dereference_protected(sock->wq, 1)->fasync_list)
 		pr_err("%s: fasync list not empty!\n", __func__);
 
-	this_cpu_sub(sockets_in_use, 1);
+	// FIXME: this_cpu_sub(sockets_in_use, 1);
 	if (!sock->file) {
 		iput(SOCK_INODE(sock));
 		return;
@@ -600,6 +598,8 @@ void sock_release(struct socket *sock)
 }
 EXPORT_SYMBOL(sock_release);
 
+#if 0
+{
 void __sock_tx_timestamp(const struct sock *sk, __u8 *tx_flags)
 {
 	u8 flags = *tx_flags;

@@ -186,7 +186,7 @@ int inode_init_always(struct super_block *sb, struct inode *inode)
 	inode->i_fsnotify_mask = 0;
 #endif
 	inode->i_flctx = NULL;
-	this_cpu_inc(nr_inodes);
+	// FIXME: this_cpu_inc(nr_inodes);
 
 	return 0;
 out:
@@ -826,6 +826,8 @@ repeat:
 	}
 	return NULL;
 }
+}
+#endif
 
 /*
  * Each cpu owns a range of LAST_INO_BATCH numbers.
@@ -868,8 +870,6 @@ unsigned int get_next_ino(void)
 	return res;
 }
 EXPORT_SYMBOL(get_next_ino);
-}
-#endif
 
 /**
  *	new_inode_pseudo 	- obtain an inode
