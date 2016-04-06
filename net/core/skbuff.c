@@ -82,6 +82,8 @@ static struct kmem_cache *skbuff_fclone_cache __read_mostly;
 int sysctl_max_skb_frags __read_mostly = MAX_SKB_FRAGS;
 EXPORT_SYMBOL(sysctl_max_skb_frags);
 
+#if 0
+{
 /**
  *	skb_panic - private function for out-of-line support
  *	@skb:	buffer
@@ -3314,6 +3316,8 @@ done:
 	NAPI_GRO_CB(skb)->same_flow = 1;
 	return 0;
 }
+}
+#endif
 
 void __init skb_init(void)
 {
@@ -3329,6 +3333,8 @@ void __init skb_init(void)
 						NULL);
 }
 
+#if 0
+{
 /**
  *	skb_to_sgvec - Fill a scatter-gather list from a socket buffer
  *	@skb: Socket buffer containing the buffers to be mapped
@@ -4501,3 +4507,5 @@ failure:
 	return NULL;
 }
 EXPORT_SYMBOL(alloc_skb_with_frags);
+}
+#endif
