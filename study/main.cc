@@ -23,4 +23,6 @@ int main(int argc, char* argv[])
   struct socket* sock = NULL;
   int err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
   printf("%d %p\n", err, sock);
+  err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_IP, &sock);
+  printf("%d %p\n", err, sock);
 }

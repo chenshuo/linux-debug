@@ -253,8 +253,6 @@ EXPORT_SYMBOL(inet_listen);
 static int inet_create(struct net *net, struct socket *sock, int protocol,
 		       int kern)
 {
-	return -EPROTONOSUPPORT;
-#if 0
 	struct sock *sk;
 	struct inet_protosw *answer;
 	struct inet_sock *inet;
@@ -313,6 +311,8 @@ lookup_protocol:
 			goto out_rcu_unlock;
 	}
 
+	return -EPERM;
+#if 0
 	err = -EPERM;
 	if (sock->type == SOCK_RAW && !kern &&
 	    !ns_capable(net->user_ns, CAP_NET_RAW))
@@ -384,12 +384,12 @@ lookup_protocol:
 		if (err)
 			sk_common_release(sk);
 	}
+#endif
 out:
 	return err;
 out_rcu_unlock:
 	rcu_read_unlock();
 	goto out;
-#endif
 }
 
 #if 0
@@ -904,10 +904,13 @@ static int inet_compat_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
 	return err;
 }
 #endif
+}
+#endif
 
 const struct proto_ops inet_stream_ops = {
 	.family		   = PF_INET,
 	.owner		   = THIS_MODULE,
+/* FIXME
 	.release	   = inet_release,
 	.bind		   = inet_bind,
 	.connect	   = inet_stream_connect,
@@ -925,6 +928,7 @@ const struct proto_ops inet_stream_ops = {
 	.mmap		   = sock_no_mmap,
 	.sendpage	   = inet_sendpage,
 	.splice_read	   = tcp_splice_read,
+*/
 #ifdef CONFIG_COMPAT
 	.compat_setsockopt = compat_sock_common_setsockopt,
 	.compat_getsockopt = compat_sock_common_getsockopt,
@@ -933,6 +937,8 @@ const struct proto_ops inet_stream_ops = {
 };
 EXPORT_SYMBOL(inet_stream_ops);
 
+#if 0
+{
 const struct proto_ops inet_dgram_ops = {
 	.family		   = PF_INET,
 	.owner		   = THIS_MODULE,
@@ -998,7 +1004,6 @@ static const struct net_proto_family inet_family_ops = {
 	.owner	= THIS_MODULE,
 };
 
-#if 0
 /* Upon startup we insert all the elements in inetsw_array[] into
  * the linked list inetsw.
  */
@@ -1007,11 +1012,12 @@ static struct inet_protosw inetsw_array[] =
 	{
 		.type =       SOCK_STREAM,
 		.protocol =   IPPROTO_TCP,
-		.prot =       &tcp_prot,
+// FIXME:		.prot =       &tcp_prot,
 		.ops =        &inet_stream_ops,
 		.flags =      INET_PROTOSW_PERMANENT |
 			      INET_PROTOSW_ICSK,
 	},
+#if 0
 	{
 		.type =       SOCK_DGRAM,
 		.protocol =   IPPROTO_UDP,
@@ -1035,13 +1041,11 @@ static struct inet_protosw inetsw_array[] =
 	       .ops =        &inet_sockraw_ops,
 	       .flags =      INET_PROTOSW_REUSE,
        }
+#endif
 };
 
 #define INETSW_ARRAY_LEN ARRAY_SIZE(inetsw_array)
-#endif
 
-#if 0
-{
 void inet_register_protosw(struct inet_protosw *p)
 {
 	struct list_head *lh;
@@ -1089,6 +1093,8 @@ out_illegal:
 }
 EXPORT_SYMBOL(inet_register_protosw);
 
+#if 0
+{
 void inet_unregister_protosw(struct inet_protosw *p)
 {
 	if (INET_PROTOSW_PERMANENT & p->flags) {
@@ -1725,9 +1731,9 @@ static struct packet_type ip_packet_type __read_mostly = {
 	 */
 
 	(void)sock_register(&inet_family_ops);
-	return 0;
 
 #if 0
+{
 #ifdef CONFIG_SYSCTL
 	ip_static_sysctl_init();
 #endif
@@ -1745,6 +1751,8 @@ static struct packet_type ip_packet_type __read_mostly = {
 	if (inet_add_protocol(&igmp_protocol, IPPROTO_IGMP) < 0)
 		pr_crit("%s: Cannot add IGMP protocol\n", __func__);
 #endif
+}
+#endif
 
 	/* Register the socket-side information for inet_create. */
 	for (r = &inetsw[0]; r < &inetsw[SOCK_MAX]; ++r)
@@ -1753,6 +1761,8 @@ static struct packet_type ip_packet_type __read_mostly = {
 	for (q = inetsw_array; q < &inetsw_array[INETSW_ARRAY_LEN]; ++q)
 		inet_register_protosw(q);
 
+#if 0
+{
 	/*
 	 *	Set the ARP module up
 	 */
@@ -1764,11 +1774,13 @@ static struct packet_type ip_packet_type __read_mostly = {
 	 */
 
 	ip_init();
+}
 #endif
 
 	tcp_v4_init();
 
 #if 0
+{
 	/* Setup TCP slab cache for open requests. */
 	tcp_init();
 
@@ -1822,7 +1834,9 @@ out_unregister_udp_proto:
 out_unregister_tcp_proto:
 	proto_unregister(&tcp_prot);
 	goto out;
+}
 #endif
+	return 0;
 }
 
 #if 0
