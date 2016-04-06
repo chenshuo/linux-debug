@@ -30,3 +30,8 @@ void kmem_cache_free(struct kmem_cache *cachep, void *objp)
 	// FIXME
 	printk("kmem_cache_free %p\n", cachep);
 }
+
+void *__kmalloc(size_t size, gfp_t flags)
+{
+	return zalloc(size);
+}

@@ -245,6 +245,8 @@ static int move_addr_to_user(struct sockaddr_storage *kaddr, int klen,
 	 */
 	return __put_user(klen, ulen);
 }
+}
+#endif
 
 static struct kmem_cache *sock_inode_cachep __read_mostly;
 
@@ -309,10 +311,12 @@ static int init_inodecache(void)
 
 static const struct super_operations sockfs_ops = {
 	.alloc_inode	= sock_alloc_inode,
-	.destroy_inode	= sock_destroy_inode,
-	.statfs		= simple_statfs,
+//	.destroy_inode	= sock_destroy_inode,
+//	.statfs		= simple_statfs,
 };
 
+#if 0
+{
 /*
  * sockfs_dname() is called from d_path().
  */
@@ -335,6 +339,12 @@ static struct dentry *sockfs_mount(struct file_system_type *fs_type,
 }
 #endif
 
+struct super_block g_super_block = {
+	.s_op = &sockfs_ops
+};
+struct vfsmount g_sock_mnt = {
+	.mnt_sb = &g_super_block
+};
 static struct vfsmount *sock_mnt __read_mostly;
 
 #if 0
@@ -2494,16 +2504,20 @@ void sock_unregister(int family)
 	pr_info("NET: Unregistered protocol family %d\n", family);
 }
 EXPORT_SYMBOL(sock_unregister);
+}
+#endif
 
-static int __init sock_init(void)
+/*static*/ int __init sock_init(void)
 {
 	int err;
+#if 0
 	/*
 	 *      Initialize the network sysctl infrastructure.
 	 */
 	err = net_sysctl_init();
 	if (err)
 		goto out;
+#endif
 
 	/*
 	 *      Initialize skbuff SLAB cache
@@ -2514,8 +2528,9 @@ static int __init sock_init(void)
 	 *      Initialize the protocols module.
 	 */
 
-	init_inodecache();
-
+	err = init_inodecache();
+	sock_mnt = &g_sock_mnt;
+#if 0
 	err = register_filesystem(&sock_fs_type);
 	if (err)
 		goto out_fs;
@@ -2537,14 +2552,19 @@ static int __init sock_init(void)
 	ptp_classifier_init();
 
 out:
+#endif
 	return err;
 
+#if 0
 out_mount:
 	unregister_filesystem(&sock_fs_type);
 out_fs:
 	goto out;
+#endif
 }
 
+#if 0
+{
 core_initcall(sock_init);	/* early initcall */
 
 #ifdef CONFIG_PROC_FS

@@ -20,6 +20,8 @@ void __init_waitqueue_head(wait_queue_head_t *q, const char *name, struct lock_c
 
 EXPORT_SYMBOL(__init_waitqueue_head);
 
+#if 0
+{
 void add_wait_queue(wait_queue_head_t *q, wait_queue_t *wait)
 {
 	unsigned long flags;
@@ -622,3 +624,5 @@ __sched int bit_wait_io_timeout(struct wait_bit_key *word, int mode)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(bit_wait_io_timeout);
+}
+#endif

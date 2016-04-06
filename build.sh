@@ -1,10 +1,13 @@
 #!/bin/sh
 
 OBJS="study/stub_memory.o"
+OBJS="$OBJS study/stub_arch.o"
+OBJS="$OBJS study/stub_kernel.o"
 OBJS="$OBJS study/stub_fs.o"
 OBJS="$OBJS study/stub_net.o"
 OBJS="$OBJS kernel/user.o"  # init_user_ns
 OBJS="$OBJS kernel/locking/mutex.o"  # __mutex_init
+OBJS="$OBJS kernel/sched/wait.o"  # __init_waitqueue_head
 OBJS="$OBJS fs/inode.o"  # new_inode_pseudo
 OBJS="$OBJS net/socket.o"
 OBJS="$OBJS net/core/skbuff.o"

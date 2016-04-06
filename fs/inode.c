@@ -352,6 +352,8 @@ void address_space_init_once(struct address_space *mapping)
 	mapping->i_mmap = RB_ROOT;
 }
 EXPORT_SYMBOL(address_space_init_once);
+}
+#endif
 
 /*
  * These are initializations that only need to be done
@@ -365,7 +367,7 @@ void inode_init_once(struct inode *inode)
 	INIT_LIST_HEAD(&inode->i_devices);
 	INIT_LIST_HEAD(&inode->i_io_list);
 	INIT_LIST_HEAD(&inode->i_lru);
-	address_space_init_once(&inode->i_data);
+	// FIXME: address_space_init_once(&inode->i_data);
 	i_size_ordered_init(inode);
 #ifdef CONFIG_FSNOTIFY
 	INIT_HLIST_HEAD(&inode->i_fsnotify_marks);
@@ -373,6 +375,8 @@ void inode_init_once(struct inode *inode)
 }
 EXPORT_SYMBOL(inode_init_once);
 
+#if 0
+{
 static void init_once(void *foo)
 {
 	struct inode *inode = (struct inode *) foo;

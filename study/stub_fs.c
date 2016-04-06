@@ -2,5 +2,5 @@
 
 void iput(struct inode *inode)
 {
-	printk("iput %p", inode);
+	printk("iput %p\n", inode);
 }
