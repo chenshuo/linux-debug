@@ -108,6 +108,8 @@
 #include <net/busy_poll.h>
 #include <linux/errqueue.h>
 
+#if 0
+{
 #ifdef CONFIG_NET_RX_BUSY_POLL
 unsigned int sysctl_net_busy_read __read_mostly;
 unsigned int sysctl_net_busy_poll __read_mostly;
@@ -154,12 +156,14 @@ static const struct file_operations socket_file_ops = {
 	.splice_write = generic_splice_sendpage,
 	.splice_read =	sock_splice_read,
 };
+}
+#endif
 
 /*
  *	The protocol list. Each protocol is registered in here.
  */
 
-static DEFINE_SPINLOCK(net_family_lock);
+// FIXME: static DEFINE_SPINLOCK(net_family_lock);
 static const struct net_proto_family __rcu *net_families[NPROTO] __read_mostly;
 
 /*
@@ -168,6 +172,8 @@ static const struct net_proto_family __rcu *net_families[NPROTO] __read_mostly;
 
 static DEFINE_PER_CPU(int, sockets_in_use);
 
+#if 0
+{
 /*
  * Support routines.
  * Move socket addresses back and forth across the kernel/user
@@ -326,9 +332,13 @@ static struct dentry *sockfs_mount(struct file_system_type *fs_type,
 	return mount_pseudo(fs_type, "socket:", &sockfs_ops,
 		&sockfs_dentry_operations, SOCKFS_MAGIC);
 }
+}
+#endif
 
 static struct vfsmount *sock_mnt __read_mostly;
 
+#if 0
+{
 static struct file_system_type sock_fs_type = {
 	.name =		"sockfs",
 	.mount =	sockfs_mount,
@@ -524,6 +534,8 @@ static const struct inode_operations sockfs_inode_ops = {
 	.getxattr = sockfs_getxattr,
 	.listxattr = sockfs_listxattr,
 };
+}
+#endif
 
 /**
  *	sock_alloc	-	allocate a socket
@@ -549,12 +561,14 @@ static struct socket *sock_alloc(void)
 	inode->i_mode = S_IFSOCK | S_IRWXUGO;
 	inode->i_uid = current_fsuid();
 	inode->i_gid = current_fsgid();
-	inode->i_op = &sockfs_inode_ops;
+	// FIXME: inode->i_op = &sockfs_inode_ops;
 
 	this_cpu_add(sockets_in_use, 1);
 	return sock;
 }
 
+#if 0
+{
 /**
  *	sock_release	-	close a socket
  *	@sock: socket to close
@@ -1084,6 +1098,8 @@ call_kill:
 	return 0;
 }
 EXPORT_SYMBOL(sock_wake_async);
+}
+#endif
 
 int __sock_create(struct net *net, int family, int type, int protocol,
 			 struct socket **res, int kern)
@@ -1210,6 +1226,8 @@ int sock_create_kern(struct net *net, int family, int type, int protocol, struct
 }
 EXPORT_SYMBOL(sock_create_kern);
 
+#if 0
+{
 SYSCALL_DEFINE3(socket, int, family, int, type, int, protocol)
 {
 	int retval;
@@ -3294,3 +3312,5 @@ int kernel_sock_shutdown(struct socket *sock, enum sock_shutdown_cmd how)
 	return sock->ops->shutdown(sock, how);
 }
 EXPORT_SYMBOL(kernel_sock_shutdown);
+}
+#endif

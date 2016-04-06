@@ -62,6 +62,8 @@ struct user_namespace init_user_ns = {
 };
 EXPORT_SYMBOL_GPL(init_user_ns);
 
+#if 0
+{
 /*
  * UID task count cache, to get fast user lookup in "alloc_uid"
  * when changing user ID's (ie setuid() and friends).
@@ -226,3 +228,5 @@ static int __init uid_cache_init(void)
 	return 0;
 }
 subsys_initcall(uid_cache_init);
+}
+#endif

@@ -52,10 +52,10 @@
  *   inode_hash_lock
  */
 
-static unsigned int i_hash_mask __read_mostly;
-static unsigned int i_hash_shift __read_mostly;
-static struct hlist_head *inode_hashtable __read_mostly;
-static __cacheline_aligned_in_smp DEFINE_SPINLOCK(inode_hash_lock);
+// static unsigned int i_hash_mask __read_mostly;
+// static unsigned int i_hash_shift __read_mostly;
+// static struct hlist_head *inode_hashtable __read_mostly;
+// static __cacheline_aligned_in_smp DEFINE_SPINLOCK(inode_hash_lock);
 
 /*
  * Empty aops. Can be used for the cases where the user does not
@@ -68,13 +68,15 @@ EXPORT_SYMBOL(empty_aops);
 /*
  * Statistics gathering..
  */
-struct inodes_stat_t inodes_stat;
+// struct inodes_stat_t inodes_stat;
 
 static DEFINE_PER_CPU(unsigned long, nr_inodes);
-static DEFINE_PER_CPU(unsigned long, nr_unused);
+// static DEFINE_PER_CPU(unsigned long, nr_unused);
 
 static struct kmem_cache *inode_cachep __read_mostly;
 
+#if 0
+{
 static long get_nr_inodes(void)
 {
 	int i;
@@ -110,6 +112,8 @@ int proc_nr_inodes(struct ctl_table *table, int write,
 	inodes_stat.nr_inodes = get_nr_inodes();
 	inodes_stat.nr_unused = get_nr_inodes_unused();
 	return proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
+}
+#endif
 }
 #endif
 
@@ -213,6 +217,8 @@ static struct inode *alloc_inode(struct super_block *sb)
 	return inode;
 }
 
+#if 0
+{
 void free_inode_nonrcu(struct inode *inode)
 {
 	kmem_cache_free(inode_cachep, inode);
@@ -862,6 +868,8 @@ unsigned int get_next_ino(void)
 	return res;
 }
 EXPORT_SYMBOL(get_next_ino);
+}
+#endif
 
 /**
  *	new_inode_pseudo 	- obtain an inode
@@ -886,6 +894,8 @@ struct inode *new_inode_pseudo(struct super_block *sb)
 	return inode;
 }
 
+#if 0
+{
 /**
  *	new_inode 	- obtain an inode
  *	@sb: superblock
@@ -2028,3 +2038,5 @@ void inode_set_flags(struct inode *inode, unsigned int flags,
 				  new_flags) != old_flags));
 }
 EXPORT_SYMBOL(inode_set_flags);
+}
+#endif

@@ -1,3 +1,5 @@
+#include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
 
@@ -8,6 +10,24 @@ std::map<const void*, size_t> g_sizes;
 extern "C"
 {
 
+void panic(const char *fmt, ...)
+{
+  va_list args;
+  va_start(args, fmt);
+  vprintf(fmt, args);
+  va_end(args);
+  abort();
+}
+
+int printk(const char *fmt, ...)
+{
+  va_list args;
+  va_start(args, fmt);
+  int r = vprintf(fmt, args);
+  va_end(args);
+  return r;
+}
+
 void* zalloc(size_t size)
 {
   void* ret = malloc(size);
@@ -15,4 +35,5 @@ void* zalloc(size_t size)
   g_sizes[ret] = size;
   return ret;
 }
+
 }

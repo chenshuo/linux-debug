@@ -1,6 +1,10 @@
 #!/bin/sh
 
 OBJS="study/stub_memory.o"
+OBJS="$OBJS kernel/user.o"  # init_user_ns
+OBJS="$OBJS kernel/locking/mutex.o"  # __mutex_init
+OBJS="$OBJS fs/inode.o"  # new_inode_pseudo
+OBJS="$OBJS net/socket.o"
 OBJS="$OBJS net/core/skbuff.o"
 OBJS="$OBJS net/ipv4/inet_hashtables.o"
 OBJS="$OBJS net/ipv4/tcp_ipv4.o"
