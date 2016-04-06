@@ -108,13 +108,13 @@
 #include <net/busy_poll.h>
 #include <linux/errqueue.h>
 
-#if 0
-{
 #ifdef CONFIG_NET_RX_BUSY_POLL
 unsigned int sysctl_net_busy_read __read_mostly;
 unsigned int sysctl_net_busy_poll __read_mostly;
 #endif
 
+#if 0
+{
 static ssize_t sock_read_iter(struct kiocb *iocb, struct iov_iter *to);
 static ssize_t sock_write_iter(struct kiocb *iocb, struct iov_iter *from);
 static int sock_mmap(struct file *file, struct vm_area_struct *vma);
@@ -163,14 +163,14 @@ static const struct file_operations socket_file_ops = {
  *	The protocol list. Each protocol is registered in here.
  */
 
-// FIXME: static DEFINE_SPINLOCK(net_family_lock);
+static DEFINE_SPINLOCK(net_family_lock);
 static const struct net_proto_family __rcu *net_families[NPROTO] __read_mostly;
 
 /*
  *	Statistics counters of the socket lists
  */
 
-static DEFINE_PER_CPU(int, sockets_in_use);
+// FIXME: static DEFINE_PER_CPU(int, sockets_in_use);
 
 #if 0
 {
@@ -311,7 +311,7 @@ static int init_inodecache(void)
 
 static const struct super_operations sockfs_ops = {
 	.alloc_inode	= sock_alloc_inode,
-//	.destroy_inode	= sock_destroy_inode,
+	.destroy_inode	= sock_destroy_inode,
 //	.statfs		= simple_statfs,
 };
 
@@ -2444,6 +2444,8 @@ SYSCALL_DEFINE2(socketcall, int, call, unsigned long __user *, args)
 }
 
 #endif				/* __ARCH_WANT_SYS_SOCKETCALL */
+}
+#endif
 
 /**
  *	sock_register - add a socket protocol handler
@@ -2478,6 +2480,8 @@ int sock_register(const struct net_proto_family *ops)
 }
 EXPORT_SYMBOL(sock_register);
 
+#if 0
+{
 /**
  *	sock_unregister - remove a protocol handler
  *	@family: protocol family to remove

@@ -70,7 +70,7 @@ EXPORT_SYMBOL(empty_aops);
  */
 // struct inodes_stat_t inodes_stat;
 
-static DEFINE_PER_CPU(unsigned long, nr_inodes);
+// FIXME: static DEFINE_PER_CPU(unsigned long, nr_inodes);
 // static DEFINE_PER_CPU(unsigned long, nr_unused);
 
 static struct kmem_cache *inode_cachep __read_mostly;

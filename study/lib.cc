@@ -28,6 +28,11 @@ int printk(const char *fmt, ...)
   return r;
 }
 
+void warn_slowpath_null(const char *file, const int line)
+{
+  printf("warn_slowpath_null %s:%d\n", file, line);
+}
+
 void* zalloc(size_t size)
 {
   void* ret = malloc(size);

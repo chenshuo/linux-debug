@@ -128,6 +128,8 @@
 static struct list_head inetsw[SOCK_MAX];
 static DEFINE_SPINLOCK(inetsw_lock);
 
+#if 0
+{
 /* New destruction routine */
 
 void inet_sock_destruct(struct sock *sk)
@@ -241,6 +243,8 @@ out:
 	return err;
 }
 EXPORT_SYMBOL(inet_listen);
+}
+#endif
 
 /*
  *	Create an inet socket.
@@ -249,6 +253,8 @@ EXPORT_SYMBOL(inet_listen);
 static int inet_create(struct net *net, struct socket *sock, int protocol,
 		       int kern)
 {
+	return -EPROTONOSUPPORT;
+#if 0
 	struct sock *sk;
 	struct inet_protosw *answer;
 	struct inet_sock *inet;
@@ -383,9 +389,11 @@ out:
 out_rcu_unlock:
 	rcu_read_unlock();
 	goto out;
+#endif
 }
 
-
+#if 0
+{
 /*
  *	The peer socket should always be NULL (or else). When we call this
  *	function we are destroying the object and from then on nobody
@@ -981,6 +989,8 @@ static const struct proto_ops inet_sockraw_ops = {
 	.compat_ioctl	   = inet_compat_ioctl,
 #endif
 };
+}
+#endif
 
 static const struct net_proto_family inet_family_ops = {
 	.family = PF_INET,
@@ -988,6 +998,7 @@ static const struct net_proto_family inet_family_ops = {
 	.owner	= THIS_MODULE,
 };
 
+#if 0
 /* Upon startup we insert all the elements in inetsw_array[] into
  * the linked list inetsw.
  */
@@ -1001,14 +1012,13 @@ static struct inet_protosw inetsw_array[] =
 		.flags =      INET_PROTOSW_PERMANENT |
 			      INET_PROTOSW_ICSK,
 	},
-
 	{
 		.type =       SOCK_DGRAM,
 		.protocol =   IPPROTO_UDP,
 		.prot =       &udp_prot,
 		.ops =        &inet_dgram_ops,
 		.flags =      INET_PROTOSW_PERMANENT,
-       },
+	},
 
        {
 		.type =       SOCK_DGRAM,
@@ -1028,7 +1038,10 @@ static struct inet_protosw inetsw_array[] =
 };
 
 #define INETSW_ARRAY_LEN ARRAY_SIZE(inetsw_array)
+#endif
 
+#if 0
+{
 void inet_register_protosw(struct inet_protosw *p)
 {
 	struct list_head *lh;
@@ -1678,8 +1691,10 @@ static struct packet_type ip_packet_type __read_mostly = {
 	.type = cpu_to_be16(ETH_P_IP),
 	.func = ip_rcv,
 };
+}
+#endif
 
-static int __init inet_init(void)
+/*static*/ int __init inet_init(void)
 {
 	struct inet_protosw *q;
 	struct list_head *r;
@@ -1687,6 +1702,7 @@ static int __init inet_init(void)
 
 	sock_skb_cb_check_size(sizeof(struct inet_skb_parm));
 
+	/*
 	rc = proto_register(&tcp_prot, 1);
 	if (rc)
 		goto out;
@@ -1702,17 +1718,19 @@ static int __init inet_init(void)
 	rc = proto_register(&ping_prot, 1);
 	if (rc)
 		goto out_unregister_raw_proto;
+		*/
 
 	/*
 	 *	Tell SOCKET that we are alive...
 	 */
 
 	(void)sock_register(&inet_family_ops);
+	return 0;
 
+#if 0
 #ifdef CONFIG_SYSCTL
 	ip_static_sysctl_init();
 #endif
-
 	/*
 	 *	Add all the base protocols.
 	 */
@@ -1746,9 +1764,11 @@ static int __init inet_init(void)
 	 */
 
 	ip_init();
+#endif
 
 	tcp_v4_init();
 
+#if 0
 	/* Setup TCP slab cache for open requests. */
 	tcp_init();
 
@@ -1802,8 +1822,11 @@ out_unregister_udp_proto:
 out_unregister_tcp_proto:
 	proto_unregister(&tcp_prot);
 	goto out;
+#endif
 }
 
+#if 0
+{
 fs_initcall(inet_init);
 
 /* ------------------------------------------------------------------------ */
@@ -1846,4 +1869,5 @@ static int __init ipv4_proc_init(void)
 #endif /* CONFIG_PROC_FS */
 
 MODULE_ALIAS_NETPROTO(PF_INET);
-
+}
+#endif

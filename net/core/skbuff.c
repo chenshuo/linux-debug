@@ -678,6 +678,8 @@ void __kfree_skb(struct sk_buff *skb)
 	kfree_skbmem(skb);
 }
 EXPORT_SYMBOL(__kfree_skb);
+}
+#endif
 
 /**
  *	kfree_skb - free an sk_buff
@@ -699,6 +701,8 @@ void kfree_skb(struct sk_buff *skb)
 }
 EXPORT_SYMBOL(kfree_skb);
 
+#if 0
+{
 void kfree_skb_list(struct sk_buff *segs)
 {
 	while (segs) {

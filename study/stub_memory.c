@@ -28,10 +28,16 @@ void *kmem_cache_alloc(struct kmem_cache *cachep, gfp_t flags)
 void kmem_cache_free(struct kmem_cache *cachep, void *objp)
 {
 	// FIXME
-	printk("kmem_cache_free %p\n", cachep);
+	printk("kmem_cache_free %p %p\n", cachep, objp);
 }
 
 void *__kmalloc(size_t size, gfp_t flags)
 {
 	return zalloc(size);
+}
+
+void kfree(const void *objp)
+{
+	// FIXME
+	printk("kfree %p\n", objp);
 }

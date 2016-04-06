@@ -106,7 +106,7 @@
 
 #define smp_store_release(p, v)						\
 do {									\
-	compiletime_assert_atomic_type(*p);				\
+	/*compiletime_assert_atomic_type(*p);*/				\
 	smp_mb();							\
 	WRITE_ONCE(*p, v);						\
 } while (0)
