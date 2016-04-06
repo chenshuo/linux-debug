@@ -1210,17 +1210,23 @@ static struct dst_entry *tcp_v4_route_req(const struct sock *sk,
 
 	return dst;
 }
+}
+#endif
 
 struct request_sock_ops tcp_request_sock_ops __read_mostly = {
 	.family		=	PF_INET,
 	.obj_size	=	sizeof(struct tcp_request_sock),
+/* FIXME
 	.rtx_syn_ack	=	tcp_rtx_synack,
 	.send_ack	=	tcp_v4_reqsk_send_ack,
 	.destructor	=	tcp_v4_reqsk_destructor,
 	.send_reset	=	tcp_v4_send_reset,
 	.syn_ack_timeout =	tcp_syn_ack_timeout,
+*/
 };
 
+#if 0
+{
 static const struct tcp_request_sock_ops tcp_request_sock_ipv4_ops = {
 	.mss_clamp	=	TCP_MSS_DEFAULT,
 #ifdef CONFIG_TCP_MD5SIG
@@ -1722,13 +1728,19 @@ do_time_wait:
 	}
 	goto discard_it;
 }
+}
+#endif
 
 static struct timewait_sock_ops tcp_timewait_sock_ops = {
+/* FIXME
 	.twsk_obj_size	= sizeof(struct tcp_timewait_sock),
 	.twsk_unique	= tcp_twsk_unique,
 	.twsk_destructor= tcp_twsk_destructor,
+*/
 };
 
+#if 0
+{
 void inet_sk_rx_dst_set(struct sock *sk, const struct sk_buff *skb)
 {
 	struct dst_entry *dst = skb_dst(skb);
@@ -2306,10 +2318,13 @@ void tcp4_proc_exit(void)
 	unregister_pernet_subsys(&tcp4_net_ops);
 }
 #endif /* CONFIG_PROC_FS */
+}
+#endif
 
 struct proto tcp_prot = {
 	.name			= "TCP",
 	.owner			= THIS_MODULE,
+/* FIXME
 	.close			= tcp_close,
 	.connect		= tcp_v4_connect,
 	.disconnect		= tcp_disconnect,
@@ -2330,6 +2345,8 @@ struct proto tcp_prot = {
 	.get_port		= inet_csk_get_port,
 	.enter_memory_pressure	= tcp_enter_memory_pressure,
 	.stream_memory_free	= tcp_stream_memory_free,
+*/
+/* FIXME
 	.sockets_allocated	= &tcp_sockets_allocated,
 	.orphan_count		= &tcp_orphan_count,
 	.memory_allocated	= &tcp_memory_allocated,
@@ -2337,6 +2354,7 @@ struct proto tcp_prot = {
 	.sysctl_mem		= sysctl_tcp_mem,
 	.sysctl_wmem		= sysctl_tcp_wmem,
 	.sysctl_rmem		= sysctl_tcp_rmem,
+*/
 	.max_header		= MAX_TCP_HEADER,
 	.obj_size		= sizeof(struct tcp_sock),
 	.slab_flags		= SLAB_DESTROY_BY_RCU,
@@ -2356,6 +2374,8 @@ struct proto tcp_prot = {
 };
 EXPORT_SYMBOL(tcp_prot);
 
+#if 0
+{
 static void __net_exit tcp_sk_exit(struct net *net)
 {
 	int cpu;

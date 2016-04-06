@@ -1012,7 +1012,7 @@ static struct inet_protosw inetsw_array[] =
 	{
 		.type =       SOCK_STREAM,
 		.protocol =   IPPROTO_TCP,
-// FIXME:		.prot =       &tcp_prot,
+		.prot =       &tcp_prot,
 		.ops =        &inet_stream_ops,
 		.flags =      INET_PROTOSW_PERMANENT |
 			      INET_PROTOSW_ICSK,
@@ -1708,11 +1708,11 @@ static struct packet_type ip_packet_type __read_mostly = {
 
 	sock_skb_cb_check_size(sizeof(struct inet_skb_parm));
 
-	/*
 	rc = proto_register(&tcp_prot, 1);
 	if (rc)
 		goto out;
 
+/*
 	rc = proto_register(&udp_prot, 1);
 	if (rc)
 		goto out_unregister_tcp_proto;
@@ -1724,7 +1724,7 @@ static struct packet_type ip_packet_type __read_mostly = {
 	rc = proto_register(&ping_prot, 1);
 	if (rc)
 		goto out_unregister_raw_proto;
-		*/
+*/
 
 	/*
 	 *	Tell SOCKET that we are alive...
@@ -1823,10 +1823,14 @@ static struct packet_type ip_packet_type __read_mostly = {
 	dev_add_pack(&ip_packet_type);
 
 	ip_tunnel_core_init();
+}
+#endif
 
 	rc = 0;
 out:
 	return rc;
+#if 0
+{
 out_unregister_raw_proto:
 	proto_unregister(&raw_prot);
 out_unregister_udp_proto:
@@ -1836,7 +1840,6 @@ out_unregister_tcp_proto:
 	goto out;
 }
 #endif
-	return 0;
 }
 
 #if 0

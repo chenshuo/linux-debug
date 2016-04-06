@@ -146,6 +146,8 @@
 static DEFINE_MUTEX(proto_list_mutex);
 static LIST_HEAD(proto_list);
 
+#if 0
+{
 /**
  * sk_ns_capable - General socket capability test
  * @sk: Socket to use a capability on or through
@@ -2833,9 +2835,12 @@ static int req_prot_init(const struct proto *prot)
 	}
 	return 0;
 }
+}
+#endif
 
 int proto_register(struct proto *prot, int alloc_slab)
 {
+#if 0
 	if (alloc_slab) {
 		prot->slab = kmem_cache_create(prot->name, prot->obj_size, 0,
 					SLAB_HWCACHE_ALIGN | prot->slab_flags,
@@ -2881,10 +2886,13 @@ out_free_request_sock_slab:
 	kmem_cache_destroy(prot->slab);
 	prot->slab = NULL;
 out:
+#endif
 	return -ENOBUFS;
 }
 EXPORT_SYMBOL(proto_register);
 
+#if 0
+{
 void proto_unregister(struct proto *prot)
 {
 	mutex_lock(&proto_list_mutex);
@@ -3039,3 +3047,5 @@ static int __init proto_init(void)
 subsys_initcall(proto_init);
 
 #endif /* PROC_FS */
+}
+#endif
