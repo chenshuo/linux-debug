@@ -97,6 +97,8 @@ static int tcp_v4_md5_hash_hdr(char *md5_hash, const struct tcp_md5sig_key *key,
 struct inet_hashinfo tcp_hashinfo;
 EXPORT_SYMBOL(tcp_hashinfo);
 
+#if 0
+{
 static  __u32 tcp_v4_init_sequence(const struct sk_buff *skb)
 {
 	return secure_tcp_sequence_number(ip_hdr(skb)->daddr,
@@ -2405,10 +2407,13 @@ static struct pernet_operations __net_initdata tcp_sk_ops = {
        .exit	   = tcp_sk_exit,
        .exit_batch = tcp_sk_exit_batch,
 };
+}
+#endif
 
 void __init tcp_v4_init(void)
 {
 	inet_hashinfo_init(&tcp_hashinfo);
-	if (register_pernet_subsys(&tcp_sk_ops))
-		panic("Failed to create the TCP control socket.\n");
+	// FIXME
+	//if (register_pernet_subsys(&tcp_sk_ops))
+	//	panic("Failed to create the TCP control socket.\n");
 }

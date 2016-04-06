@@ -25,6 +25,8 @@
 #include <net/secure_seq.h>
 #include <net/ip.h>
 
+#if 0
+{
 static u32 inet_ehashfn(const struct net *net, const __be32 laddr,
 			const __u16 lport, const __be32 faddr,
 			const __be16 fport)
@@ -622,6 +624,8 @@ int inet_hash_connect(struct inet_timewait_death_row *death_row,
 				   __inet_check_established);
 }
 EXPORT_SYMBOL_GPL(inet_hash_connect);
+}
+#endif
 
 void inet_hashinfo_init(struct inet_hashinfo *h)
 {
@@ -631,10 +635,12 @@ void inet_hashinfo_init(struct inet_hashinfo *h)
 		spin_lock_init(&h->listening_hash[i].lock);
 		INIT_HLIST_NULLS_HEAD(&h->listening_hash[i].head,
 				      i + LISTENING_NULLS_BASE);
-		}
+	}
 }
 EXPORT_SYMBOL_GPL(inet_hashinfo_init);
 
+#if 0
+{
 int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
 {
 	unsigned int locksz = sizeof(spinlock_t);
@@ -663,3 +669,5 @@ int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(inet_ehash_locks_alloc);
+}
+#endif

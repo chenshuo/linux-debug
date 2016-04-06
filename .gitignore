@@ -33,6 +33,7 @@
 *.lzo
 *.patch
 *.gcno
+a.out
 modules.builtin
 Module.symvers
 *.dwo

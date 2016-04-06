@@ -33,7 +33,7 @@
  * fix-mapped?
  */
 enum fixed_addresses {
-	__end_of_fixed_addresses
+	__end_of_fixed_addresses = 1  // FIXME: for -O0 build
 };
 
 extern void __set_fixmap (enum fixed_addresses idx,
