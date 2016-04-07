@@ -1751,25 +1751,31 @@ void inet_sk_rx_dst_set(struct sock *sk, const struct sk_buff *skb)
 	}
 }
 EXPORT_SYMBOL(inet_sk_rx_dst_set);
+}
+#endif
 
 const struct inet_connection_sock_af_ops ipv4_specific = {
+/* FIXME
 	.queue_xmit	   = ip_queue_xmit,
 	.send_check	   = tcp_v4_send_check,
 	.rebuild_header	   = inet_sk_rebuild_header,
 	.sk_rx_dst_set	   = inet_sk_rx_dst_set,
 	.conn_request	   = tcp_v4_conn_request,
 	.syn_recv_sock	   = tcp_v4_syn_recv_sock,
+*/
 	.net_header_len	   = sizeof(struct iphdr),
-	.setsockopt	   = ip_setsockopt,
-	.getsockopt	   = ip_getsockopt,
-	.addr2sockaddr	   = inet_csk_addr2sockaddr,
+//	.setsockopt	   = ip_setsockopt,
+//	.getsockopt	   = ip_getsockopt,
+//	.addr2sockaddr	   = inet_csk_addr2sockaddr,
 	.sockaddr_len	   = sizeof(struct sockaddr_in),
+/* FIXME
 	.bind_conflict	   = inet_csk_bind_conflict,
 #ifdef CONFIG_COMPAT
 	.compat_setsockopt = compat_ip_setsockopt,
 	.compat_getsockopt = compat_ip_getsockopt,
 #endif
 	.mtu_reduced	   = tcp_v4_mtu_reduced,
+*/
 };
 EXPORT_SYMBOL(ipv4_specific);
 
@@ -1799,6 +1805,8 @@ static int tcp_v4_init_sock(struct sock *sk)
 	return 0;
 }
 
+#if 0
+{
 void tcp_v4_destroy_sock(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -2330,7 +2338,9 @@ struct proto tcp_prot = {
 	.disconnect		= tcp_disconnect,
 	.accept			= inet_csk_accept,
 	.ioctl			= tcp_ioctl,
+*/
 	.init			= tcp_v4_init_sock,
+/* FIXME
 	.destroy		= tcp_v4_destroy_sock,
 	.shutdown		= tcp_shutdown,
 	.setsockopt		= tcp_setsockopt,

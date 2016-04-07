@@ -282,6 +282,8 @@
 #include <asm/unaligned.h>
 #include <net/busy_poll.h>
 
+#if 0
+{
 int sysctl_tcp_fin_timeout __read_mostly = TCP_FIN_TIMEOUT;
 
 int sysctl_tcp_min_tso_segs __read_mostly = 2;
@@ -371,6 +373,8 @@ static int retrans_to_secs(u8 retrans, int timeout, int rto_max)
 	}
 	return period;
 }
+}
+#endif
 
 /* Address-family independent initialization for a tcp_sock.
  *
@@ -383,6 +387,7 @@ void tcp_init_sock(struct sock *sk)
 	struct tcp_sock *tp = tcp_sk(sk);
 
 	__skb_queue_head_init(&tp->out_of_order_queue);
+#if 0
 	tcp_init_xmit_timers(sk);
 	tcp_prequeue_init(tp);
 	INIT_LIST_HEAD(&tp->tsq_node);
@@ -426,9 +431,12 @@ void tcp_init_sock(struct sock *sk)
 	sock_update_memcg(sk);
 	sk_sockets_allocated_inc(sk);
 	local_bh_enable();
+#endif
 }
 EXPORT_SYMBOL(tcp_init_sock);
 
+#if 0
+{
 static void tcp_tx_timestamp(struct sock *sk, struct sk_buff *skb)
 {
 	if (sk->sk_tsflags) {
@@ -3191,3 +3199,5 @@ void __init tcp_init(void)
 	BUG_ON(tcp_register_congestion_control(&tcp_reno) != 0);
 	tcp_tasklet_init();
 }
+}
+#endif
