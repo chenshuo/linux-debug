@@ -138,9 +138,15 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(tcp_twsk_unique);
+}
+#endif
 
 /* This will initiate an outgoing connection. */
 int tcp_v4_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
+{
+	// FIXME
+	return 0;
+#if 0
 {
 	struct sockaddr_in *usin = (struct sockaddr_in *)uaddr;
 	struct inet_sock *inet = inet_sk(sk);
@@ -264,8 +270,12 @@ failure:
 	inet->inet_dport = 0;
 	return err;
 }
+#endif
+}
 EXPORT_SYMBOL(tcp_v4_connect);
 
+#if 0
+{
 /*
  * This routine reacts to ICMP_FRAG_NEEDED mtu indications as defined in RFC1191.
  * It can be called through tcp_release_cb() if socket was owned by user
@@ -2332,9 +2342,9 @@ void tcp4_proc_exit(void)
 struct proto tcp_prot = {
 	.name			= "TCP",
 	.owner			= THIS_MODULE,
-/* FIXME
-	.close			= tcp_close,
+//	.close			= tcp_close,
 	.connect		= tcp_v4_connect,
+/* FIXME
 	.disconnect		= tcp_disconnect,
 	.accept			= inet_csk_accept,
 	.ioctl			= tcp_ioctl,
@@ -2352,7 +2362,9 @@ struct proto tcp_prot = {
 	.release_cb		= tcp_release_cb,
 	.hash			= inet_hash,
 	.unhash			= inet_unhash,
+*/
 	.get_port		= inet_csk_get_port,
+/* FIXME
 	.enter_memory_pressure	= tcp_enter_memory_pressure,
 	.stream_memory_free	= tcp_stream_memory_free,
 */

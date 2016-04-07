@@ -51,7 +51,9 @@
 int tcp_connect(struct socket *sock)
 {
 	struct sockaddr_in address = {
-		0
+		.sin_family = AF_INET,
+		.sin_port = htons(1234),
+		.sin_addr.s_addr = INADDR_LOOPBACK
 	};
 	// struct proto_ops inet_stream_ops.connect -> inet_stream_connect
 	int err = sock->ops->connect(sock, (struct sockaddr *)&address, sizeof address, 0);
@@ -62,7 +64,9 @@ int tcp_connect(struct socket *sock)
 int tcp_bind(struct socket *sock)
 {
 	struct sockaddr_in address = {
-		0
+		.sin_family = AF_INET,
+		.sin_port = htons(1234),
+		.sin_addr.s_addr = INADDR_ANY
 	};
 	// struct proto_ops inet_stream_ops.bind -> inet_bind
 	int err = sock->ops->bind(sock, (struct sockaddr *)&address, sizeof address);

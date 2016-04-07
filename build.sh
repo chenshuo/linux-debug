@@ -16,6 +16,7 @@ OBJS="$OBJS net/core/skbuff.o"
 OBJS="$OBJS net/core/sock.o"
 OBJS="$OBJS net/ipv4/af_inet.o"
 OBJS="$OBJS net/ipv4/inet_hashtables.o"
+OBJS="$OBJS net/ipv4/inet_connection_sock.o"
 OBJS="$OBJS net/ipv4/tcp_ipv4.o"
 OBJS="$OBJS net/ipv4/tcp.o"
 

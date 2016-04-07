@@ -1,3 +1,4 @@
+#include <linux/capability.h>
 #include <linux/rcupdate.h>
 
 // kernel/rcu/tiny.c
@@ -21,6 +22,13 @@ void __mutex_lock_slowpath(atomic_t *lock_count)
 void __mutex_unlock_slowpath(atomic_t *lock_count)
 {
 	printk("__mutex_unlock_slowpath %p\n", lock_count);
+}
+
+// kernel/sched/wait.c
+void __wake_up(wait_queue_head_t *q, unsigned int mode,
+			int nr_exclusive, void *key)
+{
+	printk("__wake_up %p\n", q);
 }
 
 // kernel/capability.c

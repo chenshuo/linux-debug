@@ -1,4 +1,5 @@
 #include <linux/skbuff.h>
+#include <uapi/linux/rtnetlink.h>
 
 // net/core/utils.c
 
@@ -38,4 +39,10 @@ void __lock_sock(struct sock *sk)
 void __release_sock(struct sock *sk)
 {
 	printk("__release_sock%p\n", sk);
+}
+
+// net/ipv4/fib_frontend.c
+unsigned int inet_addr_type_table(struct net *net, __be32 addr, u32 tb_id)
+{
+	return RTN_LOCAL;
 }

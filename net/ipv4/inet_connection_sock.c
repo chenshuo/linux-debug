@@ -30,6 +30,8 @@ const char inet_csk_timer_bug_msg[] = "inet_csk BUG: unknown timer value\n";
 EXPORT_SYMBOL(inet_csk_timer_bug_msg);
 #endif
 
+#if 0
+{
 void inet_get_local_port_range(struct net *net, int *low, int *high)
 {
 	unsigned int seq;
@@ -86,11 +88,17 @@ int inet_csk_bind_conflict(const struct sock *sk,
 	return sk2 != NULL;
 }
 EXPORT_SYMBOL_GPL(inet_csk_bind_conflict);
+}
+#endif
 
 /* Obtain a reference to a local port for the given sock,
  * if snum is zero it means select any available local port.
  */
 int inet_csk_get_port(struct sock *sk, unsigned short snum)
+{
+	// FIXME
+	return 0;
+#if 0
 {
 	struct inet_hashinfo *hashinfo = sk->sk_prot->h.hashinfo;
 	struct inet_bind_hashbucket *head;
@@ -246,8 +254,12 @@ fail:
 	local_bh_enable();
 	return ret;
 }
+#endif
+}
 EXPORT_SYMBOL_GPL(inet_csk_get_port);
 
+#if 0
+{
 /*
  * Wait for an incoming connection, avoid race conditions. This must be called
  * with the socket locked.
@@ -963,3 +975,5 @@ out:
 	return dst;
 }
 EXPORT_SYMBOL_GPL(inet_csk_update_pmtu);
+}
+#endif
