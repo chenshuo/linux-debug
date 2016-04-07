@@ -31,6 +31,8 @@ char *kvasprintf(gfp_t gfp, const char *fmt, va_list ap)
 }
 EXPORT_SYMBOL(kvasprintf);
 
+#if 0
+{
 /*
  * If fmt contains no % (or is exactly %s), use kstrdup_const. If fmt
  * (or the sole vararg) points to rodata, we will then save a memory
@@ -46,6 +48,8 @@ const char *kvasprintf_const(gfp_t gfp, const char *fmt, va_list ap)
 	return kvasprintf(gfp, fmt, ap);
 }
 EXPORT_SYMBOL(kvasprintf_const);
+}
+#endif
 
 char *kasprintf(gfp_t gfp, const char *fmt, ...)
 {

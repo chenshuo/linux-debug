@@ -233,6 +233,8 @@ void mem_cgroup_sockets_destroy(struct mem_cgroup *memcg)
 	mutex_unlock(&proto_list_mutex);
 }
 #endif
+}
+#endif
 
 /*
  * Each address family might have different locking rules, so we have
@@ -333,6 +335,8 @@ int sysctl_tstamp_allow_data __read_mostly = 1;
 struct static_key memalloc_socks = STATIC_KEY_INIT_FALSE;
 EXPORT_SYMBOL_GPL(memalloc_socks);
 
+#if 0
+{
 /**
  * sk_set_memalloc - sets %SOCK_MEMALLOC
  * @sk: socket to set it on
@@ -1281,6 +1285,8 @@ lenout:
 		return -EFAULT;
 	return 0;
 }
+}
+#endif
 
 /*
  * Initialize an sk_lock.
@@ -1296,6 +1302,8 @@ static inline void sock_lock_init(struct sock *sk)
 			af_family_keys + sk->sk_family);
 }
 
+#if 0
+{
 /*
  * Copy all fields from osk to nsk but nsk->sk_refcnt must not change yet,
  * even temporarly, because of RCU lookups. sk_node should also be left as is.
@@ -1334,6 +1342,8 @@ void sk_prot_clear_portaddr_nulls(struct sock *sk, int size)
 	       size - nulls2 - sizeof(void *));
 }
 EXPORT_SYMBOL(sk_prot_clear_portaddr_nulls);
+}
+#endif
 
 static struct sock *sk_prot_alloc(struct proto *prot, gfp_t priority,
 		int family)
@@ -1378,6 +1388,8 @@ out_free:
 	return NULL;
 }
 
+#if 0
+{
 static void sk_prot_free(struct proto *prot, struct sock *sk)
 {
 	struct kmem_cache *slab;
@@ -1403,6 +1415,8 @@ void sock_update_netprioidx(struct sock *sk)
 	sk->sk_cgrp_prioidx = task_netprioidx(current);
 }
 EXPORT_SYMBOL_GPL(sock_update_netprioidx);
+#endif
+}
 #endif
 
 /**
@@ -1441,6 +1455,8 @@ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
 }
 EXPORT_SYMBOL(sk_alloc);
 
+#if 0
+{
 void sk_destruct(struct sock *sk)
 {
 	struct sk_filter *filter;
@@ -2362,6 +2378,12 @@ void sk_stop_timer(struct sock *sk, struct timer_list* timer)
 		__sock_put(sk);
 }
 EXPORT_SYMBOL(sk_stop_timer);
+}
+#endif
+
+static void sock_def_destruct(struct sock *sk)
+{
+}
 
 void sock_init_data(struct socket *sock, struct sock *sk)
 {
@@ -2371,7 +2393,7 @@ void sock_init_data(struct socket *sock, struct sock *sk)
 
 	sk->sk_send_head	=	NULL;
 
-	init_timer(&sk->sk_timer);
+	// FIXME: init_timer(&sk->sk_timer);
 
 	sk->sk_allocation	=	GFP_KERNEL;
 	sk->sk_rcvbuf		=	sysctl_rmem_default;
@@ -2393,10 +2415,11 @@ void sock_init_data(struct socket *sock, struct sock *sk)
 			af_callback_keys + sk->sk_family,
 			af_family_clock_key_strings[sk->sk_family]);
 
-	sk->sk_state_change	=	sock_def_wakeup;
-	sk->sk_data_ready	=	sock_def_readable;
-	sk->sk_write_space	=	sock_def_write_space;
-	sk->sk_error_report	=	sock_def_error_report;
+	// FIXME
+	// sk->sk_state_change	=	sock_def_wakeup;
+	// sk->sk_data_ready	=	sock_def_readable;
+	// sk->sk_write_space	=	sock_def_write_space;
+	// sk->sk_error_report	=	sock_def_error_report;
 	sk->sk_destruct		=	sock_def_destruct;
 
 	sk->sk_frag.page	=	NULL;
@@ -2430,6 +2453,8 @@ void sock_init_data(struct socket *sock, struct sock *sk)
 }
 EXPORT_SYMBOL(sock_init_data);
 
+#if 0
+{
 void lock_sock_nested(struct sock *sk, int subclass)
 {
 	might_sleep();
@@ -2753,7 +2778,7 @@ static __init int net_inuse_init(void)
 }
 
 core_initcall(net_inuse_init);
-#else
+#else  // CONFIG_NET_NS
 static DEFINE_PER_CPU(struct prot_inuse, prot_inuse);
 
 void sock_prot_inuse_add(struct net *net, struct proto *prot, int val)
@@ -2773,7 +2798,7 @@ int sock_prot_inuse_get(struct net *net, struct proto *prot)
 	return res >= 0 ? res : 0;
 }
 EXPORT_SYMBOL_GPL(sock_prot_inuse_get);
-#endif
+#endif  // CONFIG_NET_NS
 
 static void assign_proto_idx(struct proto *prot)
 {
@@ -2792,13 +2817,15 @@ static void release_proto_idx(struct proto *prot)
 	if (prot->inuse_idx != PROTO_INUSE_NR - 1)
 		clear_bit(prot->inuse_idx, proto_inuse_idx);
 }
-#else
+#else  // CONFIG_PROC_FS
 static inline void assign_proto_idx(struct proto *prot)
 {
 }
 
 static inline void release_proto_idx(struct proto *prot)
 {
+}
+#endif // CONFIG_PROC_FS
 }
 #endif
 
@@ -2810,6 +2837,11 @@ static void req_prot_cleanup(struct request_sock_ops *rsk_prot)
 	rsk_prot->slab_name = NULL;
 	kmem_cache_destroy(rsk_prot->slab);
 	rsk_prot->slab = NULL;
+}
+
+static inline void assign_proto_idx(struct proto *prot)
+{
+	// FIXME
 }
 
 static int req_prot_init(const struct proto *prot)
@@ -2835,12 +2867,9 @@ static int req_prot_init(const struct proto *prot)
 	}
 	return 0;
 }
-}
-#endif
 
 int proto_register(struct proto *prot, int alloc_slab)
 {
-#if 0
 	if (alloc_slab) {
 		prot->slab = kmem_cache_create(prot->name, prot->obj_size, 0,
 					SLAB_HWCACHE_ALIGN | prot->slab_flags,
@@ -2886,7 +2915,6 @@ out_free_request_sock_slab:
 	kmem_cache_destroy(prot->slab);
 	prot->slab = NULL;
 out:
-#endif
 	return -ENOBUFS;
 }
 EXPORT_SYMBOL(proto_register);

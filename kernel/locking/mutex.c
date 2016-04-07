@@ -62,8 +62,6 @@ __mutex_init(struct mutex *lock, const char *name, struct lock_class_key *key)
 
 EXPORT_SYMBOL(__mutex_init);
 
-#if 0
-{
 #ifndef CONFIG_DEBUG_LOCK_ALLOC
 /*
  * We split the mutex lock/unlock logic into separate fastpath and
@@ -108,6 +106,8 @@ void __sched mutex_lock(struct mutex *lock)
 EXPORT_SYMBOL(mutex_lock);
 #endif
 
+#if 0
+{
 static __always_inline void ww_mutex_lock_acquired(struct ww_mutex *ww,
 						   struct ww_acquire_ctx *ww_ctx)
 {
@@ -407,6 +407,8 @@ static bool mutex_optimistic_spin(struct mutex *lock,
 	return false;
 }
 #endif
+}
+#endif
 
 __visible __used noinline
 void __sched __mutex_unlock_slowpath(atomic_t *lock_count);
@@ -441,6 +443,8 @@ void __sched mutex_unlock(struct mutex *lock)
 
 EXPORT_SYMBOL(mutex_unlock);
 
+#if 0
+{
 /**
  * ww_mutex_unlock - release the w/w mutex
  * @lock: the mutex to be released

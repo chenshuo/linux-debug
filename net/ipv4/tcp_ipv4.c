@@ -1732,8 +1732,8 @@ do_time_wait:
 #endif
 
 static struct timewait_sock_ops tcp_timewait_sock_ops = {
-/* FIXME
 	.twsk_obj_size	= sizeof(struct tcp_timewait_sock),
+/* FIXME
 	.twsk_unique	= tcp_twsk_unique,
 	.twsk_destructor= tcp_twsk_destructor,
 */

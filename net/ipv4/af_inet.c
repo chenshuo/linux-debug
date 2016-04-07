@@ -128,8 +128,6 @@
 static struct list_head inetsw[SOCK_MAX];
 static DEFINE_SPINLOCK(inetsw_lock);
 
-#if 0
-{
 /* New destruction routine */
 
 void inet_sock_destruct(struct sock *sk)
@@ -163,6 +161,8 @@ void inet_sock_destruct(struct sock *sk)
 }
 EXPORT_SYMBOL(inet_sock_destruct);
 
+#if 0
+{
 /*
  *	The routines beyond this point handle the behaviour of an AF_INET
  *	socket object. Mostly it punts to the subprotocols of IP to do
@@ -311,8 +311,6 @@ lookup_protocol:
 			goto out_rcu_unlock;
 	}
 
-	return -EPERM;
-#if 0
 	err = -EPERM;
 	if (sock->type == SOCK_RAW && !kern &&
 	    !ns_capable(net->user_ns, CAP_NET_RAW))
@@ -354,8 +352,8 @@ lookup_protocol:
 
 	sock_init_data(sock, sk);
 
-	sk->sk_destruct	   = inet_sock_destruct;
-	sk->sk_protocol	   = protocol;
+	sk->sk_destruct    = inet_sock_destruct;
+	sk->sk_protocol    = protocol;
 	sk->sk_backlog_rcv = sk->sk_prot->backlog_rcv;
 
 	inet->uc_ttl	= -1;
@@ -384,7 +382,6 @@ lookup_protocol:
 		if (err)
 			sk_common_release(sk);
 	}
-#endif
 out:
 	return err;
 out_rcu_unlock:
@@ -1017,7 +1014,7 @@ static struct inet_protosw inetsw_array[] =
 		.flags =      INET_PROTOSW_PERMANENT |
 			      INET_PROTOSW_ICSK,
 	},
-#if 0
+/*
 	{
 		.type =       SOCK_DGRAM,
 		.protocol =   IPPROTO_UDP,
@@ -1025,23 +1022,21 @@ static struct inet_protosw inetsw_array[] =
 		.ops =        &inet_dgram_ops,
 		.flags =      INET_PROTOSW_PERMANENT,
 	},
-
-       {
+	{
 		.type =       SOCK_DGRAM,
 		.protocol =   IPPROTO_ICMP,
 		.prot =       &ping_prot,
 		.ops =        &inet_dgram_ops,
 		.flags =      INET_PROTOSW_REUSE,
-       },
-
-       {
+	},
+	{
 	       .type =       SOCK_RAW,
-	       .protocol =   IPPROTO_IP,	/* wild card */
+	       .protocol =   IPPROTO_IP,	// wild card
 	       .prot =       &raw_prot,
 	       .ops =        &inet_sockraw_ops,
 	       .flags =      INET_PROTOSW_REUSE,
-       }
-#endif
+	}
+*/
 };
 
 #define INETSW_ARRAY_LEN ARRAY_SIZE(inetsw_array)
