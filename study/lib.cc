@@ -1,3 +1,5 @@
+// Implement kernel stubs with stdlib.
+// Do not include any kernel headers
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>

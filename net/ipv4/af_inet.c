@@ -423,6 +423,8 @@ int inet_release(struct socket *sock)
 	return 0;
 }
 EXPORT_SYMBOL(inet_release);
+}
+#endif
 
 int inet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 {
@@ -521,6 +523,8 @@ out:
 }
 EXPORT_SYMBOL(inet_bind);
 
+#if 0
+{
 int inet_dgram_connect(struct socket *sock, struct sockaddr *uaddr,
 		       int addr_len, int flags)
 {
@@ -536,7 +540,10 @@ int inet_dgram_connect(struct socket *sock, struct sockaddr *uaddr,
 	return sk->sk_prot->connect(sk, uaddr, addr_len);
 }
 EXPORT_SYMBOL(inet_dgram_connect);
+}
+#endif
 
+#if 0
 static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
 {
 	DEFINE_WAIT(wait);
@@ -560,6 +567,12 @@ static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
 	finish_wait(sk_sleep(sk), &wait);
 	sk->sk_write_pending -= writebias;
 	return timeo;
+}
+#endif
+static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
+{
+	// FIXME
+	return 1;
 }
 
 /*
@@ -665,6 +678,8 @@ int inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
 }
 EXPORT_SYMBOL(inet_stream_connect);
 
+#if 0
+{
 /*
  *	Accept a pending connection. The TCP layer now gives BSD semantics.
  */
@@ -907,11 +922,11 @@ static int inet_compat_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
 const struct proto_ops inet_stream_ops = {
 	.family		   = PF_INET,
 	.owner		   = THIS_MODULE,
-/* FIXME
-	.release	   = inet_release,
+//	.release	   = inet_release,
 	.bind		   = inet_bind,
 	.connect	   = inet_stream_connect,
 	.socketpair	   = sock_no_socketpair,
+/* FIXME
 	.accept		   = inet_accept,
 	.getname	   = inet_getname,
 	.poll		   = tcp_poll,

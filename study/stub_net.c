@@ -29,3 +29,13 @@ void __sk_mem_reclaim(struct sock *sk, int amount)
 {
 	printk("__sk_mem_reclaim %p %d\n", sk, amount);
 }
+
+void __lock_sock(struct sock *sk)
+{
+	printk("__lock_sock %p\n", sk);
+}
+
+void __release_sock(struct sock *sk)
+{
+	printk("__release_sock%p\n", sk);
+}

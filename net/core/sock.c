@@ -369,6 +369,8 @@ void sk_clear_memalloc(struct sock *sk)
 	sk_mem_reclaim(sk);
 }
 EXPORT_SYMBOL_GPL(sk_clear_memalloc);
+}
+#endif
 
 int __sk_backlog_rcv(struct sock *sk, struct sk_buff *skb)
 {
@@ -386,6 +388,8 @@ int __sk_backlog_rcv(struct sock *sk, struct sk_buff *skb)
 }
 EXPORT_SYMBOL(__sk_backlog_rcv);
 
+#if 0
+{
 static int sock_set_timeout(long *timeo_p, char __user *optval, int optlen)
 {
 	struct timeval tv;
@@ -2046,7 +2050,13 @@ static void __release_sock(struct sock *sk)
 	 */
 	sk->sk_backlog.len = 0;
 }
+}
+#endif
+extern void __lock_sock(struct sock *sk);
+extern void __release_sock(struct sock *sk);
 
+#if 0
+{
 /**
  * sk_wait_data - wait for data to arrive at sk_receive_queue
  * @sk:    sock to wait on
@@ -2176,7 +2186,8 @@ void __sk_mem_reclaim(struct sock *sk, int amount)
 		sk_leave_memory_pressure(sk);
 }
 EXPORT_SYMBOL(__sk_mem_reclaim);
-
+}
+#endif
 
 /*
  * Set of default routines for initialising struct proto_ops when
@@ -2275,6 +2286,8 @@ int sock_no_mmap(struct file *file, struct socket *sock, struct vm_area_struct *
 }
 EXPORT_SYMBOL(sock_no_mmap);
 
+#if 0
+{
 ssize_t sock_no_sendpage(struct socket *sock, struct page *page, int offset, size_t size, int flags)
 {
 	ssize_t res;
@@ -2453,8 +2466,6 @@ void sock_init_data(struct socket *sock, struct sock *sk)
 }
 EXPORT_SYMBOL(sock_init_data);
 
-#if 0
-{
 void lock_sock_nested(struct sock *sk, int subclass)
 {
 	might_sleep();
@@ -2495,6 +2506,8 @@ void release_sock(struct sock *sk)
 }
 EXPORT_SYMBOL(release_sock);
 
+#if 0
+{
 /**
  * lock_sock_fast - fast version of lock_sock
  * @sk: socket

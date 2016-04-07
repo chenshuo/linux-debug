@@ -4,15 +4,18 @@
 extern "C"
 {
 // fs/inode.c
-extern unsigned int get_next_ino(void);
+// extern unsigned int get_next_ino(void);
 // net/socket.c
-int sock_init(void);
+extern int sock_init(void);
 struct socket;
-int sock_create(int family, int type, int protocol, struct socket **res);
+extern int sock_create(int family, int type, int protocol, struct socket **res);
 // net/ipv4/af_inet.c
-int inet_init(void);
+extern int inet_init(void);
 // net/ipv4/tcp_ipv4.c
 extern void tcp_v4_init(void);
+// study/helper.c
+extern int tcp_connect(struct socket *sock);
+extern int tcp_bind(struct socket *sock);
 }
 
 
@@ -29,6 +32,8 @@ int main(int argc, char* argv[])
   struct socket* sock = NULL;
   int err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
   printf("%d %p\n", err, sock);
+  tcp_bind(sock);
   err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_IP, &sock);
   printf("%d %p\n", err, sock);
+  tcp_connect(sock);
 }

@@ -1,6 +1,7 @@
 #!/bin/sh
 
-OBJS="study/stub_memory.o"
+OBJS="study/helper.o"
+OBJS="$OBJS study/stub_memory.o"
 OBJS="$OBJS study/stub_arch.o"
 OBJS="$OBJS study/stub_kernel.o"
 OBJS="$OBJS study/stub_fs.o"
