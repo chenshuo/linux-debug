@@ -82,8 +82,6 @@ static struct kmem_cache *skbuff_fclone_cache __read_mostly;
 int sysctl_max_skb_frags __read_mostly = MAX_SKB_FRAGS;
 EXPORT_SYMBOL(sysctl_max_skb_frags);
 
-#if 0
-{
 /**
  *	skb_panic - private function for out-of-line support
  *	@skb:	buffer
@@ -111,6 +109,8 @@ static void skb_over_panic(struct sk_buff *skb, unsigned int sz, void *addr)
 	skb_panic(skb, sz, addr, __func__);
 }
 
+#if 0
+{
 static void skb_under_panic(struct sk_buff *skb, unsigned int sz, void *addr)
 {
 	skb_panic(skb, sz, addr, __func__);
@@ -350,8 +350,12 @@ struct sk_buff *build_skb(void *data, unsigned int frag_size)
 	return skb;
 }
 EXPORT_SYMBOL(build_skb);
+}
+#endif
 
 static DEFINE_PER_CPU(struct page_frag_cache, netdev_alloc_cache);
+#if 0
+{
 static DEFINE_PER_CPU(struct page_frag_cache, napi_alloc_cache);
 
 static void *__netdev_alloc_frag(unsigned int fragsz, gfp_t gfp_mask)
@@ -392,6 +396,8 @@ void *napi_alloc_frag(unsigned int fragsz)
 	return __napi_alloc_frag(fragsz, GFP_ATOMIC | __GFP_COLD);
 }
 EXPORT_SYMBOL(napi_alloc_frag);
+}
+#endif
 
 /**
  *	__netdev_alloc_skb - allocate an skbuff for rx on a specific device
@@ -411,10 +417,10 @@ struct sk_buff *__netdev_alloc_skb(struct net_device *dev, unsigned int len,
 {
 	struct page_frag_cache *nc;
 	unsigned long flags;
-	struct sk_buff *skb;
+	struct sk_buff *skb = NULL;
 	bool pfmemalloc;
 	void *data;
-
+#if 0
 	len += NET_SKB_PAD;
 
 	if ((len > SKB_WITH_OVERHEAD(PAGE_SIZE)) ||
@@ -458,10 +464,13 @@ skb_success:
 	skb->dev = dev;
 
 skb_fail:
+#endif
 	return skb;
 }
 EXPORT_SYMBOL(__netdev_alloc_skb);
 
+#if 0
+{
 /**
  *	__napi_alloc_skb - allocate skbuff for rx in a specific NAPI instance
  *	@napi: napi instance this buffer was allocated for
@@ -1347,6 +1356,8 @@ unsigned char *pskb_put(struct sk_buff *skb, struct sk_buff *tail, int len)
 	return skb_put(tail, len);
 }
 EXPORT_SYMBOL_GPL(pskb_put);
+}
+#endif
 
 /**
  *	skb_put - add data to a buffer
@@ -1369,6 +1380,8 @@ unsigned char *skb_put(struct sk_buff *skb, unsigned int len)
 }
 EXPORT_SYMBOL(skb_put);
 
+#if 0
+{
 /**
  *	skb_push - add data to the start of a buffer
  *	@skb: buffer to use

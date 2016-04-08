@@ -72,3 +72,25 @@ int tcp_bind(struct socket *sock)
 	int err = sock->ops->bind(sock, (struct sockaddr *)&address, sizeof address);
 	return err;
 }
+
+struct net_device g_dev = {
+  // .nd_net = { &init_net }
+};
+
+struct sk_buff *build_skbuff(const void* data, unsigned int len)
+{
+	struct sk_buff* skb = netdev_alloc_skb(&g_dev, len);
+	if (skb) {
+		skb_put(skb, len);
+		skb_copy_to_linear_data(skb, data, len);
+		skb_reset_mac_header(skb);
+		skb_reset_network_header(skb);
+		skb_set_transport_header(skb, 20);
+		__skb_pull(skb, skb_network_header_len(skb));
+		skb->protocol = htons(ETH_P_IP);
+		// g_rt.dst.dev = &g_dev;
+		// skb_dst_set(skb, &g_rt.dst);
+	}
+	return skb;
+}
+
