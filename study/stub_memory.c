@@ -3,6 +3,9 @@
 
 void *zalloc(size_t size);
 
+// mm/memory.c
+struct page *mem_map;
+
 // mm/slab_common.c
 
 struct kmem_cache *

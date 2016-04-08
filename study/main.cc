@@ -6,6 +6,7 @@ extern "C"
 {
 // fs/inode.c
 // extern unsigned int get_next_ino(void);
+struct sk_buff;
 // net/socket.c
 extern int sock_init(void);
 struct socket;
@@ -14,11 +15,11 @@ extern int sock_create(int family, int type, int protocol, struct socket **res);
 extern int inet_init(void);
 // net/ipv4/tcp_ipv4.c
 extern void tcp_v4_init(void);
+extern int tcp_v4_rcv(struct sk_buff *skb);
 // study/helper.c
 extern int tcp_connect(struct socket *sock);
 extern int tcp_bind(struct socket *sock);
-struct sk_buff;
-struct sk_buff *build_skbuff(const void* data, unsigned int len);
+struct sk_buff *build_skbuff(const void* ippacket, unsigned int len);
 }
 
 using std::string;
@@ -42,6 +43,7 @@ int main(int argc, char* argv[])
   string syn = build_syn(false);
   sk_buff* skb = build_skbuff(syn.data(), syn.size());
   printf("skbuff %p %zd\n", skb, syn.size());
+  printf("tcp_v4_rcv %d\n", tcp_v4_rcv(skb));
   err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_IP, &sock);
   printf("%d %p\n", err, sock);
   tcp_connect(sock);

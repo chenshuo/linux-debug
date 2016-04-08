@@ -60,6 +60,8 @@
 #include <trace/events/skb.h>
 #include <net/busy_poll.h>
 
+#if 0
+{
 /*
  *	Is a socket 'connection oriented' ?
  */
@@ -663,6 +665,8 @@ __sum16 __skb_checksum_complete_head(struct sk_buff *skb, int len)
 	return sum;
 }
 EXPORT_SYMBOL(__skb_checksum_complete_head);
+}
+#endif
 
 __sum16 __skb_checksum_complete(struct sk_buff *skb)
 {
@@ -691,6 +695,8 @@ __sum16 __skb_checksum_complete(struct sk_buff *skb)
 }
 EXPORT_SYMBOL(__skb_checksum_complete);
 
+#if 0
+{
 /**
  *	skb_copy_and_csum_datagram_msg - Copy and checksum skb to user iovec.
  *	@skb: skbuff
@@ -790,3 +796,5 @@ unsigned int datagram_poll(struct file *file, struct socket *sock,
 	return mask;
 }
 EXPORT_SYMBOL(datagram_poll);
+}
+#endif

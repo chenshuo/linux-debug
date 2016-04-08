@@ -51,7 +51,7 @@ static inline struct thread_info *current_thread_info(void)
 	return ti;
 }
 #endif
-extern struct thread_info *current_thread_info(void);
+extern struct thread_info *current_thread_info(void);  // FIXME
 
 #define THREAD_SIZE_ORDER CONFIG_KERNEL_STACK_ORDER
 

@@ -29,8 +29,11 @@ struct thread_info g_thread_info = {
 	.task = &g_task
 };
 
+// arch/um/include/asm/thread_info.h
 struct thread_info *current_thread_info(void)
 {
 	return &g_thread_info;
 }
 
+// arch/um/kernel/um_arch.c
+unsigned long uml_physmem;

@@ -77,12 +77,12 @@ struct net_device g_dev = {
   // .nd_net = { &init_net }
 };
 
-struct sk_buff *build_skbuff(const void* data, unsigned int len)
+struct sk_buff *build_skbuff(const void* ippacket, unsigned int len)
 {
-	struct sk_buff* skb = netdev_alloc_skb(&g_dev, len);
+	struct sk_buff* skb = alloc_skb(len, GFP_ATOMIC);
 	if (skb) {
 		skb_put(skb, len);
-		skb_copy_to_linear_data(skb, data, len);
+		skb_copy_to_linear_data(skb, ippacket, len);
 		skb_reset_mac_header(skb);
 		skb_reset_network_header(skb);
 		// skb_set_transport_header(skb, 20);

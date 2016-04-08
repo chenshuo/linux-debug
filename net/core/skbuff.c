@@ -109,12 +109,10 @@ static void skb_over_panic(struct sk_buff *skb, unsigned int sz, void *addr)
 	skb_panic(skb, sz, addr, __func__);
 }
 
-#if 0
-{
-static void skb_under_panic(struct sk_buff *skb, unsigned int sz, void *addr)
-{
-	skb_panic(skb, sz, addr, __func__);
-}
+// static void skb_under_panic(struct sk_buff *skb, unsigned int sz, void *addr)
+// {
+// 	skb_panic(skb, sz, addr, __func__);
+// }
 
 /*
  * kmalloc_reserve is a wrapper around kmalloc_node_track_caller that tells
@@ -130,7 +128,7 @@ static void *__kmalloc_reserve(size_t size, gfp_t flags, int node,
 			       unsigned long ip, bool *pfmemalloc)
 {
 	void *obj;
-	bool ret_pfmemalloc = false;
+//	bool ret_pfmemalloc = false;
 
 	/*
 	 * Try a regular allocation, when that fails and we're not entitled
@@ -139,20 +137,22 @@ static void *__kmalloc_reserve(size_t size, gfp_t flags, int node,
 	obj = kmalloc_node_track_caller(size,
 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
 					node);
-	if (obj || !(gfp_pfmemalloc_allowed(flags)))
-		goto out;
-
-	/* Try again but now we are using pfmemalloc reserves */
-	ret_pfmemalloc = true;
-	obj = kmalloc_node_track_caller(size, flags, node);
-
-out:
-	if (pfmemalloc)
-		*pfmemalloc = ret_pfmemalloc;
+// 	if (obj || !(gfp_pfmemalloc_allowed(flags)))
+// 		goto out;
+//
+// 	/* Try again but now we are using pfmemalloc reserves */
+// 	ret_pfmemalloc = true;
+// 	obj = kmalloc_node_track_caller(size, flags, node);
+//
+// out:
+// 	if (pfmemalloc)
+// 		*pfmemalloc = ret_pfmemalloc;
 
 	return obj;
 }
 
+#if 0
+{
 /* 	Allocate a new skbuff. We do this ourselves so we can fill in a few
  *	'private' fields and also do memory statistics to find all the
  *	[BEEP] leaks.
@@ -183,6 +183,8 @@ struct sk_buff *__alloc_skb_head(gfp_t gfp_mask, int node)
 out:
 	return skb;
 }
+}
+#endif
 
 /**
  *	__alloc_skb	-	allocate a network buffer
@@ -283,6 +285,8 @@ nodata:
 }
 EXPORT_SYMBOL(__alloc_skb);
 
+#if 0
+{
 /**
  * __build_skb - build a network buffer
  * @data: data buffer provided by caller
@@ -350,12 +354,8 @@ struct sk_buff *build_skb(void *data, unsigned int frag_size)
 	return skb;
 }
 EXPORT_SYMBOL(build_skb);
-}
-#endif
 
 static DEFINE_PER_CPU(struct page_frag_cache, netdev_alloc_cache);
-#if 0
-{
 static DEFINE_PER_CPU(struct page_frag_cache, napi_alloc_cache);
 
 static void *__netdev_alloc_frag(unsigned int fragsz, gfp_t gfp_mask)
@@ -396,8 +396,6 @@ void *napi_alloc_frag(unsigned int fragsz)
 	return __napi_alloc_frag(fragsz, GFP_ATOMIC | __GFP_COLD);
 }
 EXPORT_SYMBOL(napi_alloc_frag);
-}
-#endif
 
 /**
  *	__netdev_alloc_skb - allocate an skbuff for rx on a specific device
@@ -420,7 +418,6 @@ struct sk_buff *__netdev_alloc_skb(struct net_device *dev, unsigned int len,
 	struct sk_buff *skb = NULL;
 	bool pfmemalloc;
 	void *data;
-#if 0
 	len += NET_SKB_PAD;
 
 	if ((len > SKB_WITH_OVERHEAD(PAGE_SIZE)) ||
@@ -464,13 +461,10 @@ skb_success:
 	skb->dev = dev;
 
 skb_fail:
-#endif
 	return skb;
 }
 EXPORT_SYMBOL(__netdev_alloc_skb);
 
-#if 0
-{
 /**
  *	__napi_alloc_skb - allocate skbuff for rx in a specific NAPI instance
  *	@napi: napi instance this buffer was allocated for
@@ -2048,6 +2042,8 @@ fault:
 	return -EFAULT;
 }
 EXPORT_SYMBOL(skb_store_bits);
+}
+#endif
 
 /* Checksum skb data. */
 __wsum __skb_checksum(const struct sk_buff *skb, int offset, int len,
@@ -2133,6 +2129,8 @@ __wsum skb_checksum(const struct sk_buff *skb, int offset,
 }
 EXPORT_SYMBOL(skb_checksum);
 
+#if 0
+{
 /* Both of above in one bottle. */
 
 __wsum skb_copy_and_csum_bits(const struct sk_buff *skb, int offset,
