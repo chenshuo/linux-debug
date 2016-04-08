@@ -43,4 +43,9 @@ void* zalloc(size_t size)
   return ret;
 }
 
+size_t ksize(const void *p)
+{
+  return g_sizes[p];
+}
+
 }

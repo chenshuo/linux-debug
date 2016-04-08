@@ -22,11 +22,7 @@ struct sk_buff *build_skbuff(const void* data, unsigned int len);
 }
 
 using std::string;
-string build_syn()
-{
-  return string(40, '-');
-}
-
+string build_syn(bool ether);
 
 int main(int argc, char* argv[])
 {
@@ -43,9 +39,9 @@ int main(int argc, char* argv[])
   printf("%d %p\n", err, sock);
   tcp_bind(sock);
   // tcp_listen();
-  string syn = build_syn();
+  string syn = build_syn(false);
   sk_buff* skb = build_skbuff(syn.data(), syn.size());
-  printf("skbuff %p\n", skb);
+  printf("skbuff %p %zd\n", skb, syn.size());
   err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_IP, &sock);
   printf("%d %p\n", err, sock);
   tcp_connect(sock);

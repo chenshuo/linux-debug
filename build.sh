@@ -23,5 +23,6 @@ OBJS="$OBJS net/ipv4/tcp.o"
 set -x
 
 make ARCH=um $OBJS || { exit 1; }
+g++ -std=c++11 -Wall -g -m32 -O0 -c study/build.cc -o study/build.o
 g++ -std=c++11 -Wall -g -m32 -O0 -c study/lib.cc -o study/lib.o
-g++ -std=c++11 -Wall -g -m32 -O0 study/main.cc study/lib.o $OBJS
+g++ -std=c++11 -Wall -g -m32 -O0 study/main.cc study/lib.o study/build.o $OBJS -lnet

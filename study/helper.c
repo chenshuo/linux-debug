@@ -85,7 +85,9 @@ struct sk_buff *build_skbuff(const void* data, unsigned int len)
 		skb_copy_to_linear_data(skb, data, len);
 		skb_reset_mac_header(skb);
 		skb_reset_network_header(skb);
-		skb_set_transport_header(skb, 20);
+		// skb_set_transport_header(skb, 20);
+		// iph = ip_hdr(skb);
+		skb->transport_header = skb->network_header + 20; // iph->ihl*4;
 		__skb_pull(skb, skb_network_header_len(skb));
 		skb->protocol = htons(ETH_P_IP);
 		// g_rt.dst.dev = &g_dev;
