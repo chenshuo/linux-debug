@@ -55,6 +55,8 @@ u32 sk_ehashfn(const struct sock *sk)
 			    sk->sk_rcv_saddr, sk->sk_num,
 			    sk->sk_daddr, sk->sk_dport);
 }
+}
+#endif
 
 /*
  * Allocate and initialize a new local port bind bucket.
@@ -79,6 +81,8 @@ struct inet_bind_bucket *inet_bind_bucket_create(struct kmem_cache *cachep,
 	return tb;
 }
 
+#if 0
+{
 /*
  * Caller must hold hashbucket lock for this tb with local BH disabled
  */
@@ -89,6 +93,8 @@ void inet_bind_bucket_destroy(struct kmem_cache *cachep, struct inet_bind_bucket
 		kmem_cache_free(cachep, tb);
 	}
 }
+}
+#endif
 
 void inet_bind_hash(struct sock *sk, struct inet_bind_bucket *tb,
 		    const unsigned short snum)
@@ -99,6 +105,8 @@ void inet_bind_hash(struct sock *sk, struct inet_bind_bucket *tb,
 	inet_csk(sk)->icsk_bind_hash = tb;
 }
 
+#if 0
+{
 /*
  * Get rid of any references to a local port held by the given sock.
  */
@@ -639,8 +647,6 @@ void inet_hashinfo_init(struct inet_hashinfo *h)
 }
 EXPORT_SYMBOL_GPL(inet_hashinfo_init);
 
-#if 0
-{
 int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
 {
 	unsigned int locksz = sizeof(spinlock_t);
@@ -656,8 +662,9 @@ int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
 
 		hashinfo->ehash_locks =	kmalloc_array(nblocks, locksz,
 						      GFP_KERNEL | __GFP_NOWARN);
-		if (!hashinfo->ehash_locks)
-			hashinfo->ehash_locks = vmalloc(nblocks * locksz);
+		// FIXME
+		//if (!hashinfo->ehash_locks)
+		//	hashinfo->ehash_locks = vmalloc(nblocks * locksz);
 
 		if (!hashinfo->ehash_locks)
 			return -ENOMEM;
@@ -669,5 +676,3 @@ int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(inet_ehash_locks_alloc);
-}
-#endif

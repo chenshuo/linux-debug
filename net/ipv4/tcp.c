@@ -282,8 +282,6 @@
 #include <asm/unaligned.h>
 #include <net/busy_poll.h>
 
-#if 0
-{
 int sysctl_tcp_fin_timeout __read_mostly = TCP_FIN_TIMEOUT;
 
 int sysctl_tcp_min_tso_segs __read_mostly = 2;
@@ -310,6 +308,8 @@ EXPORT_SYMBOL(tcp_memory_allocated);
 struct percpu_counter tcp_sockets_allocated;
 EXPORT_SYMBOL(tcp_sockets_allocated);
 
+#if 0
+{
 /*
  * TCP splice context
  */
@@ -3091,10 +3091,13 @@ void tcp_done(struct sock *sk)
 		inet_csk_destroy_sock(sk);
 }
 EXPORT_SYMBOL_GPL(tcp_done);
+}
+#endif
 
 extern struct tcp_congestion_ops tcp_reno;
 
 static __initdata unsigned long thash_entries;
+/*
 static int __init set_thash_entries(char *str)
 {
 	ssize_t ret;
@@ -3109,6 +3112,7 @@ static int __init set_thash_entries(char *str)
 	return 1;
 }
 __setup("thash_entries=", set_thash_entries);
+*/
 
 static void __init tcp_init_mem(void)
 {
@@ -3195,9 +3199,7 @@ void __init tcp_init(void)
 	pr_info("Hash tables configured (established %u bind %u)\n",
 		tcp_hashinfo.ehash_mask + 1, tcp_hashinfo.bhash_size);
 
-	tcp_metrics_init();
-	BUG_ON(tcp_register_congestion_control(&tcp_reno) != 0);
-	tcp_tasklet_init();
+	// FIXME: tcp_metrics_init();
+	// FIXME: BUG_ON(tcp_register_congestion_control(&tcp_reno) != 0);
+	// FIXME: tcp_tasklet_init();
 }
-}
-#endif

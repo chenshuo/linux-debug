@@ -1789,11 +1789,11 @@ static struct packet_type ip_packet_type __read_mostly = {
 
 	tcp_v4_init();
 
-#if 0
-{
 	/* Setup TCP slab cache for open requests. */
 	tcp_init();
 
+#if 0
+{
 	/* Setup UDP memory threshold */
 	udp_init();
 

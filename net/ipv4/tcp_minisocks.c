@@ -38,6 +38,8 @@ struct inet_timewait_death_row tcp_death_row = {
 };
 EXPORT_SYMBOL_GPL(tcp_death_row);
 
+#if 0
+{
 static bool tcp_in_window(u32 seq, u32 end_seq, u32 s_win, u32 e_win)
 {
 	if (seq == s_win)
@@ -836,3 +838,5 @@ int tcp_child_process(struct sock *parent, struct sock *child,
 	return ret;
 }
 EXPORT_SYMBOL(tcp_child_process);
+}
+#endif

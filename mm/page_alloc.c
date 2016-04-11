@@ -68,6 +68,10 @@
 #include <asm/div64.h>
 #include "internal.h"
 
+void *zalloc(size_t size);  // stub
+
+#if 0
+{
 /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
 static DEFINE_MUTEX(pcp_batch_high_lock);
 #define MIN_PERCPU_PAGELIST_FRACTION	(8)
@@ -240,11 +244,15 @@ compound_page_dtor * const compound_page_dtors[] = {
 
 int min_free_kbytes = 1024;
 int user_min_free_kbytes = -1;
+}
+#endif
 
 static unsigned long __meminitdata nr_kernel_pages;
 static unsigned long __meminitdata nr_all_pages;
 static unsigned long __meminitdata dma_reserve;
 
+#if 0
+{
 #ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
 static unsigned long __meminitdata arch_zone_lowest_possible_pfn[MAX_NR_ZONES];
 static unsigned long __meminitdata arch_zone_highest_possible_pfn[MAX_NR_ZONES];
@@ -6302,6 +6310,8 @@ static int __init set_hashdist(char *str)
 }
 __setup("hashdist=", set_hashdist);
 #endif
+}
+#endif
 
 /*
  * allocate a large system hash table from bootmem
@@ -6367,6 +6377,8 @@ void *__init alloc_large_system_hash(const char *tablename,
 
 	do {
 		size = bucketsize << log2qty;
+		table = zalloc(size);
+#if 0
 		if (flags & HASH_EARLY)
 			table = memblock_virt_alloc_nopanic(size, 0);
 		else if (hashdist)
@@ -6382,6 +6394,7 @@ void *__init alloc_large_system_hash(const char *tablename,
 				kmemleak_alloc(table, size, 1, GFP_ATOMIC);
 			}
 		}
+#endif
 	} while (!table && size > PAGE_SIZE && --log2qty);
 
 	if (!table)
@@ -6401,6 +6414,8 @@ void *__init alloc_large_system_hash(const char *tablename,
 	return table;
 }
 
+#if 0
+{
 /* Return a pointer to the bitmap storing bits affecting a block of pages */
 static inline unsigned long *get_pageblock_bitmap(struct zone *zone,
 							unsigned long pfn)
@@ -6907,5 +6922,7 @@ bool is_free_buddy_page(struct page *page)
 	spin_unlock_irqrestore(&zone->lock, flags);
 
 	return order < MAX_ORDER;
+}
+#endif
 }
 #endif

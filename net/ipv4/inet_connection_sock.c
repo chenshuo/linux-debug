@@ -96,10 +96,6 @@ EXPORT_SYMBOL_GPL(inet_csk_bind_conflict);
  */
 int inet_csk_get_port(struct sock *sk, unsigned short snum)
 {
-	// FIXME
-	return 0;
-#if 0
-{
 	struct inet_hashinfo *hashinfo = sk->sk_prot->h.hashinfo;
 	struct inet_bind_hashbucket *head;
 	struct inet_bind_bucket *tb;
@@ -111,6 +107,9 @@ int inet_csk_get_port(struct sock *sk, unsigned short snum)
 
 	local_bh_disable();
 	if (!snum) {
+		panic("snum == 0 %d\n", snum);
+#if 0
+{
 		int remaining, rover, low, high;
 
 again:
@@ -182,6 +181,8 @@ again:
 		 * non-NULL and we hold it's mutex.
 		 */
 		snum = rover;
+}
+#endif
 	} else {
 have_snum:
 		head = &hashinfo->bhash[inet_bhashfn(net, snum,
@@ -194,6 +195,8 @@ have_snum:
 	tb = NULL;
 	goto tb_not_found;
 tb_found:
+#if 0
+{
 	if (!hlist_empty(&tb->owners)) {
 		if (sk->sk_reuse == SK_FORCE_REUSE)
 			goto success;
@@ -219,6 +222,8 @@ tb_found:
 			}
 		}
 	}
+}
+#endif
 tb_not_found:
 	ret = 1;
 	if (!tb && (tb = inet_bind_bucket_create(hashinfo->bind_bucket_cachep,
@@ -253,8 +258,6 @@ fail_unlock:
 fail:
 	local_bh_enable();
 	return ret;
-}
-#endif
 }
 EXPORT_SYMBOL_GPL(inet_csk_get_port);
 

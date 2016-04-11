@@ -49,6 +49,8 @@ void reqsk_queue_alloc(struct request_sock_queue *queue)
 	queue->rskq_accept_head = NULL;
 }
 
+#if 0
+{
 /*
  * This function is called to set a Fast Open socket's "fastopen_rsk" field
  * to NULL when a TFO socket no longer needs to access the request_sock.
@@ -136,3 +138,5 @@ void reqsk_fastopen_remove(struct sock *sk, struct request_sock *req,
 out:
 	spin_unlock_bh(&fastopenq->lock);
 }
+}
+#endif

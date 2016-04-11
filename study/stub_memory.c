@@ -6,6 +6,12 @@ void *zalloc(size_t size);
 // mm/memory.c
 struct page *mem_map;
 
+// mm/page_alloc.c
+unsigned long nr_free_buffer_pages(void)
+{
+	return 1024;
+}
+
 // mm/slab_common.c
 
 struct kmem_cache *

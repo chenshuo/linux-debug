@@ -1739,6 +1739,8 @@ void sock_efree(struct sk_buff *skb)
 	sock_put(skb->sk);
 }
 EXPORT_SYMBOL(sock_efree);
+}
+#endif
 
 kuid_t sock_i_uid(struct sock *sk)
 {
@@ -1751,6 +1753,8 @@ kuid_t sock_i_uid(struct sock *sk)
 }
 EXPORT_SYMBOL(sock_i_uid);
 
+#if 0
+{
 unsigned long sock_i_ino(struct sock *sk)
 {
 	unsigned long ino;
