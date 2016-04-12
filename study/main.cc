@@ -11,6 +11,9 @@ struct sk_buff;
 extern int sock_init(void);
 struct socket;
 extern int sock_create(int family, int type, int protocol, struct socket **res);
+// net/core/sock.c
+extern int sock_setsockopt(struct socket *sock, int level, int optname,
+                           void *optval, unsigned int optlen);
 // net/ipv4/af_inet.c
 extern int inet_init(void);
 // net/ipv4/tcp_ipv4.c
@@ -38,7 +41,12 @@ int main(int argc, char* argv[])
   }
   struct socket* sock = NULL;
   int err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
-  printf("%d %p\n", err, sock);
+  printf("sock_create %d %p\n", err, sock);
+  {
+    int one = 1;
+    err = sock_setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &one, sizeof one);
+    printf("sock_setsockopt %d\n", err);
+  }
   tcp_bind(sock);
   tcp_listen(sock, 5);
   string syn = build_syn(false);

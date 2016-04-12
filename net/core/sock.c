@@ -692,6 +692,8 @@ bool sk_mc_loop(struct sock *sk)
 	return true;
 }
 EXPORT_SYMBOL(sk_mc_loop);
+}
+#endif
 
 /*
  *	This is meant for all protocols to use and covers goings on
@@ -711,6 +713,7 @@ int sock_setsockopt(struct socket *sock, int level, int optname,
 	 *	Options without arguments
 	 */
 
+	/* FIXME
 	if (optname == SO_BINDTODEVICE)
 		return sock_setbindtodevice(sk, optval, optlen);
 
@@ -719,18 +722,22 @@ int sock_setsockopt(struct socket *sock, int level, int optname,
 
 	if (get_user(val, (int __user *)optval))
 		return -EFAULT;
+	*/
+	val = *(int*)optval;  // FIXME
 
 	valbool = val ? 1 : 0;
 
 	lock_sock(sk);
 
 	switch (optname) {
+	/*
 	case SO_DEBUG:
 		if (val && !capable(CAP_NET_ADMIN))
 			ret = -EACCES;
 		else
 			sock_valbool_flag(sk, SOCK_DBG, valbool);
 		break;
+	*/
 	case SO_REUSEADDR:
 		sk->sk_reuse = (valbool ? SK_CAN_REUSE : SK_NO_REUSE);
 		break;
@@ -743,6 +750,8 @@ int sock_setsockopt(struct socket *sock, int level, int optname,
 	case SO_ERROR:
 		ret = -ENOPROTOOPT;
 		break;
+#if 0
+{
 	case SO_DONTROUTE:
 		sock_valbool_flag(sk, SOCK_LOCALROUTE, valbool);
 		break;
@@ -1015,7 +1024,8 @@ set_rcvbuf:
 	case SO_INCOMING_CPU:
 		sk->sk_incoming_cpu = val;
 		break;
-
+}
+#endif
 	default:
 		ret = -ENOPROTOOPT;
 		break;
@@ -1025,7 +1035,8 @@ set_rcvbuf:
 }
 EXPORT_SYMBOL(sock_setsockopt);
 
-
+#if 0
+{
 static void cred_to_ucred(struct pid *pid, const struct cred *cred,
 			  struct ucred *ucred)
 {
