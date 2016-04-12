@@ -173,6 +173,8 @@ int __inet_inherit_port(const struct sock *sk, struct sock *child)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(__inet_inherit_port);
+}
+#endif
 
 static inline int compute_score(struct sock *sk, struct net *net,
 				const unsigned short hnum, const __be32 daddr,
@@ -271,8 +273,10 @@ void sock_gen_put(struct sock *sk)
 	if (!atomic_dec_and_test(&sk->sk_refcnt))
 		return;
 
-	if (sk->sk_state == TCP_TIME_WAIT)
-		inet_twsk_free(inet_twsk(sk));
+	if (sk->sk_state == TCP_TIME_WAIT) {
+		panic("TCP_TIME_WAIT\n");
+		// FIXME: inet_twsk_free(inet_twsk(sk));
+	}
 	else if (sk->sk_state == TCP_NEW_SYN_RECV)
 		reqsk_free(inet_reqsk(sk));
 	else
@@ -335,6 +339,8 @@ found:
 }
 EXPORT_SYMBOL_GPL(__inet_lookup_established);
 
+#if 0
+{
 /* called with local bh disabled */
 static int __inet_check_established(struct inet_timewait_death_row *death_row,
 				    struct sock *sk, __u16 lport,

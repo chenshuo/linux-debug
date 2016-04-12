@@ -1,6 +1,16 @@
 #include <linux/capability.h>
 #include <linux/rcupdate.h>
 
+// kernel/cred.c
+void __put_cred(struct cred *cred)
+{
+}
+
+// kernel/pid.c
+void put_pid(struct pid *pid)
+{
+}
+
 // kernel/rcu/tiny.c
 void call_rcu_sched(struct rcu_head *head, rcu_callback_t func)
 {

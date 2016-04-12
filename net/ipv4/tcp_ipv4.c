@@ -1227,6 +1227,12 @@ static struct dst_entry *tcp_v4_route_req(const struct sock *sk,
 }
 #endif
 
+static bool tcp_v4_inbound_md5_hash(const struct sock *sk,
+				    const struct sk_buff *skb)
+{
+	return false;
+}
+
 struct request_sock_ops tcp_request_sock_ops __read_mostly = {
 	.family		=	PF_INET,
 	.obj_size	=	sizeof(struct tcp_request_sock),
@@ -1239,21 +1245,19 @@ struct request_sock_ops tcp_request_sock_ops __read_mostly = {
 */
 };
 
-#if 0
-{
 static const struct tcp_request_sock_ops tcp_request_sock_ipv4_ops = {
 	.mss_clamp	=	TCP_MSS_DEFAULT,
 #ifdef CONFIG_TCP_MD5SIG
 	.req_md5_lookup	=	tcp_v4_md5_lookup,
 	.calc_md5_hash	=	tcp_v4_md5_hash_skb,
 #endif
-	.init_req	=	tcp_v4_init_req,
+//	.init_req	=	tcp_v4_init_req,
 #ifdef CONFIG_SYN_COOKIES
 	.cookie_init_seq =	cookie_v4_init_sequence,
 #endif
-	.route_req	=	tcp_v4_route_req,
-	.init_seq	=	tcp_v4_init_sequence,
-	.send_synack	=	tcp_v4_send_synack,
+//	.route_req	=	tcp_v4_route_req,
+//	.init_seq	=	tcp_v4_init_sequence,
+//	.send_synack	=	tcp_v4_send_synack,
 };
 
 int tcp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
@@ -1271,7 +1275,8 @@ drop:
 }
 EXPORT_SYMBOL(tcp_v4_conn_request);
 
-
+#if 0
+{
 /*
  * The three way handshake has completed - we got a valid synack -
  * now create the new socket.
@@ -1375,6 +1380,8 @@ put_and_exit:
 	goto exit;
 }
 EXPORT_SYMBOL(tcp_v4_syn_recv_sock);
+}
+#endif
 
 static struct sock *tcp_v4_cookie_check(struct sock *sk, struct sk_buff *skb)
 {
@@ -1411,7 +1418,7 @@ int tcp_v4_do_rcv(struct sock *sk, struct sk_buff *skb)
 				sk->sk_rx_dst = NULL;
 			}
 		}
-		tcp_rcv_established(sk, skb, tcp_hdr(skb), skb->len);
+		// FIXME: tcp_rcv_established(sk, skb, tcp_hdr(skb), skb->len);
 		return 0;
 	}
 
@@ -1459,6 +1466,8 @@ csum_err:
 }
 EXPORT_SYMBOL(tcp_v4_do_rcv);
 
+#if 0
+{
 void tcp_v4_early_demux(struct sk_buff *skb)
 {
 	const struct iphdr *iph;
@@ -1553,6 +1562,13 @@ EXPORT_SYMBOL(tcp_prequeue);
 }
 #endif
 
+// FIXME
+bool tcp_prequeue(struct sock *sk, struct sk_buff *skb)
+{
+	return false;
+}
+
+
 /*
  *	From tcp_input.c
  */
@@ -1606,7 +1622,6 @@ int tcp_v4_rcv(struct sk_buff *skb)
 	TCP_SKB_CB(skb)->tcp_tw_isn = 0;
 	TCP_SKB_CB(skb)->ip_dsfield = ipv4_get_dsfield(iph);
 	TCP_SKB_CB(skb)->sacked	 = 0;
-#if 0
 lookup:
 	sk = __inet_lookup_skb(&tcp_hashinfo, skb, th->source, th->dest);
 	if (!sk)
@@ -1617,6 +1632,7 @@ process:
 		goto do_time_wait;
 
 	if (sk->sk_state == TCP_NEW_SYN_RECV) {
+		/* FIXME
 		struct request_sock *req = inet_reqsk(sk);
 		struct sock *nsk;
 
@@ -1644,6 +1660,7 @@ process:
 			sock_put(sk);
 			return 0;
 		}
+		*/
 	}
 	if (unlikely(iph->ttl < inet_sk(sk)->min_ttl)) {
 		NET_INC_STATS_BH(net, LINUX_MIB_TCPMINTTLDROP);
@@ -1692,7 +1709,6 @@ put_and_return:
 no_tcp_socket:
 	if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb))
 		goto discard_it;
-#endif
 	if (tcp_checksum_complete(skb)) {
 csum_error:
 		TCP_INC_STATS_BH(net, TCP_MIB_CSUMERRORS);
@@ -1711,8 +1727,9 @@ discard_and_relse:
 	sock_put(sk);
 	goto discard_it;
 
-#if 0
 do_time_wait:
+	panic("do_time_wait:\n");
+#if 0
 	if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb)) {
 		inet_twsk_put(inet_twsk(sk));
 		goto discard_it;
@@ -1776,9 +1793,9 @@ const struct inet_connection_sock_af_ops ipv4_specific = {
 	.send_check	   = tcp_v4_send_check,
 	.rebuild_header	   = inet_sk_rebuild_header,
 	.sk_rx_dst_set	   = inet_sk_rx_dst_set,
-	.conn_request	   = tcp_v4_conn_request,
-	.syn_recv_sock	   = tcp_v4_syn_recv_sock,
 */
+	.conn_request	   = tcp_v4_conn_request,
+//	.syn_recv_sock	   = tcp_v4_syn_recv_sock,
 	.net_header_len	   = sizeof(struct iphdr),
 //	.setsockopt	   = ip_setsockopt,
 //	.getsockopt	   = ip_getsockopt,

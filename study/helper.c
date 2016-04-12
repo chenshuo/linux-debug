@@ -83,6 +83,16 @@ struct net_device g_dev = {
   // .nd_net = { &init_net }
 };
 
+// include/net/route.h
+// struct rtable {
+//	struct dst_entry	dst;
+//	...
+
+struct rtable g_rt = {
+	.rt_iif = 123,
+	.rt_type = RTN_LOCAL
+};
+
 struct sk_buff *build_skbuff(const void* ippacket, unsigned int len)
 {
 	struct sk_buff* skb = alloc_skb(len, GFP_ATOMIC);
@@ -97,7 +107,7 @@ struct sk_buff *build_skbuff(const void* ippacket, unsigned int len)
 		__skb_pull(skb, skb_network_header_len(skb));
 		skb->protocol = htons(ETH_P_IP);
 		// g_rt.dst.dev = &g_dev;
-		// skb_dst_set(skb, &g_rt.dst);
+		skb_dst_set(skb, &g_rt.dst);
 	}
 	return skb;
 }

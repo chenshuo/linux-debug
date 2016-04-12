@@ -15,6 +15,10 @@ void netdev_rx_csum_fault(struct net_device *dev)
 	printk("netdev_rx_csum_fault %p\n", dev);
 }
 
+void net_disable_timestamp(void)
+{
+}
+
 // net/core/dst.c
 void dst_release(struct dst_entry *dst)
 {
@@ -58,6 +62,12 @@ void __release_sock(struct sock *sk)
 unsigned int inet_addr_type_table(struct net *net, __be32 addr, u32 tb_id)
 {
 	return RTN_LOCAL;
+}
+
+// net/core/filter.c
+int sk_filter(struct sock *sk, struct sk_buff *skb)
+{
+	return 0;
 }
 
 // net/ipv4/tcp_fastopen.c

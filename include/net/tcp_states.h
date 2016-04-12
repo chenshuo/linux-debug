@@ -23,7 +23,7 @@ enum {
 	TCP_CLOSE,
 	TCP_CLOSE_WAIT,
 	TCP_LAST_ACK,
-	TCP_LISTEN,
+	TCP_LISTEN,     // 10
 	TCP_CLOSING,	/* Now a valid state */
 	TCP_NEW_SYN_RECV,
 

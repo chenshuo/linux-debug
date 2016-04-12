@@ -801,6 +801,8 @@ embryonic_reset:
 	return NULL;
 }
 EXPORT_SYMBOL(tcp_check_req);
+}
+#endif
 
 /*
  * Queue segment on the new socket if the new socket is active,
@@ -838,5 +840,3 @@ int tcp_child_process(struct sock *parent, struct sock *child,
 	return ret;
 }
 EXPORT_SYMBOL(tcp_child_process);
-}
-#endif

@@ -5736,6 +5736,8 @@ reset_and_undo:
 	tp->rx_opt.mss_clamp = saved_clamp;
 	return 1;
 }
+}
+#endif
 
 /*
  *	This function implements the receiving procedure of RFC 793 for
@@ -5794,7 +5796,8 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
 		}
 		goto discard;
 
-	case TCP_SYN_SENT:
+	case TCP_SYN_SENT:  // ACTIVE OPEN
+#if 0
 		queued = tcp_rcv_synsent_state_process(sk, skb, th);
 		if (queued >= 0)
 			return queued;
@@ -5803,9 +5806,12 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
 		tcp_urg(sk, skb, th);
 		__kfree_skb(skb);
 		tcp_data_snd_check(sk);
+#endif
 		return 0;
 	}
 
+#if 0
+{
 	req = tp->fastopen_rsk;
 	if (req) {
 		WARN_ON_ONCE(sk->sk_state != TCP_SYN_RECV &&
@@ -6004,6 +6010,7 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
 		tcp_data_snd_check(sk);
 		tcp_ack_snd_check(sk);
 	}
+#endif
 
 	if (!queued) {
 discard:
@@ -6013,6 +6020,8 @@ discard:
 }
 EXPORT_SYMBOL(tcp_rcv_state_process);
 
+#if 0
+{
 static inline void pr_drop_req(struct request_sock *req, __u16 port, int family)
 {
 	struct inet_request_sock *ireq = inet_rsk(req);
@@ -6154,6 +6163,8 @@ static void tcp_reqsk_record_syn(const struct sock *sk,
 		}
 	}
 }
+}
+#endif
 
 int tcp_conn_request(struct request_sock_ops *rsk_ops,
 		     const struct tcp_request_sock_ops *af_ops,
@@ -6168,7 +6179,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 	struct request_sock *req;
 	bool want_cookie = false;
 	struct flowi fl;
-
+#if 0
 	/* TW buckets are converted to open requests without
 	 * limitations, they conserve resources and peer is
 	 * evidently real one.
@@ -6299,7 +6310,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 	}
 	reqsk_put(req);
 	return 0;
-
+#endif
 drop_and_release:
 	dst_release(dst);
 drop_and_free:
@@ -6309,5 +6320,3 @@ drop:
 	return 0;
 }
 EXPORT_SYMBOL(tcp_conn_request);
-}
-#endif

@@ -431,6 +431,8 @@ static void sock_warn_obsolete_bsdism(const char *name)
 		warned++;
 	}
 }
+}
+#endif
 
 static bool sock_needs_netstamp(const struct sock *sk)
 {
@@ -453,7 +455,8 @@ static void sock_disable_timestamp(struct sock *sk, unsigned long flags)
 	}
 }
 
-
+#if 0
+{
 int sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 {
 	int err;
@@ -1392,8 +1395,6 @@ out_free:
 	return NULL;
 }
 
-#if 0
-{
 static void sk_prot_free(struct proto *prot, struct sock *sk)
 {
 	struct kmem_cache *slab;
@@ -1419,8 +1420,6 @@ void sock_update_netprioidx(struct sock *sk)
 	sk->sk_cgrp_prioidx = task_netprioidx(current);
 }
 EXPORT_SYMBOL_GPL(sock_update_netprioidx);
-#endif
-}
 #endif
 
 /**
@@ -1459,8 +1458,6 @@ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
 }
 EXPORT_SYMBOL(sk_alloc);
 
-#if 0
-{
 void sk_destruct(struct sock *sk)
 {
 	struct sk_filter *filter;
@@ -1471,7 +1468,8 @@ void sk_destruct(struct sock *sk)
 	filter = rcu_dereference_check(sk->sk_filter,
 				       atomic_read(&sk->sk_wmem_alloc) == 0);
 	if (filter) {
-		sk_filter_uncharge(sk, filter);
+		panic("filter\n");
+		// FIXME: sk_filter_uncharge(sk, filter);
 		RCU_INIT_POINTER(sk->sk_filter, NULL);
 	}
 
@@ -1491,9 +1489,10 @@ void sk_destruct(struct sock *sk)
 
 static void __sk_free(struct sock *sk)
 {
-	if (unlikely(sock_diag_has_destroy_listeners(sk) && sk->sk_net_refcnt))
-		sock_diag_broadcast_destroy(sk);
-	else
+	// FIXME
+	// if (unlikely(sock_diag_has_destroy_listeners(sk) && sk->sk_net_refcnt))
+	// 	sock_diag_broadcast_destroy(sk);
+	// else
 		sk_destruct(sk);
 }
 
@@ -1509,6 +1508,8 @@ void sk_free(struct sock *sk)
 }
 EXPORT_SYMBOL(sk_free);
 
+#if 0
+{
 static void sk_update_clone(const struct sock *sk, struct sock *newsk)
 {
 	if (mem_cgroup_sockets_enabled && sk->sk_cgrp)
