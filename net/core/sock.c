@@ -2742,8 +2742,11 @@ void sk_common_release(struct sock *sk)
 	sock_put(sk);
 }
 EXPORT_SYMBOL(sk_common_release);
+}
+#endif
 
 #ifdef CONFIG_PROC_FS
+// {
 #define PROTO_INUSE_NR	64	/* should be enough for the first time */
 struct prot_inuse {
 	int val[PROTO_INUSE_NR];
@@ -2752,6 +2755,7 @@ struct prot_inuse {
 static DECLARE_BITMAP(proto_inuse_idx, PROTO_INUSE_NR);
 
 #ifdef CONFIG_NET_NS
+{
 void sock_prot_inuse_add(struct net *net, struct proto *prot, int val)
 {
 	__this_cpu_add(net->core.inuse->val[prot->inuse_idx], val);
@@ -2795,6 +2799,7 @@ static __init int net_inuse_init(void)
 }
 
 core_initcall(net_inuse_init);
+}
 #else  // CONFIG_NET_NS
 static DEFINE_PER_CPU(struct prot_inuse, prot_inuse);
 
@@ -2834,7 +2839,9 @@ static void release_proto_idx(struct proto *prot)
 	if (prot->inuse_idx != PROTO_INUSE_NR - 1)
 		clear_bit(prot->inuse_idx, proto_inuse_idx);
 }
+// }
 #else  // CONFIG_PROC_FS
+{
 static inline void assign_proto_idx(struct proto *prot)
 {
 }
@@ -2842,9 +2849,8 @@ static inline void assign_proto_idx(struct proto *prot)
 static inline void release_proto_idx(struct proto *prot)
 {
 }
-#endif // CONFIG_PROC_FS
 }
-#endif
+#endif // CONFIG_PROC_FS
 
 static void req_prot_cleanup(struct request_sock_ops *rsk_prot)
 {
@@ -2854,11 +2860,6 @@ static void req_prot_cleanup(struct request_sock_ops *rsk_prot)
 	rsk_prot->slab_name = NULL;
 	kmem_cache_destroy(rsk_prot->slab);
 	rsk_prot->slab = NULL;
-}
-
-static inline void assign_proto_idx(struct proto *prot)
-{
-	// FIXME
 }
 
 static int req_prot_init(const struct proto *prot)

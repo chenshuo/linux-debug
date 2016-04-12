@@ -161,14 +161,14 @@ void inet_sock_destruct(struct sock *sk)
 }
 EXPORT_SYMBOL(inet_sock_destruct);
 
-#if 0
-{
 /*
  *	The routines beyond this point handle the behaviour of an AF_INET
  *	socket object. Mostly it punts to the subprotocols of IP to do
  *	the work.
  */
 
+#if 0
+{
 /*
  *	Automatically bind an unbound socket.
  */
@@ -189,6 +189,8 @@ static int inet_autobind(struct sock *sk)
 	release_sock(sk);
 	return 0;
 }
+}
+#endif
 
 /*
  *	Move a socket into listening state.
@@ -229,7 +231,7 @@ int inet_listen(struct socket *sock, int backlog)
 				fastopen_queue_tune(sk,
 				    ((uint)sysctl_tcp_fastopen) >> 16);
 
-			tcp_fastopen_init_key_once(true);
+			// FIXME: tcp_fastopen_init_key_once(true);
 		}
 		err = inet_csk_listen_start(sk, backlog);
 		if (err)
@@ -243,8 +245,6 @@ out:
 	return err;
 }
 EXPORT_SYMBOL(inet_listen);
-}
-#endif
 
 /*
  *	Create an inet socket.
@@ -931,7 +931,9 @@ const struct proto_ops inet_stream_ops = {
 	.getname	   = inet_getname,
 	.poll		   = tcp_poll,
 	.ioctl		   = inet_ioctl,
+*/
 	.listen		   = inet_listen,
+/* FIXME
 	.shutdown	   = inet_shutdown,
 	.setsockopt	   = sock_common_setsockopt,
 	.getsockopt	   = sock_common_getsockopt,

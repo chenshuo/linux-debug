@@ -10,7 +10,7 @@ void call_rcu_sched(struct rcu_head *head, rcu_callback_t func)
 // kernel/softirq.c
 void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
 {
-	printk("__local_bh_enable_ip %lx %d\n", ip, cnt);
+	// printk("__local_bh_enable_ip %lx %d\n", ip, cnt);
 }
 
 // kernel/locking/mutex.c
@@ -36,3 +36,8 @@ bool ns_capable(struct user_namespace *ns, int cap)
 {
 	return false;
 }
+
+// drivers/char/random.c
+// void get_random_bytes(void *buf, int nbytes)
+// {
+// }

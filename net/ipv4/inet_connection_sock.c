@@ -44,6 +44,8 @@ void inet_get_local_port_range(struct net *net, int *low, int *high)
 	} while (read_seqretry(&net->ipv4.ip_local_ports.lock, seq));
 }
 EXPORT_SYMBOL(inet_get_local_port_range);
+}
+#endif
 
 int inet_csk_bind_conflict(const struct sock *sk,
 			   const struct inet_bind_bucket *tb, bool relax)
@@ -88,8 +90,6 @@ int inet_csk_bind_conflict(const struct sock *sk,
 	return sk2 != NULL;
 }
 EXPORT_SYMBOL_GPL(inet_csk_bind_conflict);
-}
-#endif
 
 /* Obtain a reference to a local port for the given sock,
  * if snum is zero it means select any available local port.
@@ -195,8 +195,6 @@ have_snum:
 	tb = NULL;
 	goto tb_not_found;
 tb_found:
-#if 0
-{
 	if (!hlist_empty(&tb->owners)) {
 		if (sk->sk_reuse == SK_FORCE_REUSE)
 			goto success;
@@ -215,15 +213,14 @@ tb_found:
 				      sk->sk_reuseport && uid_eq(tb->fastuid, uid))) &&
 				    smallest_size != -1 && --attempts >= 0) {
 					spin_unlock(&head->lock);
-					goto again;
+					panic("again\n");
+					// FIXME: goto again;
 				}
 
 				goto fail_unlock;
 			}
 		}
 	}
-}
-#endif
 tb_not_found:
 	ret = 1;
 	if (!tb && (tb = inet_bind_bucket_create(hashinfo->bind_bucket_cachep,
@@ -747,6 +744,8 @@ void inet_csk_prepare_forced_close(struct sock *sk)
 	inet_sk(sk)->inet_num = 0;
 }
 EXPORT_SYMBOL(inet_csk_prepare_forced_close);
+}
+#endif
 
 int inet_csk_listen_start(struct sock *sk, int backlog)
 {
@@ -779,6 +778,8 @@ int inet_csk_listen_start(struct sock *sk, int backlog)
 }
 EXPORT_SYMBOL_GPL(inet_csk_listen_start);
 
+#if 0
+{
 static void inet_child_forget(struct sock *sk, struct request_sock *req,
 			      struct sock *child)
 {

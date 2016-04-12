@@ -25,15 +25,13 @@
 #include <net/secure_seq.h>
 #include <net/ip.h>
 
-#if 0
-{
 static u32 inet_ehashfn(const struct net *net, const __be32 laddr,
 			const __u16 lport, const __be32 faddr,
 			const __be16 fport)
 {
-	static u32 inet_ehash_secret __read_mostly;
+	static u32 inet_ehash_secret __read_mostly = 0x19820403;
 
-	net_get_random_once(&inet_ehash_secret, sizeof(inet_ehash_secret));
+	// FIXME: net_get_random_once(&inet_ehash_secret, sizeof(inet_ehash_secret));
 
 	return __inet_ehashfn(laddr, lport, faddr, fport,
 			      inet_ehash_secret + net_hash_mix(net));
@@ -55,8 +53,6 @@ u32 sk_ehashfn(const struct sock *sk)
 			    sk->sk_rcv_saddr, sk->sk_num,
 			    sk->sk_daddr, sk->sk_dport);
 }
-}
-#endif
 
 /*
  * Allocate and initialize a new local port bind bucket.
@@ -413,6 +409,8 @@ static u32 inet_sk_port_offset(const struct sock *sk)
 					  inet->inet_daddr,
 					  inet->inet_dport);
 }
+}
+#endif
 
 /* insert a socket into ehash, and eventually remove another one
  * (The another one can be a SYN_RECV or TIMEWAIT
@@ -453,7 +451,8 @@ bool inet_ehash_nolisten(struct sock *sk, struct sock *osk)
 		percpu_counter_inc(sk->sk_prot->orphan_count);
 		sk->sk_state = TCP_CLOSE;
 		sock_set_flag(sk, SOCK_DEAD);
-		inet_csk_destroy_sock(sk);
+		panic("inet_ehash_nolisten not okay.\n");
+		// FIXME: inet_csk_destroy_sock(sk);
 	}
 	return ok;
 }
@@ -488,6 +487,8 @@ void inet_hash(struct sock *sk)
 }
 EXPORT_SYMBOL_GPL(inet_hash);
 
+#if 0
+{
 void inet_unhash(struct sock *sk)
 {
 	struct inet_hashinfo *hashinfo = sk->sk_prot->h.hashinfo;

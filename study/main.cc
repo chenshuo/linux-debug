@@ -19,6 +19,7 @@ extern int tcp_v4_rcv(struct sk_buff *skb);
 // study/helper.c
 extern int tcp_connect(struct socket *sock);
 extern int tcp_bind(struct socket *sock);
+extern int tcp_listen(struct socket *sock, int backlog);
 struct sk_buff *build_skbuff(const void* ippacket, unsigned int len);
 }
 
@@ -39,7 +40,7 @@ int main(int argc, char* argv[])
   int err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
   printf("%d %p\n", err, sock);
   tcp_bind(sock);
-  // tcp_listen();
+  tcp_listen(sock, 5);
   string syn = build_syn(false);
   sk_buff* skb = build_skbuff(syn.data(), syn.size());
   printf("skbuff %p %zd\n", skb, syn.size());

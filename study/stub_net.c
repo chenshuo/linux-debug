@@ -1,4 +1,5 @@
 #include <linux/skbuff.h>
+#include <net/tcp.h>
 #include <uapi/linux/rtnetlink.h>
 
 // net/core/utils.c
@@ -59,6 +60,8 @@ unsigned int inet_addr_type_table(struct net *net, __be32 addr, u32 tb_id)
 	return RTN_LOCAL;
 }
 
+// net/ipv4/tcp_fastopen.c
+int sysctl_tcp_fastopen __read_mostly = TFO_CLIENT_ENABLE;
 
 // net/ipv4/ip_output.c
 void ip_send_unicast_reply(struct sock *sk, struct sk_buff *skb,

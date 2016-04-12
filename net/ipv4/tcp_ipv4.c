@@ -1784,8 +1784,8 @@ const struct inet_connection_sock_af_ops ipv4_specific = {
 //	.getsockopt	   = ip_getsockopt,
 //	.addr2sockaddr	   = inet_csk_addr2sockaddr,
 	.sockaddr_len	   = sizeof(struct sockaddr_in),
-/* FIXME
 	.bind_conflict	   = inet_csk_bind_conflict,
+/* FIXME
 #ifdef CONFIG_COMPAT
 	.compat_setsockopt = compat_ip_setsockopt,
 	.compat_getsockopt = compat_ip_getsockopt,
@@ -2366,9 +2366,9 @@ struct proto tcp_prot = {
 	.sendpage		= tcp_sendpage,
 	.backlog_rcv		= tcp_v4_do_rcv,
 	.release_cb		= tcp_release_cb,
-	.hash			= inet_hash,
-	.unhash			= inet_unhash,
 */
+	.hash			= inet_hash,
+//	.unhash			= inet_unhash,
 	.get_port		= inet_csk_get_port,
 /* FIXME
 	.enter_memory_pressure	= tcp_enter_memory_pressure,

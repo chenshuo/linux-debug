@@ -52,7 +52,7 @@ int tcp_connect(struct socket *sock)
 {
 	struct sockaddr_in address = {
 		.sin_family = AF_INET,
-		.sin_port = htons(1234),
+		.sin_port = htons(2222),
 		.sin_addr.s_addr = INADDR_LOOPBACK
 	};
 	// struct proto_ops inet_stream_ops.connect -> inet_stream_connect
@@ -65,11 +65,17 @@ int tcp_bind(struct socket *sock)
 {
 	struct sockaddr_in address = {
 		.sin_family = AF_INET,
-		.sin_port = htons(1234),
+		.sin_port = htons(2222),
 		.sin_addr.s_addr = INADDR_ANY
 	};
 	// struct proto_ops inet_stream_ops.bind -> inet_bind
 	int err = sock->ops->bind(sock, (struct sockaddr *)&address, sizeof address);
+	return err;
+}
+
+int tcp_listen(struct socket *sock, int backlog)
+{
+	int err = sock->ops->listen(sock, backlog);
 	return err;
 }
 
