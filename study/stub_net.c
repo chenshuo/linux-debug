@@ -83,3 +83,9 @@ void ip_send_unicast_reply(struct sock *sk, struct sk_buff *skb,
 	printk("ip_send_unicast_reply\n");
 }
 
+// net/ipv4/tcp_metrics.c
+bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst,
+			bool paws_check, bool timestamps)
+{
+	panic("tcp_peer_is_proven\n");
+}

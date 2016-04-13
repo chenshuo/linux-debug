@@ -97,8 +97,6 @@ static int tcp_v4_md5_hash_hdr(char *md5_hash, const struct tcp_md5sig_key *key,
 struct inet_hashinfo tcp_hashinfo;
 EXPORT_SYMBOL(tcp_hashinfo);
 
-#if 0
-{
 static  __u32 tcp_v4_init_sequence(const struct sk_buff *skb)
 {
 	return secure_tcp_sequence_number(ip_hdr(skb)->daddr,
@@ -107,6 +105,8 @@ static  __u32 tcp_v4_init_sequence(const struct sk_buff *skb)
 					  tcp_hdr(skb)->source);
 }
 
+#if 0
+{
 int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
 {
 	const struct tcp_timewait_sock *tcptw = tcp_twsk(sktw);
@@ -1195,6 +1195,8 @@ static bool tcp_v4_inbound_md5_hash(const struct sock *sk,
 #endif
 	return false;
 }
+}
+#endif
 
 static void tcp_v4_init_req(struct request_sock *req,
 			    const struct sock *sk_listener,
@@ -1208,6 +1210,8 @@ static void tcp_v4_init_req(struct request_sock *req,
 	ireq->opt = tcp_v4_save_options(skb);
 }
 
+#if 0
+{
 static struct dst_entry *tcp_v4_route_req(const struct sock *sk,
 					  struct flowi *fl,
 					  const struct request_sock *req,
@@ -1251,12 +1255,12 @@ static const struct tcp_request_sock_ops tcp_request_sock_ipv4_ops = {
 	.req_md5_lookup	=	tcp_v4_md5_lookup,
 	.calc_md5_hash	=	tcp_v4_md5_hash_skb,
 #endif
-//	.init_req	=	tcp_v4_init_req,
+	.init_req	=	tcp_v4_init_req,
 #ifdef CONFIG_SYN_COOKIES
 	.cookie_init_seq =	cookie_v4_init_sequence,
 #endif
 //	.route_req	=	tcp_v4_route_req,
-//	.init_seq	=	tcp_v4_init_sequence,
+	.init_seq	=	tcp_v4_init_sequence,
 //	.send_synack	=	tcp_v4_send_synack,
 };
 

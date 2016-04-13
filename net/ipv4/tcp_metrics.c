@@ -26,6 +26,8 @@ static struct tcp_metrics_block *__tcp_get_metrics(const struct inetpeer_addr *s
 						   const struct inetpeer_addr *daddr,
 						   struct net *net, unsigned int hash);
 
+#if 0
+{
 struct tcp_fastopen_metrics {
 	u16	mss;
 	u16	syn_loss:10,		/* Recurring Fast Open SYN losses */
@@ -230,6 +232,8 @@ static struct tcp_metrics_block *__tcp_get_metrics(const struct inetpeer_addr *s
 	}
 	return tcp_get_encode(tm, depth);
 }
+}
+#endif
 
 static struct tcp_metrics_block *__tcp_get_metrics_req(struct request_sock *req,
 						       struct dst_entry *dst)
@@ -273,6 +277,8 @@ static struct tcp_metrics_block *__tcp_get_metrics_req(struct request_sock *req,
 	return tm;
 }
 
+#if 0
+{
 static struct tcp_metrics_block *__tcp_get_metrics_tw(struct inet_timewait_sock *tw)
 {
 	struct tcp_metrics_block *tm;
@@ -575,6 +581,8 @@ reset:
 		tp->snd_cwnd = tcp_init_cwnd(tp, dst);
 	tp->snd_cwnd_stamp = tcp_time_stamp;
 }
+}
+#endif
 
 bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst,
 			bool paws_check, bool timestamps)
@@ -607,6 +615,8 @@ bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst,
 }
 EXPORT_SYMBOL_GPL(tcp_peer_is_proven);
 
+#if 0
+{
 void tcp_fetch_timewait_stamp(struct sock *sk, struct dst_entry *dst)
 {
 	struct tcp_metrics_block *tm;
@@ -1181,3 +1191,5 @@ void __init tcp_metrics_init(void)
 	if (ret < 0)
 		panic("Could not register tcp_metrics generic netlink\n");
 }
+}
+#endif

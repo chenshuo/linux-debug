@@ -3674,6 +3674,8 @@ old_ack:
 	SOCK_DEBUG(sk, "Ack %u before %u:%u\n", ack, tp->snd_una, tp->snd_nxt);
 	return 0;
 }
+}
+#endif
 
 static void tcp_parse_fastopen_option(int len, const unsigned char *cookie,
 				      bool syn, struct tcp_fastopen_cookie *foc,
@@ -3807,6 +3809,8 @@ void tcp_parse_options(const struct sk_buff *skb,
 }
 EXPORT_SYMBOL(tcp_parse_options);
 
+#if 0
+{
 static bool tcp_parse_aligned_timestamp(struct tcp_sock *tp, const struct tcphdr *th)
 {
 	const __be32 *ptr = (const __be32 *)(th + 1);
@@ -6020,8 +6024,6 @@ discard:
 }
 EXPORT_SYMBOL(tcp_rcv_state_process);
 
-#if 0
-{
 static inline void pr_drop_req(struct request_sock *req, __u16 port, int family)
 {
 	struct inet_request_sock *ireq = inet_rsk(req);
@@ -6036,6 +6038,8 @@ static inline void pr_drop_req(struct request_sock *req, __u16 port, int family)
 #endif
 }
 
+#if 0
+{
 /* RFC3168 : 6.1.1 SYN packets must not have ECT/ECN bits set
  *
  * If we receive a SYN packet with these bits set, it means a
@@ -6070,6 +6074,8 @@ static void tcp_ecn_create_request(struct request_sock *req,
 	    (ecn_ok_dst & DST_FEATURE_ECN_CA))
 		inet_rsk(req)->ecn_ok = 1;
 }
+}
+#endif
 
 static void tcp_openreq_init(struct request_sock *req,
 			     const struct tcp_options_received *rx_opt,
@@ -6118,6 +6124,8 @@ struct request_sock *inet_reqsk_alloc(const struct request_sock_ops *ops,
 }
 EXPORT_SYMBOL(inet_reqsk_alloc);
 
+#if 0
+{
 /*
  * Return true if a syncookie should be sent
  */
@@ -6166,6 +6174,14 @@ static void tcp_reqsk_record_syn(const struct sock *sk,
 }
 #endif
 
+static bool tcp_syn_flood_action(const struct sock *sk,
+				 const struct sk_buff *skb,
+				 const char *proto)
+{
+	// FIXME
+	return false;
+}
+
 int tcp_conn_request(struct request_sock_ops *rsk_ops,
 		     const struct tcp_request_sock_ops *af_ops,
 		     struct sock *sk, struct sk_buff *skb)
@@ -6179,7 +6195,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 	struct request_sock *req;
 	bool want_cookie = false;
 	struct flowi fl;
-#if 0
+
 	/* TW buckets are converted to open requests without
 	 * limitations, they conserve resources and peer is
 	 * evidently real one.
@@ -6274,7 +6290,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 		if (!dst)
 			goto drop_and_free;
 	}
-
+#if 0
 	tcp_ecn_create_request(req, skb, sk, dst);
 
 	if (want_cookie) {

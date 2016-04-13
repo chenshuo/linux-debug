@@ -29,6 +29,8 @@
 #include <net/cipso_ipv4.h>
 #include <net/ip_fib.h>
 
+#if 0
+{
 /*
  * Write options to IP header, record destination address to
  * source route option, address of outgoing interface
@@ -77,6 +79,8 @@ void ip_options_build(struct sk_buff *skb, struct ip_options *opt,
 		opt->ts_needaddr = opt->ts_needtime = 0;
 	}
 }
+}
+#endif
 
 /*
  * Provided (sopt, skb) points to received options,
@@ -98,7 +102,9 @@ int __ip_options_echo(struct ip_options *dopt, struct sk_buff *skb,
 
 	if (sopt->optlen == 0)
 		return 0;
-
+	panic("__ip_options_echo\n");
+#if 0
+{
 	sptr = skb_network_header(skb);
 	dptr = dopt->__data;
 
@@ -199,9 +205,13 @@ int __ip_options_echo(struct ip_options *dopt, struct sk_buff *skb,
 		*dptr++ = IPOPT_END;
 		dopt->optlen++;
 	}
+}
+#endif
 	return 0;
 }
 
+#if 0
+{
 /*
  *	Options "fragmenting", just fill options not
  *	allowed in fragments with NOOPs.
@@ -661,3 +671,5 @@ int ip_options_rcv_srr(struct sk_buff *skb)
 	return 0;
 }
 EXPORT_SYMBOL(ip_options_rcv_srr);
+}
+#endif

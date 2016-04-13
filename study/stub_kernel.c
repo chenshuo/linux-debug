@@ -34,6 +34,15 @@ void __mutex_unlock_slowpath(atomic_t *lock_count)
 	printk("__mutex_unlock_slowpath %p\n", lock_count);
 }
 
+// kernel/sched/clock.c
+u64 local_clock(void)
+{
+	// FIXME
+	return 0;
+}
+
+unsigned long volatile jiffies;
+
 // kernel/sched/wait.c
 void __wake_up(wait_queue_head_t *q, unsigned int mode,
 			int nr_exclusive, void *key)
@@ -51,3 +60,11 @@ bool ns_capable(struct user_namespace *ns, int cap)
 // void get_random_bytes(void *buf, int nbytes)
 // {
 // }
+
+// kernel/time/timekeeping.c
+ktime_t ktime_get_with_offset(enum tk_offsets offs)
+{
+	ktime_t kt = { 0 };
+	return kt;
+}
+
