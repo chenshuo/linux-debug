@@ -362,6 +362,8 @@ void tcp_twsk_destructor(struct sock *sk)
 #endif
 }
 EXPORT_SYMBOL_GPL(tcp_twsk_destructor);
+}
+#endif
 
 /* Warning : This function is called without sk_listener being locked.
  * Be sure to read socket fields once, as their value could change under us.
@@ -402,6 +404,8 @@ void tcp_openreq_init_rwin(struct request_sock *req,
 }
 EXPORT_SYMBOL(tcp_openreq_init_rwin);
 
+#if 0
+{
 static void tcp_ecn_openreq_child(struct tcp_sock *tp,
 				  const struct request_sock *req)
 {

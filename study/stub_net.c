@@ -72,6 +72,13 @@ int sk_filter(struct sock *sk, struct sk_buff *skb)
 
 // net/ipv4/tcp_fastopen.c
 int sysctl_tcp_fastopen __read_mostly = TFO_CLIENT_ENABLE;
+struct sock *tcp_try_fastopen(struct sock *sk, struct sk_buff *skb,
+			      struct request_sock *req,
+			      struct tcp_fastopen_cookie *foc,
+			      struct dst_entry *dst)
+{
+	return NULL;
+}
 
 // net/ipv4/ip_output.c
 void ip_send_unicast_reply(struct sock *sk, struct sk_buff *skb,
@@ -89,3 +96,16 @@ bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst,
 {
 	panic("tcp_peer_is_proven\n");
 }
+
+// net/ipv4/tcp_timer.c
+int sysctl_tcp_synack_retries __read_mostly = TCP_SYNACK_RETRIES;
+
+// net/ipv4/route.c
+extern struct rtable g_rt;
+struct rtable *ip_route_output_flow(struct net *net, struct flowi4 *flp4,
+				    const struct sock *sk)
+{
+	return &g_rt;
+	// panic("ip_route_output_flow\n");
+}
+

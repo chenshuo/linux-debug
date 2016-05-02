@@ -172,6 +172,8 @@ int ip_build_and_send_pkt(struct sk_buff *skb, const struct sock *sk,
 }
 EXPORT_SYMBOL_GPL(ip_build_and_send_pkt);
 
+#if 0
+{
 static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *skb)
 {
 	struct dst_entry *dst = skb_dst(skb);
@@ -1615,3 +1617,5 @@ void __init ip_init(void)
 	igmp_mc_init();
 #endif
 }
+}
+#endif

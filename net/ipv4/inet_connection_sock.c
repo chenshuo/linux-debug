@@ -417,6 +417,8 @@ void inet_csk_reset_keepalive_timer(struct sock *sk, unsigned long len)
 	sk_reset_timer(sk, &sk->sk_timer, jiffies + len);
 }
 EXPORT_SYMBOL(inet_csk_reset_keepalive_timer);
+}
+#endif
 
 struct dst_entry *inet_csk_route_req(const struct sock *sk,
 				     struct flowi4 *fl4,
@@ -449,6 +451,8 @@ no_route:
 }
 EXPORT_SYMBOL_GPL(inet_csk_route_req);
 
+#if 0
+{
 struct dst_entry *inet_csk_route_child_sock(const struct sock *sk,
 					    struct sock *newsk,
 					    const struct request_sock *req)
@@ -493,10 +497,11 @@ EXPORT_SYMBOL_GPL(inet_csk_route_child_sock);
 #else
 #define AF_INET_FAMILY(fam) true
 #endif
+}
+#endif
 
 /* Only thing we need from tcp.h */
 extern int sysctl_tcp_synack_retries;
-
 
 /* Decide when to expire the request and when to resend SYN-ACK */
 static inline void syn_ack_recalc(struct request_sock *req, const int thresh,
@@ -544,8 +549,9 @@ static bool reqsk_queue_unlink(struct request_sock_queue *queue,
 		found = __sk_nulls_del_node_init_rcu(req_to_sk(req));
 		spin_unlock(lock);
 	}
-	if (timer_pending(&req->rsk_timer) && del_timer_sync(&req->rsk_timer))
-		reqsk_put(req);
+	// FIXME
+	// if (timer_pending(&req->rsk_timer) && del_timer_sync(&req->rsk_timer))
+	//	reqsk_put(req);
 	return found;
 }
 
@@ -623,7 +629,8 @@ static void reqsk_timer_handler(unsigned long data)
 		if (req->num_timeout++ == 0)
 			atomic_dec(&queue->young);
 		timeo = min(TCP_TIMEOUT_INIT << req->num_timeout, TCP_RTO_MAX);
-		mod_timer_pinned(&req->rsk_timer, jiffies + timeo);
+		// FIXME
+		// mod_timer_pinned(&req->rsk_timer, jiffies + timeo);
 		return;
 	}
 drop:
@@ -637,8 +644,9 @@ static void reqsk_queue_hash_req(struct request_sock *req,
 	req->num_timeout = 0;
 	req->sk = NULL;
 
-	setup_timer(&req->rsk_timer, reqsk_timer_handler, (unsigned long)req);
-	mod_timer_pinned(&req->rsk_timer, jiffies + timeout);
+	// FIXME
+	// setup_timer(&req->rsk_timer, reqsk_timer_handler, (unsigned long)req);
+	// mod_timer_pinned(&req->rsk_timer, jiffies + timeout);
 
 	inet_ehash_insert(req_to_sk(req), NULL);
 	/* before letting lookups find us, make sure all req fields
@@ -656,6 +664,8 @@ void inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
 }
 EXPORT_SYMBOL_GPL(inet_csk_reqsk_queue_hash_add);
 
+#if 0
+{
 /**
  *	inet_csk_clone_lock - clone an inet socket, and lock its clone
  *	@sk: the socket to clone

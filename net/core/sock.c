@@ -1656,6 +1656,8 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
 	sk->sk_gso_max_segs = max_segs;
 }
 EXPORT_SYMBOL_GPL(sk_setup_caps);
+}
+#endif
 
 /*
  *	Simple resource managers for sockets.
@@ -1710,6 +1712,8 @@ void skb_set_owner_w(struct sk_buff *skb, struct sock *sk)
 }
 EXPORT_SYMBOL(skb_set_owner_w);
 
+#if 0
+{
 void skb_orphan_partial(struct sk_buff *skb)
 {
 	/* TCP stack sets skb->ooo_okay based on sk_wmem_alloc,

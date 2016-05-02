@@ -114,7 +114,7 @@ do {									\
 #define smp_load_acquire(p)						\
 ({									\
 	typeof(*p) ___p1 = READ_ONCE(*p);				\
-	compiletime_assert_atomic_type(*p);				\
+	/*compiletime_assert_atomic_type(*p);*/				\
 	smp_mb();							\
 	___p1;								\
 })

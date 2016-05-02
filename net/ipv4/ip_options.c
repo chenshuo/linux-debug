@@ -29,8 +29,6 @@
 #include <net/cipso_ipv4.h>
 #include <net/ip_fib.h>
 
-#if 0
-{
 /*
  * Write options to IP header, record destination address to
  * source route option, address of outgoing interface
@@ -44,6 +42,9 @@
 
 void ip_options_build(struct sk_buff *skb, struct ip_options *opt,
 		      __be32 daddr, struct rtable *rt, int is_frag)
+{
+	panic("ip_options_build");
+#if 0
 {
 	unsigned char *iph = skb_network_header(skb);
 
@@ -79,8 +80,8 @@ void ip_options_build(struct sk_buff *skb, struct ip_options *opt,
 		opt->ts_needaddr = opt->ts_needtime = 0;
 	}
 }
-}
 #endif
+}
 
 /*
  * Provided (sopt, skb) points to received options,

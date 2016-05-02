@@ -93,6 +93,22 @@ struct rtable g_rt = {
 	.rt_type = RTN_LOCAL
 };
 
+int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+{
+	panic("ip_output");
+}
+
+const u32 dst_default_metrics[RTAX_MAX + 1] = {
+	[RTAX_ADVMSS-1] = 1460,
+	[RTAX_MAX] = 0xdeadbeef,
+};
+
+void schen_dst_init(void)
+{
+	dst_init_metrics(&g_rt.dst, dst_default_metrics, true);
+	g_rt.dst.output = ip_output;
+}
+
 struct sk_buff *build_skbuff(const void* ippacket, unsigned int len)
 {
 	struct sk_buff* skb = alloc_skb(len, GFP_ATOMIC);

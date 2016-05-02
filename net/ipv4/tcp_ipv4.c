@@ -554,6 +554,8 @@ out:
 	bh_unlock_sock(sk);
 	sock_put(sk);
 }
+}
+#endif
 
 void __tcp_v4_send_check(struct sk_buff *skb, __be32 saddr, __be32 daddr)
 {
@@ -579,8 +581,6 @@ void tcp_v4_send_check(struct sock *sk, struct sk_buff *skb)
 	__tcp_v4_send_check(skb, inet->inet_saddr, inet->inet_daddr);
 }
 EXPORT_SYMBOL(tcp_v4_send_check);
-}
-#endif
 
 /*
  *	This routine will send an RST to the other tcp.
@@ -836,6 +836,8 @@ static void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
 			inet_rsk(req)->no_srccheck ? IP_REPLY_ARG_NOSRCCHECK : 0,
 			ip_hdr(skb)->tos);
 }
+}
+#endif
 
 /*
  *	Send a SYN-ACK after having received a SYN.
@@ -871,6 +873,8 @@ static int tcp_v4_send_synack(const struct sock *sk, struct dst_entry *dst,
 	return err;
 }
 
+#if 0
+{
 /*
  *	IPv4 request_sock destructor.
  */
@@ -1210,8 +1214,6 @@ static void tcp_v4_init_req(struct request_sock *req,
 	ireq->opt = tcp_v4_save_options(skb);
 }
 
-#if 0
-{
 static struct dst_entry *tcp_v4_route_req(const struct sock *sk,
 					  struct flowi *fl,
 					  const struct request_sock *req,
@@ -1228,8 +1230,6 @@ static struct dst_entry *tcp_v4_route_req(const struct sock *sk,
 
 	return dst;
 }
-}
-#endif
 
 static bool tcp_v4_inbound_md5_hash(const struct sock *sk,
 				    const struct sk_buff *skb)
@@ -1259,9 +1259,9 @@ static const struct tcp_request_sock_ops tcp_request_sock_ipv4_ops = {
 #ifdef CONFIG_SYN_COOKIES
 	.cookie_init_seq =	cookie_v4_init_sequence,
 #endif
-//	.route_req	=	tcp_v4_route_req,
+	.route_req	=	tcp_v4_route_req,
 	.init_seq	=	tcp_v4_init_sequence,
-//	.send_synack	=	tcp_v4_send_synack,
+	.send_synack	=	tcp_v4_send_synack,
 };
 
 int tcp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
@@ -1636,6 +1636,7 @@ process:
 		goto do_time_wait;
 
 	if (sk->sk_state == TCP_NEW_SYN_RECV) {
+		panic("TCP_NEW_SYN_RECV");
 		/* FIXME
 		struct request_sock *req = inet_reqsk(sk);
 		struct sock *nsk;

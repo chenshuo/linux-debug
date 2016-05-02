@@ -24,6 +24,8 @@ extern int tcp_connect(struct socket *sock);
 extern int tcp_bind(struct socket *sock);
 extern int tcp_listen(struct socket *sock, int backlog);
 struct sk_buff *build_skbuff(const void* ippacket, unsigned int len);
+// helper.c
+extern void schen_dst_init(void);
 }
 
 using std::string;
@@ -31,6 +33,7 @@ string build_syn(bool ether);
 
 int main(int argc, char* argv[])
 {
+  schen_dst_init();
   if (sock_init())
   {
     printf("sock_init failed.\n"); return 1;

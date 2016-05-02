@@ -6038,8 +6038,6 @@ static inline void pr_drop_req(struct request_sock *req, __u16 port, int family)
 #endif
 }
 
-#if 0
-{
 /* RFC3168 : 6.1.1 SYN packets must not have ECT/ECN bits set
  *
  * If we receive a SYN packet with these bits set, it means a
@@ -6074,8 +6072,6 @@ static void tcp_ecn_create_request(struct request_sock *req,
 	    (ecn_ok_dst & DST_FEATURE_ECN_CA))
 		inet_rsk(req)->ecn_ok = 1;
 }
-}
-#endif
 
 static void tcp_openreq_init(struct request_sock *req,
 			     const struct tcp_options_received *rx_opt,
@@ -6154,6 +6150,8 @@ static bool tcp_syn_flood_action(const struct sock *sk,
 
 	return want_cookie;
 }
+}
+#endif
 
 static void tcp_reqsk_record_syn(const struct sock *sk,
 				 struct request_sock *req,
@@ -6171,8 +6169,6 @@ static void tcp_reqsk_record_syn(const struct sock *sk,
 		}
 	}
 }
-}
-#endif
 
 static bool tcp_syn_flood_action(const struct sock *sk,
 				 const struct sk_buff *skb,
@@ -6290,7 +6286,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 		if (!dst)
 			goto drop_and_free;
 	}
-#if 0
+
 	tcp_ecn_create_request(req, skb, sk, dst);
 
 	if (want_cookie) {
@@ -6308,6 +6304,8 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 		fastopen_sk = tcp_try_fastopen(sk, skb, req, &foc, dst);
 	}
 	if (fastopen_sk) {
+		panic("fastopen_sk");
+#if 0
 		af_ops->send_synack(fastopen_sk, dst, &fl, req,
 				    &foc, false);
 		/* Add the child socket directly into the accept queue */
@@ -6315,6 +6313,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 		sk->sk_data_ready(sk);
 		bh_unlock_sock(fastopen_sk);
 		sock_put(fastopen_sk);
+#endif
 	} else {
 		tcp_rsk(req)->tfo_listener = false;
 		if (!want_cookie)
@@ -6326,7 +6325,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 	}
 	reqsk_put(req);
 	return 0;
-#endif
+
 drop_and_release:
 	dst_release(dst);
 drop_and_free:

@@ -27,11 +27,14 @@ OBJS="$OBJS net/ipv4/af_inet.o"
 OBJS="$OBJS net/ipv4/inet_connection_sock.o"
 OBJS="$OBJS net/ipv4/inet_hashtables.o"
 OBJS="$OBJS net/ipv4/ip_options.o"
+OBJS="$OBJS net/ipv4/ip_output.o"
+OBJS="$OBJS net/ipv4/route.o"
 OBJS="$OBJS net/ipv4/tcp.o"
 OBJS="$OBJS net/ipv4/tcp_input.o"
 OBJS="$OBJS net/ipv4/tcp_ipv4.o"
 # OBJS="$OBJS net/ipv4/tcp_metrics.o"
 OBJS="$OBJS net/ipv4/tcp_minisocks.o"
+OBJS="$OBJS net/ipv4/tcp_output.o"
 
 set -x
 

@@ -109,10 +109,10 @@ static void skb_over_panic(struct sk_buff *skb, unsigned int sz, void *addr)
 	skb_panic(skb, sz, addr, __func__);
 }
 
-// static void skb_under_panic(struct sk_buff *skb, unsigned int sz, void *addr)
-// {
-// 	skb_panic(skb, sz, addr, __func__);
-// }
+static void skb_under_panic(struct sk_buff *skb, unsigned int sz, void *addr)
+{
+	skb_panic(skb, sz, addr, __func__);
+}
 
 /*
  * kmalloc_reserve is a wrapper around kmalloc_node_track_caller that tells
@@ -1374,8 +1374,6 @@ unsigned char *skb_put(struct sk_buff *skb, unsigned int len)
 }
 EXPORT_SYMBOL(skb_put);
 
-#if 0
-{
 /**
  *	skb_push - add data to the start of a buffer
  *	@skb: buffer to use
@@ -1395,6 +1393,8 @@ unsigned char *skb_push(struct sk_buff *skb, unsigned int len)
 }
 EXPORT_SYMBOL(skb_push);
 
+#if 0
+{
 /**
  *	skb_pull - remove data from the start of a buffer
  *	@skb: buffer to use

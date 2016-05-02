@@ -65,6 +65,8 @@ int sysctl_tcp_slow_start_after_idle __read_mostly = 1;
 unsigned int sysctl_tcp_notsent_lowat __read_mostly = UINT_MAX;
 EXPORT_SYMBOL(sysctl_tcp_notsent_lowat);
 
+#if 0
+{
 static bool tcp_write_xmit(struct sock *sk, unsigned int mss_now, int nonagle,
 			   int push_one, gfp_t gfp);
 
@@ -182,6 +184,8 @@ static inline void tcp_event_ack_sent(struct sock *sk, unsigned int pkts)
 	tcp_dec_quickack_mode(sk, pkts);
 	inet_csk_clear_xmit_timer(sk, ICSK_TIME_DACK);
 }
+}
+#endif
 
 
 u32 tcp_default_init_rwnd(u32 mss)
@@ -258,6 +262,8 @@ void tcp_select_initial_window(int __space, __u32 mss,
 }
 EXPORT_SYMBOL(tcp_select_initial_window);
 
+#if 0
+{
 /* Chose a new window to advertise, update state in tcp_sock for the
  * socket, and return result with RFC1323 scaling applied.  The return
  * value can be stuffed directly into th->window for an outgoing
@@ -355,6 +361,8 @@ static void tcp_ecn_clear_syn(struct sock *sk, struct sk_buff *skb)
 		 */
 		TCP_SKB_CB(skb)->tcp_flags &= ~(TCPHDR_ECE | TCPHDR_CWR);
 }
+}
+#endif
 
 static void
 tcp_ecn_make_synack(const struct request_sock *req, struct tcphdr *th)
@@ -363,6 +371,8 @@ tcp_ecn_make_synack(const struct request_sock *req, struct tcphdr *th)
 		th->ece = 1;
 }
 
+#if 0
+{
 /* Set up ECN state for a packet on a ESTABLISHED socket that is about to
  * be sent.
  */
@@ -389,6 +399,8 @@ static void tcp_ecn_send(struct sock *sk, struct sk_buff *skb,
 			tcp_hdr(skb)->ece = 1;
 	}
 }
+}
+#endif
 
 /* Constructs common control bits of non-data skb. If SYN/FIN is present,
  * auto increment end seqno.
@@ -539,6 +551,8 @@ static void tcp_options_write(__be32 *ptr, struct tcp_sock *tp,
 	}
 }
 
+#if 0
+{
 /* Compute TCP options for SYN packets. This is not the final
  * network wire format yet.
  */
@@ -606,6 +620,8 @@ static unsigned int tcp_syn_options(struct sock *sk, struct sk_buff *skb,
 
 	return MAX_TCP_OPTION_SPACE - remaining;
 }
+}
+#endif
 
 /* Set up TCP options for SYN-ACKs. */
 static unsigned int tcp_synack_options(struct request_sock *req,
@@ -667,6 +683,8 @@ static unsigned int tcp_synack_options(struct request_sock *req,
 	return MAX_TCP_OPTION_SPACE - remaining;
 }
 
+#if 0
+{
 /* Compute TCP options for ESTABLISHED sockets. This is not the
  * final wire format yet.
  */
@@ -2929,6 +2947,8 @@ int tcp_send_synack(struct sock *sk)
 	}
 	return tcp_transmit_skb(sk, skb, 1, GFP_ATOMIC);
 }
+}
+#endif
 
 /**
  * tcp_make_synack - Prepare a SYN-ACK.
@@ -3034,6 +3054,8 @@ struct sk_buff *tcp_make_synack(const struct sock *sk, struct dst_entry *dst,
 }
 EXPORT_SYMBOL(tcp_make_synack);
 
+#if 0
+{
 static void tcp_ca_dst_init(struct sock *sk, const struct dst_entry *dst)
 {
 	struct inet_connection_sock *icsk = inet_csk(sk);
@@ -3519,3 +3541,5 @@ int tcp_rtx_synack(const struct sock *sk, struct request_sock *req)
 	return res;
 }
 EXPORT_SYMBOL(tcp_rtx_synack);
+}
+#endif

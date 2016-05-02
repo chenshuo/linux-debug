@@ -48,4 +48,10 @@ size_t ksize(const void *p)
   return g_sizes[p];
 }
 
+uint32_t random_32 = 42;
+uint32_t prandom_u32(void)
+{
+	return random_32;
+}
+
 }

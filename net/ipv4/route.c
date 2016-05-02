@@ -155,6 +155,8 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
 					   struct sk_buff *skb,
 					   const void *daddr);
 
+#if 0
+{
 static struct dst_ops ipv4_dst_ops = {
 	.family =		AF_INET,
 	.check =		ipv4_dst_check,
@@ -460,6 +462,8 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
 		return n;
 	return neigh_create(&arp_tbl, pkey, dev);
 }
+}
+#endif
 
 #define IP_IDENTS_SZ 2048u
 
@@ -490,7 +494,7 @@ void __ip_select_ident(struct net *net, struct iphdr *iph, int segs)
 	static u32 ip_idents_hashrnd __read_mostly;
 	u32 hash, id;
 
-	net_get_random_once(&ip_idents_hashrnd, sizeof(ip_idents_hashrnd));
+	// FIXME: net_get_random_once(&ip_idents_hashrnd, sizeof(ip_idents_hashrnd));
 
 	hash = jhash_3words((__force u32)iph->daddr,
 			    (__force u32)iph->saddr,
@@ -501,6 +505,8 @@ void __ip_select_ident(struct net *net, struct iphdr *iph, int segs)
 }
 EXPORT_SYMBOL(__ip_select_ident);
 
+#if 0
+{
 static void __build_flow_key(struct flowi4 *fl4, const struct sock *sk,
 			     const struct iphdr *iph,
 			     int oif, u8 tos,
@@ -2915,4 +2921,6 @@ void __init ip_static_sysctl_init(void)
 {
 	register_net_sysctl(&init_net, "net/ipv4/route", ipv4_route_table);
 }
+}
+#endif
 #endif
