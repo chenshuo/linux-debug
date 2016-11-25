@@ -54,4 +54,8 @@ uint32_t prandom_u32(void)
 	return random_32;
 }
 
+unsigned long get_seconds(void)
+{
+	return time(NULL);
+}
 }

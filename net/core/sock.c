@@ -1320,8 +1320,6 @@ static inline void sock_lock_init(struct sock *sk)
 			af_family_keys + sk->sk_family);
 }
 
-#if 0
-{
 /*
  * Copy all fields from osk to nsk but nsk->sk_refcnt must not change yet,
  * even temporarly, because of RCU lookups. sk_node should also be left as is.
@@ -1343,6 +1341,8 @@ static void sock_copy(struct sock *nsk, const struct sock *osk)
 #endif
 }
 
+#if 0
+{
 void sk_prot_clear_portaddr_nulls(struct sock *sk, int size)
 {
 	unsigned long nulls1, nulls2;
@@ -1519,8 +1519,6 @@ void sk_free(struct sock *sk)
 }
 EXPORT_SYMBOL(sk_free);
 
-#if 0
-{
 static void sk_update_clone(const struct sock *sk, struct sock *newsk)
 {
 	if (mem_cgroup_sockets_enabled && sk->sk_cgrp)
@@ -1578,12 +1576,14 @@ struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority)
 		skb_queue_head_init(&newsk->sk_error_queue);
 
 		filter = rcu_dereference_protected(newsk->sk_filter, 1);
-		if (filter != NULL)
+		if (filter != NULL) {
+			panic("filter");
 			/* though it's an empty new sock, the charging may fail
 			 * if sysctl_optmem_max was changed between creation of
 			 * original socket and cloning
 			 */
-			is_charged = sk_filter_charge(newsk, filter);
+			// FIXME is_charged = sk_filter_charge(newsk, filter);
+		}
 
 		if (unlikely(!is_charged || xfrm_sk_clone_policy(newsk, sk))) {
 			/* It is still raw copy of parent, so invalidate
@@ -1635,6 +1635,8 @@ out:
 }
 EXPORT_SYMBOL_GPL(sk_clone_lock);
 
+#if 0
+{
 void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
 {
 	u32 max_segs = 1;
@@ -2396,6 +2398,8 @@ void sk_send_sigurg(struct sock *sk)
 			sk_wake_async(sk, SOCK_WAKE_URG, POLL_PRI);
 }
 EXPORT_SYMBOL(sk_send_sigurg);
+}
+#endif
 
 void sk_reset_timer(struct sock *sk, struct timer_list* timer,
 		    unsigned long expires)
@@ -2411,8 +2415,6 @@ void sk_stop_timer(struct sock *sk, struct timer_list* timer)
 		__sock_put(sk);
 }
 EXPORT_SYMBOL(sk_stop_timer);
-}
-#endif
 
 static void sock_def_destruct(struct sock *sk)
 {
@@ -2426,7 +2428,7 @@ void sock_init_data(struct socket *sock, struct sock *sk)
 
 	sk->sk_send_head	=	NULL;
 
-	// FIXME: init_timer(&sk->sk_timer);
+	init_timer(&sk->sk_timer);
 
 	sk->sk_allocation	=	GFP_KERNEL;
 	sk->sk_rcvbuf		=	sysctl_rmem_default;

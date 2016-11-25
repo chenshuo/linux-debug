@@ -1279,8 +1279,6 @@ drop:
 }
 EXPORT_SYMBOL(tcp_v4_conn_request);
 
-#if 0
-{
 /*
  * The three way handshake has completed - we got a valid synack -
  * now create the new socket.
@@ -1327,6 +1325,8 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
 		inet_csk(newsk)->icsk_ext_hdr_len = inet_opt->opt.optlen;
 	newinet->inet_id = newtp->write_seq ^ jiffies;
 
+#if 0
+{
 	if (!dst) {
 		dst = inet_csk_route_child_sock(sk, newsk, req);
 		if (!dst)
@@ -1370,6 +1370,8 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
 		tcp_move_syn(newtp, req);
 
 	return newsk;
+}
+#endif
 
 exit_overflow:
 	NET_INC_STATS_BH(sock_net(sk), LINUX_MIB_LISTENOVERFLOWS);
@@ -1384,8 +1386,6 @@ put_and_exit:
 	goto exit;
 }
 EXPORT_SYMBOL(tcp_v4_syn_recv_sock);
-}
-#endif
 
 static struct sock *tcp_v4_cookie_check(struct sock *sk, struct sk_buff *skb)
 {
@@ -1636,8 +1636,6 @@ process:
 		goto do_time_wait;
 
 	if (sk->sk_state == TCP_NEW_SYN_RECV) {
-		panic("TCP_NEW_SYN_RECV");
-		/* FIXME
 		struct request_sock *req = inet_reqsk(sk);
 		struct sock *nsk;
 
@@ -1665,7 +1663,6 @@ process:
 			sock_put(sk);
 			return 0;
 		}
-		*/
 	}
 	if (unlikely(iph->ttl < inet_sk(sk)->min_ttl)) {
 		NET_INC_STATS_BH(net, LINUX_MIB_TCPMINTTLDROP);
@@ -1777,8 +1774,6 @@ static struct timewait_sock_ops tcp_timewait_sock_ops = {
 */
 };
 
-#if 0
-{
 void inet_sk_rx_dst_set(struct sock *sk, const struct sk_buff *skb)
 {
 	struct dst_entry *dst = skb_dst(skb);
@@ -1789,18 +1784,16 @@ void inet_sk_rx_dst_set(struct sock *sk, const struct sk_buff *skb)
 	}
 }
 EXPORT_SYMBOL(inet_sk_rx_dst_set);
-}
-#endif
 
 const struct inet_connection_sock_af_ops ipv4_specific = {
 /* FIXME
 	.queue_xmit	   = ip_queue_xmit,
 	.send_check	   = tcp_v4_send_check,
 	.rebuild_header	   = inet_sk_rebuild_header,
-	.sk_rx_dst_set	   = inet_sk_rx_dst_set,
 */
+	.sk_rx_dst_set	   = inet_sk_rx_dst_set,
 	.conn_request	   = tcp_v4_conn_request,
-//	.syn_recv_sock	   = tcp_v4_syn_recv_sock,
+	.syn_recv_sock	   = tcp_v4_syn_recv_sock,
 	.net_header_len	   = sizeof(struct iphdr),
 //	.setsockopt	   = ip_setsockopt,
 //	.getsockopt	   = ip_getsockopt,

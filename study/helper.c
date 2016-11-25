@@ -93,15 +93,24 @@ struct rtable g_rt = {
 	.rt_type = RTN_LOCAL
 };
 
+const struct sk_buff *output_skb;
 int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
 {
-	panic("ip_output");
+	output_skb = skb;
+	//panic("ip_output");
+	return 0;
 }
 
 const u32 dst_default_metrics[RTAX_MAX + 1] = {
 	[RTAX_ADVMSS-1] = 1460,
 	[RTAX_MAX] = 0xdeadbeef,
 };
+
+void get_output(void** data, int* len)
+{
+	*data = output_skb->data;
+	*len = output_skb->len;
+}
 
 void schen_dst_init(void)
 {

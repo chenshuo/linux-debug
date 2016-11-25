@@ -103,8 +103,6 @@ int sysctl_tcp_moderate_rcvbuf __read_mostly = 1;
 int sysctl_tcp_early_retrans __read_mostly = 3;
 int sysctl_tcp_invalid_ratelimit __read_mostly = HZ/2;
 
-#if 0
-{
 #define FLAG_DATA		0x01 /* Incoming frame contained data.		*/
 #define FLAG_WIN_UPDATE		0x02 /* Incoming ACK was a window update.	*/
 #define FLAG_DATA_ACKED		0x04 /* This ACK acknowledged new data.		*/
@@ -128,6 +126,8 @@ int sysctl_tcp_invalid_ratelimit __read_mostly = HZ/2;
 #define TCP_REMNANT (TCP_FLAG_FIN|TCP_FLAG_URG|TCP_FLAG_SYN|TCP_FLAG_PSH)
 #define TCP_HP_BITS (~(TCP_RESERVED_BITS|TCP_FLAG_PSH))
 
+#if 0
+{
 /* Adapt the MSS value used to make delayed ack decision to the
  * real world.
  */
@@ -676,6 +676,8 @@ static void tcp_event_data_recv(struct sock *sk, struct sk_buff *skb)
 	if (skb->len >= 128)
 		tcp_grow_window(sk, skb);
 }
+}
+#endif
 
 /* Called to compute a smoothed rtt estimate. The data fed to this
  * routine either comes from timestamps, or from segments that were
@@ -750,6 +752,8 @@ static void tcp_rtt_estimator(struct sock *sk, long mrtt_us)
 	tp->srtt_us = max(1U, srtt);
 }
 
+#if 0
+{
 /* Set the sk_pacing_rate to allow proper sizing of TSO packets.
  * Note: TCP stack does not yet implement pacing.
  * FQ packet scheduler can be used to implement cheap but effective
@@ -792,6 +796,8 @@ static void tcp_update_pacing_rate(struct sock *sk)
 	ACCESS_ONCE(sk->sk_pacing_rate) = min_t(u64, rate,
 						sk->sk_max_pacing_rate);
 }
+}
+#endif
 
 /* Calculate rto without backoff.  This is the second half of Van Jacobson's
  * routine referred to above.
@@ -823,6 +829,8 @@ static void tcp_set_rto(struct sock *sk)
 	tcp_bound_rto(sk);
 }
 
+#if 0
+{
 __u32 tcp_init_cwnd(const struct tcp_sock *tp, const struct dst_entry *dst)
 {
 	__u32 cwnd = (dst ? dst_metric(dst, RTAX_INITCWND) : 0);
@@ -2877,6 +2885,8 @@ static void tcp_fastretrans_alert(struct sock *sk, const int acked,
 	tcp_cwnd_reduction(sk, prior_unsacked, fast_rexmit, flag);
 	tcp_xmit_retransmit_queue(sk);
 }
+}
+#endif
 
 /* Kathleen Nichols' algorithm for tracking the minimum value of
  * a data stream over some fixed time interval. (E.g., the minimum
@@ -2994,6 +3004,8 @@ void tcp_synack_rtt_meas(struct sock *sk, struct request_sock *req)
 }
 
 
+#if 0
+{
 static void tcp_cong_avoid(struct sock *sk, u32 ack, u32 acked)
 {
 	const struct inet_connection_sock *icsk = inet_csk(sk);

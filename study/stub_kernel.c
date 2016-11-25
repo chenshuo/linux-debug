@@ -68,3 +68,9 @@ ktime_t ktime_get_with_offset(enum tk_offsets offs)
 	return kt;
 }
 
+// kernel/time/timer.c
+int del_timer(struct timer_list *timer)
+{
+	return 0;
+}
+

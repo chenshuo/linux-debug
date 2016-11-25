@@ -61,3 +61,48 @@ string build_syn(bool ether)
   libnet_destroy(net);
   return result;
 }
+
+string build_ack(const string& tcp)
+{
+  char errbuf[LIBNET_ERRBUF_SIZE];
+  string result;
+  libnet_t* net = libnet_init(LIBNET_NONE, NULL, errbuf);
+  if (!net)
+  {
+    printf("libnet: %s\n", errbuf);
+    return result;
+  }
+  libnet_build_tcp(
+      1025,  // source port
+      2222,    // dest port
+      1234568,  // seq
+      106135992,        // ack
+      TH_ACK,   // flags
+      65535,    // window
+      0,        // checksum
+      0,        // urg
+      LIBNET_TCP_H, // length
+      NULL, 0,      // payload
+      net, 0);      // ptag, build a new one
+  libnet_build_ipv4(
+      LIBNET_TCP_H + LIBNET_IPV4_H,
+      0, // tos
+      1, // id
+      0, // frag (off)
+      64, // ttl
+      IPPROTO_TCP,
+      0, // checksum
+      ip_source,
+      ip_dest,
+      NULL, 0, // payload
+      net, 0);  // ptag,
+  uint8_t* buf = NULL;
+  uint32_t size = 0;
+  if (libnet_pblock_coalesce(net, &buf, &size) == 1)
+  {
+    result.assign(reinterpret_cast<const char*>(buf), size);
+  }
+  free(buf);
+  libnet_destroy(net);
+  return result;
+}

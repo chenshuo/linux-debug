@@ -15,6 +15,10 @@ void netdev_rx_csum_fault(struct net_device *dev)
 	printk("netdev_rx_csum_fault %p\n", dev);
 }
 
+void net_enable_timestamp(void)
+{
+}
+
 void net_disable_timestamp(void)
 {
 }
@@ -99,6 +103,7 @@ bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst,
 
 // net/ipv4/tcp_timer.c
 int sysctl_tcp_synack_retries __read_mostly = TCP_SYNACK_RETRIES;
+int sysctl_tcp_keepalive_time __read_mostly = TCP_KEEPALIVE_TIME;
 
 // net/ipv4/route.c
 extern struct rtable g_rt;

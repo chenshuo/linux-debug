@@ -7,6 +7,9 @@ extern "C"
 // fs/inode.c
 // extern unsigned int get_next_ino(void);
 struct sk_buff;
+void get_output(//const struct sk_buff *skb,
+		void** data,
+		int* len);
 // net/socket.c
 extern int sock_init(void);
 struct socket;
@@ -30,6 +33,7 @@ extern void schen_dst_init(void);
 
 using std::string;
 string build_syn(bool ether);
+string build_ack(const string& in);
 
 int main(int argc, char* argv[])
 {
@@ -55,7 +59,15 @@ int main(int argc, char* argv[])
   string syn = build_syn(false);
   sk_buff* skb = build_skbuff(syn.data(), syn.size());
   printf("skbuff %p %zd\n", skb, syn.size());
-  printf("tcp_v4_rcv %d\n", tcp_v4_rcv(skb));
+  printf("tcp_v4_rcv SYN %d\n", tcp_v4_rcv(skb));
+  void* data = NULL;
+  int len = 0;
+  get_output(&data, &len);
+  printf("len = %d\n", len);
+  string synack(static_cast<char*>(data), len);
+  string ack = build_ack(synack);
+  skb = build_skbuff(ack.data(), ack.size());
+  printf("tcp_v4_rcv ACK %d\n", tcp_v4_rcv(skb));
   err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_IP, &sock);
   printf("%d %p\n", err, sock);
   tcp_connect(sock);

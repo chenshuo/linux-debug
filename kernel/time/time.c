@@ -52,6 +52,8 @@ struct timezone sys_tz;
 
 EXPORT_SYMBOL(sys_tz);
 
+#if 0
+{
 #ifdef __ARCH_WANT_SYS_TIME
 
 /*
@@ -243,6 +245,8 @@ struct timespec current_fs_time(struct super_block *sb)
 	return timespec_trunc(now, sb->s_time_gran);
 }
 EXPORT_SYMBOL(current_fs_time);
+}
+#endif
 
 /*
  * Convert jiffies to milliseconds and back.
@@ -286,6 +290,8 @@ unsigned int jiffies_to_usecs(const unsigned long j)
 }
 EXPORT_SYMBOL(jiffies_to_usecs);
 
+#if 0
+{
 /**
  * timespec_trunc - Truncate timespec to a granularity
  * @t: Timespec
@@ -485,6 +491,9 @@ struct timespec64 ns_to_timespec64(const s64 nsec)
 }
 EXPORT_SYMBOL(ns_to_timespec64);
 #endif
+}
+#endif
+
 /**
  * msecs_to_jiffies: - convert milliseconds to jiffies
  * @m:	time in milliseconds
@@ -528,6 +537,8 @@ unsigned long __usecs_to_jiffies(const unsigned int u)
 }
 EXPORT_SYMBOL(__usecs_to_jiffies);
 
+#if 0
+{
 /*
  * The TICK_NSEC - 1 rounds up the value to the next resolution.  Note
  * that a remainder subtract here would not do the right thing as the
@@ -762,3 +773,5 @@ struct timespec timespec_add_safe(const struct timespec lhs,
 
 	return res;
 }
+}
+#endif

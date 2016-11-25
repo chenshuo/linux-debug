@@ -38,8 +38,6 @@ struct inet_timewait_death_row tcp_death_row = {
 };
 EXPORT_SYMBOL_GPL(tcp_death_row);
 
-#if 0
-{
 static bool tcp_in_window(u32 seq, u32 end_seq, u32 s_win, u32 e_win)
 {
 	if (seq == s_win)
@@ -49,6 +47,8 @@ static bool tcp_in_window(u32 seq, u32 end_seq, u32 s_win, u32 e_win)
 	return seq == e_win && seq == end_seq;
 }
 
+#if 0
+{
 static enum tcp_tw_status
 tcp_timewait_check_oow_rate_limit(struct inet_timewait_sock *tw,
 				  const struct sk_buff *skb, int mib_idx)
@@ -404,14 +404,14 @@ void tcp_openreq_init_rwin(struct request_sock *req,
 }
 EXPORT_SYMBOL(tcp_openreq_init_rwin);
 
-#if 0
-{
 static void tcp_ecn_openreq_child(struct tcp_sock *tp,
 				  const struct request_sock *req)
 {
 	tp->ecn_flags = inet_rsk(req)->ecn_ok ? TCP_ECN_OK : 0;
 }
 
+#if 0
+{
 void tcp_ca_openreq_child(struct sock *sk, const struct dst_entry *dst)
 {
 	struct inet_connection_sock *icsk = inet_csk(sk);
@@ -440,6 +440,8 @@ void tcp_ca_openreq_child(struct sock *sk, const struct dst_entry *dst)
 	tcp_set_ca_state(sk, TCP_CA_Open);
 }
 EXPORT_SYMBOL_GPL(tcp_ca_openreq_child);
+}
+#endif
 
 /* This is not only more efficient than what we used to do, it eliminates
  * a lot of code duplication between IPv4/IPv6 SYN recv processing. -DaveM
@@ -499,7 +501,7 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
 		newtp->snd_cwnd = TCP_INIT_CWND;
 		newtp->snd_cwnd_cnt = 0;
 
-		tcp_init_xmit_timers(newsk);
+		// FIXME: tcp_init_xmit_timers(newsk);
 		__skb_queue_head_init(&newtp->out_of_order_queue);
 		newtp->write_seq = newtp->pushed_seq = treq->snt_isn + 1;
 
@@ -627,6 +629,7 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
 		 * Reset timer after retransmitting SYNACK, similar to
 		 * the idea of fast retransmit in recovery.
 		 */
+		/* FIXME
 		if (!tcp_oow_rate_limited(sock_net(sk), skb,
 					  LINUX_MIB_TCPACKSKIPPEDSYNRECV,
 					  &tcp_rsk(req)->last_oow_ack_time) &&
@@ -641,6 +644,7 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
 			else
 				req->rsk_timer.expires = expires;
 		}
+		*/
 		return NULL;
 	}
 
@@ -795,8 +799,10 @@ embryonic_reset:
 		 */
 		req->rsk_ops->send_reset(sk, skb);
 	} else if (fastopen) { /* received a valid RST pkt */
+		/* FIXME
 		reqsk_fastopen_remove(sk, req, true);
 		tcp_reset(sk);
+		*/
 	}
 	if (!fastopen) {
 		inet_csk_reqsk_queue_drop(sk, req);
@@ -805,8 +811,6 @@ embryonic_reset:
 	return NULL;
 }
 EXPORT_SYMBOL(tcp_check_req);
-}
-#endif
 
 /*
  * Queue segment on the new socket if the new socket is active,

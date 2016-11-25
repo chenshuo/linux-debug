@@ -98,6 +98,7 @@ struct tvec_base {
 static DEFINE_PER_CPU(struct tvec_base, tvec_bases);
 
 #if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
+{
 unsigned int sysctl_timer_migration = 1;
 
 void timers_update_migration(bool update_nohz)
@@ -141,6 +142,7 @@ static inline struct tvec_base *get_target_base(struct tvec_base *base,
 		return this_cpu_ptr(&tvec_bases);
 	return per_cpu_ptr(&tvec_bases, get_nohz_timer_target());
 }
+}
 #else
 static inline struct tvec_base *get_target_base(struct tvec_base *base,
 						int pinned)
@@ -149,6 +151,8 @@ static inline struct tvec_base *get_target_base(struct tvec_base *base,
 }
 #endif
 
+#if 0
+{
 static unsigned long round_jiffies_common(unsigned long j, int cpu,
 		bool force_up)
 {
@@ -369,6 +373,8 @@ void set_timer_slack(struct timer_list *timer, int slack_hz)
 	timer->slack = slack_hz;
 }
 EXPORT_SYMBOL_GPL(set_timer_slack);
+}
+#endif
 
 static void
 __internal_add_timer(struct tvec_base *base, struct timer_list *timer)
@@ -448,6 +454,8 @@ static void internal_add_timer(struct tvec_base *base, struct timer_list *timer)
 	}
 }
 
+#if 0
+{
 #ifdef CONFIG_TIMER_STATS
 void __timer_stats_timer_set_start_info(struct timer_list *timer, void *addr)
 {
@@ -478,6 +486,8 @@ static void timer_stats_account_timer(struct timer_list *timer)
 
 #else
 static void timer_stats_account_timer(struct timer_list *timer) {}
+#endif
+}
 #endif
 
 #ifdef CONFIG_DEBUG_OBJECTS_TIMERS
@@ -671,10 +681,14 @@ static inline void debug_deactivate(struct timer_list *timer)
 	trace_timer_cancel(timer);
 }
 
+#if 0
+{
 static inline void debug_assert_init(struct timer_list *timer)
 {
 	debug_timer_assert_init(timer);
 }
+}
+#endif
 
 static void do_init_timer(struct timer_list *timer, unsigned int flags,
 			  const char *name, struct lock_class_key *key)
@@ -721,6 +735,8 @@ static inline void detach_timer(struct timer_list *timer, bool clear_pending)
 	entry->next = LIST_POISON2;
 }
 
+#if 0
+{
 static inline void
 detach_expired_timer(struct timer_list *timer, struct tvec_base *base)
 {
@@ -729,6 +745,8 @@ detach_expired_timer(struct timer_list *timer, struct tvec_base *base)
 		base->active_timers--;
 	base->all_timers--;
 }
+}
+#endif
 
 static int detach_if_pending(struct timer_list *timer, struct tvec_base *base,
 			     bool clear_pending)
@@ -947,6 +965,8 @@ int mod_timer_pinned(struct timer_list *timer, unsigned long expires)
 }
 EXPORT_SYMBOL(mod_timer_pinned);
 
+#if 0
+{
 /**
  * add_timer - start a timer
  * @timer: the timer to be added
@@ -1716,3 +1736,5 @@ void __sched usleep_range(unsigned long min, unsigned long max)
 	do_usleep_range(min, max);
 }
 EXPORT_SYMBOL(usleep_range);
+}
+#endif

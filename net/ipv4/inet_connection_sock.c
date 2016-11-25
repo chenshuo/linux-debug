@@ -372,6 +372,8 @@ out_err:
 	goto out;
 }
 EXPORT_SYMBOL(inet_csk_accept);
+}
+#endif
 
 /*
  * Using different timers for retransmit, delayed acks and probes
@@ -394,6 +396,8 @@ void inet_csk_init_xmit_timers(struct sock *sk,
 }
 EXPORT_SYMBOL(inet_csk_init_xmit_timers);
 
+#if 0
+{
 void inet_csk_clear_xmit_timers(struct sock *sk)
 {
 	struct inet_connection_sock *icsk = inet_csk(sk);
@@ -411,14 +415,14 @@ void inet_csk_delete_keepalive_timer(struct sock *sk)
 	sk_stop_timer(sk, &sk->sk_timer);
 }
 EXPORT_SYMBOL(inet_csk_delete_keepalive_timer);
+}
+#endif
 
 void inet_csk_reset_keepalive_timer(struct sock *sk, unsigned long len)
 {
 	sk_reset_timer(sk, &sk->sk_timer, jiffies + len);
 }
 EXPORT_SYMBOL(inet_csk_reset_keepalive_timer);
-}
-#endif
 
 struct dst_entry *inet_csk_route_req(const struct sock *sk,
 				     struct flowi4 *fl4,
@@ -549,9 +553,8 @@ static bool reqsk_queue_unlink(struct request_sock_queue *queue,
 		found = __sk_nulls_del_node_init_rcu(req_to_sk(req));
 		spin_unlock(lock);
 	}
-	// FIXME
-	// if (timer_pending(&req->rsk_timer) && del_timer_sync(&req->rsk_timer))
-	//	reqsk_put(req);
+	if (timer_pending(&req->rsk_timer) && del_timer_sync(&req->rsk_timer))
+		reqsk_put(req);
 	return found;
 }
 
@@ -629,8 +632,7 @@ static void reqsk_timer_handler(unsigned long data)
 		if (req->num_timeout++ == 0)
 			atomic_dec(&queue->young);
 		timeo = min(TCP_TIMEOUT_INIT << req->num_timeout, TCP_RTO_MAX);
-		// FIXME
-		// mod_timer_pinned(&req->rsk_timer, jiffies + timeo);
+		mod_timer_pinned(&req->rsk_timer, jiffies + timeo);
 		return;
 	}
 drop:
@@ -644,9 +646,8 @@ static void reqsk_queue_hash_req(struct request_sock *req,
 	req->num_timeout = 0;
 	req->sk = NULL;
 
-	// FIXME
-	// setup_timer(&req->rsk_timer, reqsk_timer_handler, (unsigned long)req);
-	// mod_timer_pinned(&req->rsk_timer, jiffies + timeout);
+	setup_timer(&req->rsk_timer, reqsk_timer_handler, (unsigned long)req);
+	mod_timer_pinned(&req->rsk_timer, jiffies + timeout);
 
 	inet_ehash_insert(req_to_sk(req), NULL);
 	/* before letting lookups find us, make sure all req fields
@@ -664,8 +665,6 @@ void inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
 }
 EXPORT_SYMBOL_GPL(inet_csk_reqsk_queue_hash_add);
 
-#if 0
-{
 /**
  *	inet_csk_clone_lock - clone an inet socket, and lock its clone
  *	@sk: the socket to clone
@@ -689,7 +688,7 @@ struct sock *inet_csk_clone_lock(const struct sock *sk,
 		inet_sk(newsk)->inet_dport = inet_rsk(req)->ir_rmt_port;
 		inet_sk(newsk)->inet_num = inet_rsk(req)->ir_num;
 		inet_sk(newsk)->inet_sport = htons(inet_rsk(req)->ir_num);
-		newsk->sk_write_space = sk_stream_write_space;
+		// FIXME: newsk->sk_write_space = sk_stream_write_space;
 
 		newsk->sk_mark = inet_rsk(req)->ir_mark;
 		atomic64_set(&newsk->sk_cookie,
@@ -708,6 +707,8 @@ struct sock *inet_csk_clone_lock(const struct sock *sk,
 }
 EXPORT_SYMBOL_GPL(inet_csk_clone_lock);
 
+#if 0
+{
 /*
  * At this point, there should be no process reference to this
  * socket, and thus no user references at all.  Therefore we
@@ -788,10 +789,11 @@ int inet_csk_listen_start(struct sock *sk, int backlog)
 }
 EXPORT_SYMBOL_GPL(inet_csk_listen_start);
 
-#if 0
-{
 static void inet_child_forget(struct sock *sk, struct request_sock *req,
 			      struct sock *child)
+{
+	panic("inet_child_forget");
+#if 0
 {
 	sk->sk_prot->disconnect(child, O_NONBLOCK);
 
@@ -813,6 +815,8 @@ static void inet_child_forget(struct sock *sk, struct request_sock *req,
 	}
 	inet_csk_destroy_sock(child);
 	reqsk_put(req);
+}
+#endif
 }
 
 struct sock *inet_csk_reqsk_queue_add(struct sock *sk,
@@ -856,6 +860,8 @@ struct sock *inet_csk_complete_hashdance(struct sock *sk, struct sock *child,
 }
 EXPORT_SYMBOL(inet_csk_complete_hashdance);
 
+#if 0
+{
 /*
  *	This routine closes sockets which have been at least partially
  *	opened, but not yet accepted.
