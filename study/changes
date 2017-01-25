@@ -1,0 +1,6 @@
+arch/um/include/asm/thread_info.h	current_thread_info()
+fs/inode.c
+include/linux/slab.h  			kmalloc()
+net/socket.c				sock_mnt,init_inodecache
+net/ipv4/af_inet.c			inet_init()
+

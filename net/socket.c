@@ -287,7 +287,7 @@ static void init_once(void *foo)
 	inode_init_once(&ei->vfs_inode);
 }
 
-static int init_inodecache(void)
+/*static*/ int init_inodecache(void)
 {
 	sock_inode_cachep = kmem_cache_create("sock_inode_cache",
 					      sizeof(struct socket_alloc),
@@ -369,7 +369,13 @@ static struct dentry *sockfs_mount(struct file_system_type *fs_type,
 				  &sockfs_dentry_operations, SOCKFS_MAGIC);
 }
 
-static struct vfsmount *sock_mnt __read_mostly;
+struct super_block g_super_block = {
+	.s_op = &sockfs_ops
+};
+struct vfsmount g_sock_mnt = {
+	.mnt_sb = &g_super_block
+};
+static struct vfsmount *sock_mnt __read_mostly = &g_sock_mnt;
 
 static struct file_system_type sock_fs_type = {
 	.name =		"sockfs",

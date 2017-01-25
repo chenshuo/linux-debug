@@ -1753,7 +1753,7 @@ static struct packet_type ip_packet_type __read_mostly = {
 	.func = ip_rcv,
 };
 
-static int __init inet_init(void)
+/*static*/ int __init inet_init(void)
 {
 	struct inet_protosw *q;
 	struct list_head *r;

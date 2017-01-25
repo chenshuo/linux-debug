@@ -477,6 +477,7 @@ static __always_inline void *kmalloc_large(size_t size, gfp_t flags)
  */
 static __always_inline void *kmalloc(size_t size, gfp_t flags)
 {
+#if 0
 	if (__builtin_constant_p(size)) {
 		if (size > KMALLOC_MAX_CACHE_SIZE)
 			return kmalloc_large(size, flags);
@@ -492,6 +493,7 @@ static __always_inline void *kmalloc(size_t size, gfp_t flags)
 		}
 #endif
 	}
+#endif
 	return __kmalloc(size, flags);
 }
 

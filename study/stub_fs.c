@@ -1,5 +1,4 @@
 #include <linux/fs.h>
-#include <linux/slab.h>
 
 // fs/inode.c
 

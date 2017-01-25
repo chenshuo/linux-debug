@@ -130,6 +130,8 @@ void *__init alloc_large_system_hash(const char *tablename,
 // mm/slab_common.c
 //*****************************************************************************
 
+// struct kmem_cache *kmalloc_caches[KMALLOC_SHIFT_HIGH + 1];
+
 struct kmem_cache *
 kmem_cache_create(const char *name, size_t size, size_t align,
 		  unsigned long flags, void (*ctor)(void *))

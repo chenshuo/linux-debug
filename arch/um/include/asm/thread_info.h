@@ -38,6 +38,7 @@ struct thread_info {
 #define init_stack		(init_thread_union.stack)
 
 #define THREAD_SIZE ((1 << CONFIG_KERNEL_STACK_ORDER) * PAGE_SIZE)
+#if 0
 /* how to get the thread information struct from C */
 static inline struct thread_info *current_thread_info(void)
 {
@@ -49,6 +50,8 @@ static inline struct thread_info *current_thread_info(void)
 	ti = (struct thread_info *) (((unsigned long)p) & ~mask);
 	return ti;
 }
+#endif
+extern struct thread_info *current_thread_info(void);  // FIXME
 
 #define THREAD_SIZE_ORDER CONFIG_KERNEL_STACK_ORDER
 
