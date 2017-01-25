@@ -17,14 +17,15 @@ def process(src, output):
             continue
         t = m.group(1)
         sym = m.group(2)
-        if t not in 'BDRTWU':
+        if t not in 'BbDdRTtWU':
             continue
         if not sym in symbols:
-            symbols[sym] = (set(), set())
+            symbols[sym] = [set(), set(), '']
         if t == 'U':
             symbols[sym][1].add(src)
         else:  #t == 'T' or t == 'D':
             symbols[sym][0].add(src)
+            symbols[sym][2] = t
 
 
 def define(d, yes, no):
@@ -45,4 +46,4 @@ for obj in sys.argv[1:]:
     #     print 'NO SOURCE', src
 
 for sym in sorted(symbols):
-    print sym, define(symbols[sym][0], 'DEF ', 'NODEF'), define(symbols[sym][1], 'REF ', 'NO USE')
+    print sym, symbols[sym][2], define(symbols[sym][0], 'DEF ', 'NODEF'), define(symbols[sym][1], 'REF ', 'NO USE')
