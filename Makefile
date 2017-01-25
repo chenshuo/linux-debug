@@ -563,6 +563,7 @@ scripts: scripts_basic include/config/auto.conf include/config/tristate.conf \
 init-y		:= init/
 drivers-y	:= drivers/ sound/ firmware/
 net-y		:= net/
+net-m		:= study/
 libs-y		:= lib/
 core-y		:= usr/
 virt-y		:= virt/
@@ -729,7 +730,7 @@ ifdef CONFIG_DEBUG_INFO
 ifdef CONFIG_DEBUG_INFO_SPLIT
 KBUILD_CFLAGS   += $(call cc-option, -gsplit-dwarf, -g)
 else
-KBUILD_CFLAGS	+= -g
+KBUILD_CFLAGS	+= -g -fdata-sections -ffunction-sections
 endif
 KBUILD_AFLAGS	+= -Wa,-gdwarf-2
 endif

@@ -9,6 +9,7 @@
 #
 # Normal rules
 #
+a.out
 .*
 *.o
 *.o.*
