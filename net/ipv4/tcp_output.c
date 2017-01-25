@@ -839,6 +839,7 @@ EXPORT_SYMBOL(tcp_release_cb);
 
 void __init tcp_tasklet_init(void)
 {
+#if 0
 	int i;
 
 	for_each_possible_cpu(i) {
@@ -849,6 +850,7 @@ void __init tcp_tasklet_init(void)
 			     tcp_tasklet_func,
 			     (unsigned long)tsq);
 	}
+#endif
 }
 
 /*

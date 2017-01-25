@@ -1,27 +1,40 @@
 #!/bin/bash
 
+SRC=""
+SRC+="fs/inode.o "
+SRC+="fs/libfs.o "
+SRC+="kernel/locking/rwsem-spinlock.o "
+SRC+="kernel/rcu/tiny.o "
+SRC+="kernel/sched/wait.o "
+SRC+="lib/ctype.o "
+SRC+="lib/kstrtox.o "
+SRC+="lib/rbtree.o "
+SRC+="net/socket.o "
+SRC+="net/core/request_sock.o "
+SRC+="net/core/skbuff.o "
+SRC+="net/core/sock.o "
+SRC+="net/core/stream.o "
+SRC+="net/ipv4/af_inet.o "
+SRC+="net/ipv4/inet_connection_sock.o "
+SRC+="net/ipv4/inet_hashtables.o "
+SRC+="net/ipv4/inet_timewait_sock.o "
+SRC+="net/ipv4/tcp.o "
+SRC+="net/ipv4/tcp_cong.o "
+#SRC+="net/ipv4/tcp_fastopen.o "
+SRC+="net/ipv4/tcp_input.o "
+SRC+="net/ipv4/tcp_ipv4.o "
+#SRC+="net/ipv4/tcp_metrics.o "		# XXX
+SRC+="net/ipv4/tcp_minisocks.o "
+SRC+="net/ipv4/tcp_output.o "
+SRC+="net/ipv4/tcp_rate.o "
+SRC+="net/ipv4/tcp_recovery.o "
+SRC+="net/ipv4/tcp_timer.o "
+SRC+="study/stub_arch.o "
+SRC+="study/stub_fs.o "
+SRC+="study/stub_kernel.o "
+SRC+="study/stub_mm.o "
+SRC+="study/stub_net.o "
+
 set -x
-g++ -m32 -g study/main.cc study/lib.cc -Wall -Wl,--gc-sections \
-  fs/inode.o \
-  fs/libfs.o \
-  kernel/locking/rwsem-spinlock.o \
-  kernel/rcu/tiny.o \
-  kernel/sched/wait.o \
-  lib/ctype.o \
-  lib/kstrtox.o \
-  net/socket.o \
-  net/core/request_sock.o \
-  net/core/skbuff.o \
-  net/core/sock.o \
-  net/ipv4/af_inet.o \
-  net/ipv4/inet_hashtables.o \
-  net/ipv4/tcp.o \
-  net/ipv4/tcp_cong.o \
-  net/ipv4/tcp_input.o \
-  net/ipv4/tcp_ipv4.o \
-  net/ipv4/tcp_minisocks.o \
-  study/stub_arch.o \
-  study/stub_fs.o \
-  study/stub_kernel.o \
-  study/stub_mm.o \
-  study/stub_net.o
+g++ -m32 -g study/main.cc study/lib.cc -Wall -Wl,--gc-sections $SRC
+
