@@ -983,7 +983,7 @@ static const struct proto_ops inet_sockraw_ops = {
 #endif
 };
 
-static const struct net_proto_family inet_family_ops = {
+/*static*/ const struct net_proto_family inet_family_ops = {  // FIXME
 	.family = PF_INET,
 	.create = inet_create,
 	.owner	= THIS_MODULE,
@@ -1569,7 +1569,7 @@ static const struct net_protocol igmp_protocol = {
 };
 #endif
 
-static const struct net_protocol tcp_protocol = {
+/*static*/ const struct net_protocol tcp_protocol = { // FIXME
 	.early_demux	=	tcp_v4_early_demux,
 	.handler	=	tcp_v4_rcv,
 	.err_handler	=	tcp_v4_err,
