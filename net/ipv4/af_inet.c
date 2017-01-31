@@ -983,7 +983,7 @@ static const struct proto_ops inet_sockraw_ops = {
 #endif
 };
 
-/*static*/ const struct net_proto_family inet_family_ops = {  // FIXME
+static const struct net_proto_family inet_family_ops = {
 	.family = PF_INET,
 	.create = inet_create,
 	.owner	= THIS_MODULE,
@@ -1569,7 +1569,7 @@ static const struct net_protocol igmp_protocol = {
 };
 #endif
 
-/*static*/ const struct net_protocol tcp_protocol = { // FIXME
+static const struct net_protocol tcp_protocol = {
 	.early_demux	=	tcp_v4_early_demux,
 	.handler	=	tcp_v4_rcv,
 	.err_handler	=	tcp_v4_err,
@@ -1753,7 +1753,7 @@ static struct packet_type ip_packet_type __read_mostly = {
 	.func = ip_rcv,
 };
 
-/*static*/ int __init inet_init(void)
+static int __init inet_init(void)
 {
 	struct inet_protosw *q;
 	struct list_head *r;
@@ -1879,6 +1879,33 @@ out_unregister_tcp_proto:
 }
 
 fs_initcall(inet_init);
+
+struct inet_protosw tcp = {
+	.type =       SOCK_STREAM,
+	.protocol =   IPPROTO_TCP,
+	.prot =       &tcp_prot,
+	.ops =        &inet_stream_ops,
+	.flags =      INET_PROTOSW_PERMANENT |
+		      INET_PROTOSW_ICSK,
+};
+
+void schen_inet_init(void)
+{
+	struct list_head *r;
+
+	proto_register(&tcp_prot, 1);
+	(void)sock_register(&inet_family_ops);
+	inet_add_protocol(&tcp_protocol, IPPROTO_TCP);
+	/* Register the socket-side information for inet_create. */
+	for (r = &inetsw[0]; r < &inetsw[SOCK_MAX]; ++r)
+		INIT_LIST_HEAD(r);
+	inet_register_protosw(&tcp);
+	// tcp_v4_init():
+	inet_hashinfo_init(&tcp_hashinfo);
+
+	tcp_init();
+
+}
 
 /* ------------------------------------------------------------------------ */
 

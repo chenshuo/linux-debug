@@ -24,6 +24,7 @@ int proto_register(struct proto *prot, int alloc_slab);
 extern struct net_proto_family inet_family_ops;
 extern const struct net_protocol tcp_protocol;
 int inet_init(void);
+void schen_inet_init(void);
 
 // net/ipv4/tcp.c
 void tcp_init();
@@ -34,6 +35,11 @@ struct inet_hashinfo;
 void inet_hashinfo_init(struct inet_hashinfo *h);
 extern struct inet_hashinfo tcp_hashinfo;
 extern struct proto tcp_prot;
+
+// study/helper.c
+extern int tcp_connect_lo_2222(struct socket *sock);
+extern int tcp_bind(struct socket *sock);
+extern int tcp_listen(struct socket *sock, int backlog);
 }
 
 int main()
@@ -44,16 +50,14 @@ int main()
 
   // FIXME:
   // inet_init();
-  proto_register(&tcp_prot, 1);
-  (void)sock_register(&inet_family_ops);
-  inet_add_protocol(&tcp_protocol, IPPROTO_TCP);
-
-  // tcp_v4_init():
-  inet_hashinfo_init(&tcp_hashinfo);
-
-  tcp_init();
+  schen_inet_init();
 
   struct socket* sock = NULL;
   int err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
   printf("sock_create %d %s %p\n", err, strerror(-err), sock);
+
+  // tcp_connect_lo_2222(sock);
+
+  // tcp_bind(sock);
+  // tcp_listen(sock, 5);
 }

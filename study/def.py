@@ -14,6 +14,10 @@ for line in open('objs'):
         src = m.group(3)
         symbols[symbol] = (typ, src)
 
+f = open('study/fake2.c', 'w')
+f.write("extern void abort(void);\n");
+f.write("extern void puts(const char*);\n");
+
 for line in sys.stdin:
     m = U.search(line)
     if m:
@@ -24,4 +28,5 @@ for line in sys.stdin:
             t = symbols[sym][0]
             d = symbols[sym][1]
         print sym.ljust(30), t, d
+	f.write('void %s(void) { puts("UNDEF %s"); abort(); }\n\n' % (sym, sym))
 

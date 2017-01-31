@@ -36,7 +36,6 @@ struct thread_info *current_thread_info(void)
 }
 
 // arch/um/kernel/um_arch.c
-unsigned long uml_physmem;
 
 int get_signals(void)
 {
