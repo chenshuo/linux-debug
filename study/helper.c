@@ -48,6 +48,7 @@
 #include <net/busy_poll.h>
 #include <linux/errqueue.h>
 
+int pcap_write(const char *buf, int len, int origlen);
 int tcp_connect_lo_2222(struct socket *sock)
 {
 	struct sockaddr_in address = {
@@ -56,7 +57,7 @@ int tcp_connect_lo_2222(struct socket *sock)
 		.sin_addr.s_addr = INADDR_LOOPBACK
 	};
 	// struct proto_ops inet_stream_ops.connect -> inet_stream_connect
-	int err = sock->ops->connect(sock, (struct sockaddr *)&address, sizeof address, 0);
+	int err = sock->ops->connect(sock, (struct sockaddr *)&address, sizeof address, O_NONBLOCK);
 				     //sock->file->f_flags);
 	return err;
 }
@@ -78,3 +79,50 @@ int tcp_listen(struct socket *sock, int backlog)
 	int err = sock->ops->listen(sock, backlog);
 	return err;
 }
+
+unsigned int ipv4_mtu(const struct dst_entry *dst)
+{
+	return 1500;
+}
+
+const struct sk_buff *output_skb;
+int ip_output_fake(struct net *net, struct sock *sk, struct sk_buff *skb)
+{
+	output_skb = skb;
+	pcap_write(skb->data, skb->len, skb->len);
+	// panic("ip_output");
+	return 0;
+}
+
+const u32 dst_default_metrics[RTAX_MAX + 1] = {
+	[RTAX_ADVMSS-1] = 1460,
+	[RTAX_MAX] = 0xdeadbeef,
+};
+
+struct net_device g_dev = {
+  // .nd_net = { &init_net }
+};
+
+// include/net/route.h
+// struct rtable {
+//	struct dst_entry	dst;
+//	...
+
+struct dst_ops ipv4_dst_ops = {
+	.mtu = ipv4_mtu,
+};
+struct rtable g_rt = {
+	.rt_iif = 123,
+	.rt_type = RTN_LOCAL,
+	.dst = {
+		.dev = &g_dev,
+		.ops = &ipv4_dst_ops,
+	},
+};
+
+void schen_dst_init(void)
+{
+	dst_init_metrics(&g_rt.dst, dst_default_metrics, true);
+	g_rt.dst.output = ip_output_fake;
+}
+

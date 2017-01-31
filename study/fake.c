@@ -20,8 +20,6 @@ void __do_once_done(void) { puts("UNDEF __do_once_done"); abort(); }
 
 void __do_once_start(void) { puts("UNDEF __do_once_start"); abort(); }
 
-void dst_release(void) { puts("UNDEF dst_release"); abort(); }
-
 void dump_stack(void) { puts("UNDEF dump_stack"); abort(); }
 
 void fib_compute_spec_dst(void) { puts("UNDEF fib_compute_spec_dst"); abort(); }
@@ -44,10 +42,6 @@ void ip_local_error(void) { puts("UNDEF ip_local_error"); abort(); }
 
 void ip_recv_error(void) { puts("UNDEF ip_recv_error"); abort(); }
 
-void ip_route_output_flow(void) { puts("UNDEF ip_route_output_flow"); abort(); }
-
-void __ip_route_output_key_hash(void) { puts("UNDEF __ip_route_output_key_hash"); abort(); }
-
 void ip_rt_get_source(void) { puts("UNDEF ip_rt_get_source"); abort(); }
 
 void __ip_select_ident(void) { puts("UNDEF __ip_select_ident"); abort(); }
@@ -55,8 +49,6 @@ void __ip_select_ident(void) { puts("UNDEF __ip_select_ident"); abort(); }
 void ip_setsockopt(void) { puts("UNDEF ip_setsockopt"); abort(); }
 
 void kill_fasync(void) { puts("UNDEF kill_fasync"); abort(); }
-
-void ksize(void) { puts("UNDEF ksize"); abort(); }
 
 void kthread_should_stop(void) { puts("UNDEF kthread_should_stop"); abort(); }
 
@@ -103,8 +95,6 @@ void warn_slowpath_fmt(void) { puts("UNDEF warn_slowpath_fmt"); abort(); }
 void arp_ioctl(void) { puts("UNDEF arp_ioctl"); abort(); }
 
 void devinet_ioctl(void) { puts("UNDEF devinet_ioctl"); abort(); }
-
-void inet_addr_type_table(void) { puts("UNDEF inet_addr_type_table"); abort(); }
 
 void ip_mc_drop_socket(void) { puts("UNDEF ip_mc_drop_socket"); abort(); }
 

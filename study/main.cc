@@ -1,6 +1,7 @@
 #include <netinet/in.h>
 #include <stdio.h>
 #include <string.h>
+#include "pcap.h"
 
 extern "C"
 {
@@ -37,6 +38,8 @@ extern struct inet_hashinfo tcp_hashinfo;
 extern struct proto tcp_prot;
 
 // study/helper.c
+extern void schen_dst_init(void);
+
 extern int tcp_connect_lo_2222(struct socket *sock);
 extern int tcp_bind(struct socket *sock);
 extern int tcp_listen(struct socket *sock, int backlog);
@@ -51,13 +54,20 @@ int main()
   // FIXME:
   // inet_init();
   schen_inet_init();
+  schen_dst_init();
 
   struct socket* sock = NULL;
   int err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
   printf("sock_create %d %s %p\n", err, strerror(-err), sock);
 
-  // tcp_connect_lo_2222(sock);
+  /*
+  err = tcp_bind(sock);
+  printf("tcp_bind %d\n", err);
+  err = tcp_listen(sock, 5);
+  printf("tcp_listen %d\n", err);
+  */
 
-  // tcp_bind(sock);
-  // tcp_listen(sock, 5);
+  pcap_start("hello.pcap");
+  tcp_connect_lo_2222(sock);
+  pcap_stop();
 }

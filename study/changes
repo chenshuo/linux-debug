@@ -2,6 +2,7 @@ arch/um/include/asm/thread_info.h	current_thread_info()
 fs/inode.c
 include/linux/slab.h  			kmalloc()
 net/socket.c				sock_mnt, init_inodecache()
+net/core/secure_seq.c			net_get_random_once()
 net/ipv4/af_inet.c			inet_init()
 net/ipv4/tcp_output.c			tcp_tasklet_init()
-
+net/ipv4/inet_hashtables.c		net_get_random_once()

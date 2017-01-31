@@ -20,7 +20,7 @@ SRC+="kernel/sched/clock.o "
 SRC+="kernel/sched/wait.o "
 SRC+="kernel/softirq.o "
 SRC+="kernel/time/time.o "
-SRC+="kernel/time/timekeeping.o "
+#SRC+="kernel/time/timekeeping.o "
 SRC+="kernel/time/timer.o "
 SRC+="kernel/user.o "
 SRC+="lib/ctype.o "
@@ -87,5 +87,6 @@ SRC+="study/fake.o "
 SRC+="study/helper.o "
 
 set -x
-g++ -m32 -g study/main.cc study/lib.cc -Wall -Wl,--gc-sections $SRC
+gcc -m32 -Wall -g -c study/pcap.c -o study/pcap.o
+g++ -m32 -g study/main.cc study/lib.cc study/pcap.o -Wall -Wl,--gc-sections $SRC
 

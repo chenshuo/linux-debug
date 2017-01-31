@@ -18,7 +18,7 @@ static u32 net_secret[NET_SECRET_SIZE] ____cacheline_aligned;
 
 static __always_inline void net_secret_init(void)
 {
-	net_get_random_once(net_secret, sizeof(net_secret));
+//	net_get_random_once(net_secret, sizeof(net_secret));  // FIXME
 }
 #endif
 

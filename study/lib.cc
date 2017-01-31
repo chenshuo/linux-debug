@@ -37,8 +37,13 @@ void* zalloc(size_t size)
 {
   void* ret = malloc(size);
   bzero(ret, size);
-  // g_sizes[ret] = size;
+  g_sizes[ret] = size;
   return ret;
+}
+
+size_t ksize(const void *objp)
+{
+	return g_sizes[objp];
 }
 
 }  // extern "C"
