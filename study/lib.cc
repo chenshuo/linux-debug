@@ -41,6 +41,11 @@ void* zalloc(size_t size)
   return ret;
 }
 
+void *vmalloc(unsigned long size)
+{
+	return zalloc(size);
+}
+
 size_t ksize(const void *objp)
 {
 	return g_sizes[objp];

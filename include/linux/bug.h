@@ -71,12 +71,12 @@ struct pt_regs;
  * compile-time error, we'll still have a link-time error, which is harder to
  * track down.
  */
-#ifndef __OPTIMIZE__
-#define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
-#else
+//#ifndef __OPTIMIZE__
+//#define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
+//#else
 #define BUILD_BUG_ON(condition) \
 	BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-#endif
+//#endif
 
 /**
  * BUILD_BUG - break compile if used.

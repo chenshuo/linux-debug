@@ -5,6 +5,11 @@ struct net init_net = {
 	.dev_base_head = LIST_HEAD_INIT(init_net.dev_base_head),
 	.mib = {
 		.tcp_statistics = &g_tcpmib
+	},
+	.ipv4 = {
+		.ip_local_ports = {
+			.range = {32768, 60999}
+		}
 	}
 };
 EXPORT_SYMBOL(init_net);

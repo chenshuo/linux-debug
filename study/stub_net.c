@@ -24,6 +24,7 @@ extern struct rtable g_rt;
 struct rtable *__ip_route_output_key_hash(struct net *net, struct flowi4 *fl4,
 					  int mp_hash)
 {
+	fl4->saddr = htonl(0x7f000001);  // FIXME
 	return &g_rt;
 }
 

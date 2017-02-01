@@ -54,7 +54,7 @@ int tcp_connect_lo_2222(struct socket *sock)
 	struct sockaddr_in address = {
 		.sin_family = AF_INET,
 		.sin_port = htons(2222),
-		.sin_addr.s_addr = INADDR_LOOPBACK
+		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
 	};
 	// struct proto_ops inet_stream_ops.connect -> inet_stream_connect
 	int err = sock->ops->connect(sock, (struct sockaddr *)&address, sizeof address, O_NONBLOCK);
