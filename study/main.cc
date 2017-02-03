@@ -16,8 +16,8 @@ struct net_proto_family;
 int init_inodecache(void);
 struct socket;
 extern int sock_create(int family, int type, int protocol, struct socket **res);
-struct file *sock_alloc_file(struct socket *sock, int flags, const char *dname);
 int SyS_socket(int domain, int type, int protocol);
+int SyS_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
 // net/core/skbuff.c
 void skb_init(void);
@@ -43,14 +43,13 @@ extern int tcp_accept(struct socket *sock, struct socket **newsock);
 extern int sock_read(struct socket *sock, void* data, int len);
 extern int sock_write(struct socket *sock, const void* data, int len);
 
-unsigned long volatile jiffies;
-
-unsigned long totalram_pages;
+extern unsigned long volatile jiffies;
 }
 
 int main()
 {
-  int err = 0;
+  setbuf(stdout, NULL);
+
   dcache_init();
   files_init();
   // sock_init():
@@ -60,11 +59,23 @@ int main()
   schen_inet_init();
   schen_dst_init();
 
+  int err = 0;
   struct socket* sock = NULL;
   err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
   printf("*** sock_create %d %s %p\n", err, strerror(-err), sock);
-  struct file *newfile = sock_alloc_file(sock, O_NONBLOCK, NULL);
-  // int fd = SyS_socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
+
+  int fd = SyS_socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
+  printf("*** SyS_socket %d\n", fd);
+  /*
+  struct sockaddr_in address = {
+    .sin_family = AF_INET,
+    .sin_port = htons(2222),
+    .sin_addr = {
+      .s_addr = INADDR_ANY
+    }
+  };
+  err = SyS_bind(fd, (struct sockaddr *)&address, sizeof address);
+  */
 
   err = tcp_bind(sock);
   printf("*** tcp_bind %d\n", err);
@@ -82,7 +93,8 @@ int main()
   printf("*** sock_create %d %s %p\n", err, strerror(-err), clientsock);
   jiffies += 10000;
   printf("*** tcp_connect\n");
-  tcp_connect_lo_2222(clientsock);
+  err = tcp_connect_lo_2222(clientsock);
+  printf("    tcp_connect %d %s %p\n", err, strerror(-err), clientsock);
   jiffies += 10000;
   printf("*** server receive SYN\n");
   tcp_v4_rcv(output_skb);

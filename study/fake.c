@@ -53,11 +53,7 @@ void kthread_should_stop(void) { puts("UNDEF kthread_should_stop"); abort(); }
 
 void ns_capable(void) { puts("UNDEF ns_capable"); abort(); }
 
-void __put_cred(void) { puts("UNDEF __put_cred"); abort(); }
-
 void __put_page(void) { puts("UNDEF __put_page"); abort(); }
-
-void put_pid(void) { puts("UNDEF put_pid"); abort(); }
 
 void schedule(void) { puts("UNDEF schedule"); abort(); }
 

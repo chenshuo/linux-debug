@@ -63,6 +63,12 @@ void wake_up_bit(void *word, int bit)
 	printk("wake_up_bit\n");
 }
 
+// kernal/signal.c
+long do_no_restart_syscall(struct restart_block *param)
+{
+	return -EINTR;
+}
+
 // kernel/time/timekeeping.c
 ktime_t ktime_get_with_offset(enum tk_offsets offs)
 {

@@ -8,6 +8,8 @@ void *zalloc(size_t size);
 // mm/page_alloc.c
 //*****************************************************************************
 
+unsigned long totalram_pages;
+
 static unsigned long __meminitdata nr_kernel_pages;
 static unsigned long __meminitdata nr_all_pages;
 
