@@ -136,8 +136,9 @@ struct kmem_cache *
 kmem_cache_create(const char *name, size_t size, size_t align,
 		  unsigned long flags, void (*ctor)(void *))
 {
-	struct kmem_cache *s = zalloc(sizeof(struct kmem_cache));
-	printk("kmem_cache_create %s %d\n", name, size);
+	struct kmem_cache *s;
+        printk("kmem_cache_create %s %d\n", name, size);
+	s = zalloc(sizeof(struct kmem_cache));
 	s->object_size = s->size = size;
 	s->align = 0;  // FIXME: calculate_alignment(flags, align, size);
 	s->ctor = ctor;
@@ -155,6 +156,7 @@ void kmem_cache_destroy(struct kmem_cache *s)
 
 void *kmem_cache_alloc(struct kmem_cache *cachep, gfp_t flags)
 {
+	printk("kmem_cache_alloc %s %zd\n", cachep->name, cachep->object_size);
 	return zalloc(cachep->object_size);
 }
 
@@ -172,7 +174,7 @@ void *__kmalloc(size_t size, gfp_t flags)
 
 void *__kmalloc_track_caller(size_t size, gfp_t flags, unsigned long caller)
 {
-	printk("__kmalloc_track_caller %zd\n", size);
+	// printk("__kmalloc_track_caller %zd\n", size);
 	return zalloc(size);
 }
 

@@ -82,6 +82,21 @@ int tcp_listen(struct socket *sock, int backlog)
 	return err;
 }
 
+int sock_write(struct socket *sock, const void* data, int len)
+{
+	struct iovec iov = {
+		.iov_base = (void*)data,
+		.iov_len = len
+	};
+	struct msghdr msg = {
+		// .msg_iter = *from,
+		// .msg_iocb = iocb,
+		.msg_flags = MSG_DONTWAIT
+	};
+	iov_iter_init(&msg.msg_iter, WRITE, &iov, 1, len);
+	return sock_sendmsg(sock, &msg);
+}
+
 unsigned int ipv4_mtu(const struct dst_entry *dst)
 {
 	return 1500;

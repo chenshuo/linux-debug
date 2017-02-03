@@ -36,6 +36,7 @@ void warn_slowpath_null(const char *file, const int line)
 void* zalloc(size_t size)
 {
   void* ret = malloc(size);
+  printk("\tzalloc %zd %p\n", size, ret);
   bzero(ret, size);
   g_sizes[ret] = size;
   return ret;

@@ -33,7 +33,8 @@ struct task_struct g_task = {
 };
 
 struct thread_info g_thread_info = {
-	.task = &g_task
+	.task = &g_task,
+	.addr_limit = KERNEL_DS,
 };
 
 // arch/um/include/asm/thread_info.h
