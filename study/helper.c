@@ -138,7 +138,7 @@ int ip_output_fake(struct net *net, struct sock *sk, struct sk_buff *skb)
 		skb_checksum_help(skb);
 	output_skb = build_skbuff(skb->data, skb->len);
 	pcap_write(skb->data, skb->len, skb->len);
-	// FIXME: free(skb)
+	consume_skb(skb);
 	return 0;
 }
 
