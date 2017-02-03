@@ -82,6 +82,21 @@ int tcp_listen(struct socket *sock, int backlog)
 	return err;
 }
 
+int tcp_accept(struct socket *sock, struct socket **pnewsock)
+{
+	int err = -ENFILE;
+	struct socket *newsock = sock_alloc();
+	newsock->type = sock->type;
+	newsock->ops = sock->ops;
+	err = sock->ops->accept(sock, newsock, O_NONBLOCK);
+	if (!err) {
+		*pnewsock = newsock;
+	} else {
+		sock_release(newsock);
+	}
+	return err;
+}
+
 int sock_write(struct socket *sock, const void* data, int len)
 {
 	struct iovec iov;
@@ -92,6 +107,18 @@ int sock_write(struct socket *sock, const void* data, int len)
 	if (unlikely(err))
 		return err;
 	return sock_sendmsg(sock, &msg);
+}
+
+int sock_read(struct socket *sock, void* data, int len)
+{
+	struct iovec iov;
+	struct msghdr msg = {
+		.msg_flags = MSG_DONTWAIT
+	};
+	int err = import_single_range(READ, (void*)data, len, &iov, &msg.msg_iter);
+	if (unlikely(err))
+		return err;
+	return sock_recvmsg(sock, &msg, msg.msg_flags);
 }
 
 unsigned int ipv4_mtu(const struct dst_entry *dst)

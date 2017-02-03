@@ -34,6 +34,8 @@ extern void schen_dst_init(void);
 extern int tcp_connect_lo_2222(struct socket *sock);
 extern int tcp_bind(struct socket *sock);
 extern int tcp_listen(struct socket *sock, int backlog);
+extern int tcp_accept(struct socket *sock, struct socket **newsock);
+extern int sock_read(struct socket *sock, void* data, int len);
 extern int sock_write(struct socket *sock, const void* data, int len);
 
 unsigned long volatile jiffies;
@@ -60,6 +62,10 @@ int main()
   err = tcp_listen(sock, 5);
   printf("*** tcp_listen %d\n", err);
 
+  struct socket* serversock = NULL;
+  err = tcp_accept(sock, &serversock);
+  printf("*** tcp_accept %d %s %p\n", err, strerror(-err), serversock);
+
   pcap_start("hello.pcap");
   struct socket* clientsock = NULL;
 
@@ -78,8 +84,19 @@ int main()
   printf("*** server receive ACK\n");
   tcp_v4_rcv(output_skb);
 
+  err = tcp_accept(sock, &serversock);
+  printf("*** tcp_accept %d %p\n", err, serversock);
+
+  char buf[64] = { 0 };
+  err = sock_read(serversock, buf, sizeof buf);
+  printf("*** sock_read %d %s %p\n", err, strerror(-err), serversock);
+
   err = sock_write(clientsock, "hello", 5);
   printf("*** sock_write %d %p\n", err, clientsock);
   tcp_v4_rcv(output_skb);
+
+  err = sock_read(serversock, buf, sizeof buf);
+  printf("*** sock_read %d %p %s\n", err, serversock, buf);
+
   pcap_stop();
 }
