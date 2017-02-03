@@ -182,3 +182,9 @@ void kfree(const void *objp)
 	printk("kfree %p\n", objp);
 }
 
+// mm/percpu.c
+
+void __percpu *__alloc_percpu(size_t size, size_t align)
+{
+	return zalloc(size);
+}

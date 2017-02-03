@@ -67,4 +67,5 @@ void pcap_write(const char *buf, int len, int origlen)
   assert(nw == sizeof record);
   nw = fwrite(buf, 1, len, pcap_fp);
   assert(nw == len);
+  fflush(pcap_fp);
 }

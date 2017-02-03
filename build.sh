@@ -7,6 +7,7 @@ SRC+="arch/um/kernel/um_arch.o "
 SRC+="arch/um/os-Linux/elf_aux.o "
 SRC+="arch/x86/lib/atomic64_cx8_32.o "
 SRC+="arch/x86/um/checksum_32.o "
+SRC+="drivers/base/core.o "
 #SRC+="crypto/api.o "
 SRC+="fs/inode.o "
 SRC+="fs/libfs.o "
@@ -38,6 +39,7 @@ SRC+="lib/win_minmax.o "
 
 SRC+="mm/bootmem.o "
 SRC+="mm/memory.o "
+#SRC+="mm/percpu.o "
 #SRC+="mm/filemap.o "
 
 SRC+="net/socket.o "
@@ -87,6 +89,7 @@ SRC+="study/fake.o "
 SRC+="study/helper.o "
 
 set -x
+make ARCH=um $SRC
 gcc -m32 -Wall -g -c study/pcap.c -o study/pcap.o
 g++ -m32 -g study/main.cc study/lib.cc study/pcap.o -Wall -Wl,--gc-sections $SRC
 

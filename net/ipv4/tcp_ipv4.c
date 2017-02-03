@@ -2413,7 +2413,7 @@ static void __net_exit tcp_sk_exit(struct net *net)
 	free_percpu(net->ipv4.tcp_sk);
 }
 
-static int __net_init tcp_sk_init(struct net *net)
+/*static*/ int tcp_sk_init(struct net *net)
 {
 	int res, cpu;
 
@@ -2424,7 +2424,7 @@ static int __net_init tcp_sk_init(struct net *net)
 	for_each_possible_cpu(cpu) {
 		struct sock *sk;
 
-		res = inet_ctl_sock_create(&sk, PF_INET, SOCK_RAW,
+		res = inet_ctl_sock_create(&sk, PF_INET, SOCK_STREAM,  // FIXME
 					   IPPROTO_TCP, net);
 		if (res)
 			goto fail;
@@ -2455,7 +2455,8 @@ static int __net_init tcp_sk_init(struct net *net)
 
 	return 0;
 fail:
-	tcp_sk_exit(net);
+	// tcp_sk_exit(net);
+	panic("tcp_sk_exit");
 
 	return res;
 }

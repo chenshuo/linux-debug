@@ -3,8 +3,6 @@
 #include <linux/percpu.h>
 #include <linux/rcupdate.h>
 
-unsigned long volatile jiffies;
-
 // kernel/locking/mutex.c
 
 void mutex_lock(struct mutex *lock)
@@ -36,8 +34,8 @@ ktime_t ktime_get_with_offset(enum tk_offsets offs)
 
 unsigned long get_seconds(void)
 {
-	panic("get_seconds");
-	return 0;
+	// panic("get_seconds");
+	return 1234567890;
 }
 
 void getnstimeofday64(struct timespec64 *ts)

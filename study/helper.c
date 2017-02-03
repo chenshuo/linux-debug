@@ -49,6 +49,8 @@
 #include <linux/errqueue.h>
 
 int pcap_write(const char *buf, int len, int origlen);
+struct sk_buff *build_skbuff(const void* ippacket, unsigned int len);
+
 int tcp_connect_lo_2222(struct socket *sock)
 {
 	struct sockaddr_in address = {
@@ -85,12 +87,14 @@ unsigned int ipv4_mtu(const struct dst_entry *dst)
 	return 1500;
 }
 
-const struct sk_buff *output_skb;
+struct sk_buff *output_skb;
 int ip_output_fake(struct net *net, struct sock *sk, struct sk_buff *skb)
 {
-	output_skb = skb;
+	if (skb->ip_summed == CHECKSUM_PARTIAL)
+		skb_checksum_help(skb);
+	output_skb = build_skbuff(skb->data, skb->len);
 	pcap_write(skb->data, skb->len, skb->len);
-	// panic("ip_output");
+	// FIXME: free(skb)
 	return 0;
 }
 
@@ -124,5 +128,24 @@ void schen_dst_init(void)
 {
 	dst_init_metrics(&g_rt.dst, dst_default_metrics, true);
 	g_rt.dst.output = ip_output_fake;
+}
+
+struct sk_buff *build_skbuff(const void* ippacket, unsigned int len)
+{
+        struct sk_buff* skb = alloc_skb(len, GFP_ATOMIC);
+        if (skb) {
+                skb_put(skb, len);
+                skb_copy_to_linear_data(skb, ippacket, len);
+                skb_reset_mac_header(skb);
+                skb_reset_network_header(skb);
+                // skb_set_transport_header(skb, 20);
+                // iph = ip_hdr(skb);
+                skb->transport_header = skb->network_header + 20; // iph->ihl*4;
+                __skb_pull(skb, skb_network_header_len(skb));
+                skb->protocol = htons(ETH_P_IP);
+                // g_rt.dst.dev = &g_dev;
+                skb_dst_set(skb, &g_rt.dst);
+        }
+        return skb;
 }
 

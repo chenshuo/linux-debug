@@ -44,8 +44,6 @@ void ip_recv_error(void) { puts("UNDEF ip_recv_error"); abort(); }
 
 void ip_rt_get_source(void) { puts("UNDEF ip_rt_get_source"); abort(); }
 
-void __ip_select_ident(void) { puts("UNDEF __ip_select_ident"); abort(); }
-
 void ip_setsockopt(void) { puts("UNDEF ip_setsockopt"); abort(); }
 
 void kill_fasync(void) { puts("UNDEF kill_fasync"); abort(); }
@@ -77,8 +75,6 @@ void tcp_fastopen_cache_get(void) { puts("UNDEF tcp_fastopen_cache_get"); abort(
 void tcp_fastopen_cache_set(void) { puts("UNDEF tcp_fastopen_cache_set"); abort(); }
 
 void tcp_fetch_timewait_stamp(void) { puts("UNDEF tcp_fetch_timewait_stamp"); abort(); }
-
-void tcp_init_metrics(void) { puts("UNDEF tcp_init_metrics"); abort(); }
 
 void tcp_peer_is_proven(void) { puts("UNDEF tcp_peer_is_proven"); abort(); }
 
