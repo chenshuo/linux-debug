@@ -79,6 +79,7 @@ int main()
   tcp_v4_rcv(output_skb);
 
   err = sock_write(clientsock, "hello", 5);
-  printf("*** sock_write %d %s %p\n", err, strerror(-err), clientsock);
+  printf("*** sock_write %d %p\n", err, clientsock);
+  tcp_v4_rcv(output_skb);
   pcap_stop();
 }

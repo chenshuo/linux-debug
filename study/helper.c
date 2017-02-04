@@ -84,22 +84,24 @@ int tcp_listen(struct socket *sock, int backlog)
 
 int sock_write(struct socket *sock, const void* data, int len)
 {
-	struct iovec iov = {
-		.iov_base = (void*)data,
-		.iov_len = len
-	};
+	struct iovec iov;
 	struct msghdr msg = {
-		// .msg_iter = *from,
-		// .msg_iocb = iocb,
 		.msg_flags = MSG_DONTWAIT
 	};
-	iov_iter_init(&msg.msg_iter, WRITE, &iov, 1, len);
+	int err = import_single_range(WRITE, (void*)data, len, &iov, &msg.msg_iter);
+	if (unlikely(err))
+		return err;
 	return sock_sendmsg(sock, &msg);
 }
 
 unsigned int ipv4_mtu(const struct dst_entry *dst)
 {
 	return 1500;
+}
+
+struct dst_entry *ipv4_dst_check(struct dst_entry *dst, u32 cookie)
+{
+	return dst;
 }
 
 struct sk_buff *output_skb;
@@ -128,8 +130,11 @@ struct net_device g_dev = {
 //	...
 
 struct dst_ops ipv4_dst_ops = {
-	.mtu = ipv4_mtu,
+	.family =		AF_INET,
+	.check =		ipv4_dst_check,
+	.mtu =			ipv4_mtu,
 };
+
 struct rtable g_rt = {
 	.rt_iif = 123,
 	.rt_type = RTN_LOCAL,
