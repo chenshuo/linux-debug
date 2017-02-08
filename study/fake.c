@@ -112,4 +112,3 @@ void list_lru_del(void) { puts("UNDEF list_lru_del"); abort(); }
 void __mark_inode_dirty(void) { puts("UNDEF __mark_inode_dirty"); abort(); }
 
 void write_inode_now(void) { puts("UNDEF write_inode_now"); abort(); }
-

@@ -143,15 +143,15 @@ static const struct file_operations socket_file_ops = {
 	.read_iter =	sock_read_iter,
 	.write_iter =	sock_write_iter,
 	.poll =		sock_poll,
-	.unlocked_ioctl = sock_ioctl,
+//	.unlocked_ioctl = sock_ioctl,
 #ifdef CONFIG_COMPAT
 	.compat_ioctl = compat_sock_ioctl,
 #endif
 	.mmap =		sock_mmap,
 	.release =	sock_close,
-	.fasync =	sock_fasync,
+//	.fasync =	sock_fasync,
 	.sendpage =	sock_sendpage,
-	.splice_write = generic_splice_sendpage,
+//	.splice_write = generic_splice_sendpage,
 	.splice_read =	sock_splice_read,
 };
 

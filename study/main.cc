@@ -6,13 +6,18 @@
 
 extern "C"
 {
+// fs/dcache.c
+void dcache_init(void);
+// fs/file_table.c
+void files_init(void);
 
 // net/socket.c
 struct net_proto_family;
 int init_inodecache(void);
 struct socket;
 extern int sock_create(int family, int type, int protocol, struct socket **res);
-// struct file *sock_alloc_file(struct socket *sock, int flags, const char *dname);
+struct file *sock_alloc_file(struct socket *sock, int flags, const char *dname);
+int SyS_socket(int domain, int type, int protocol);
 
 // net/core/skbuff.c
 void skb_init(void);
@@ -40,11 +45,14 @@ extern int sock_write(struct socket *sock, const void* data, int len);
 
 unsigned long volatile jiffies;
 
+unsigned long totalram_pages;
 }
 
 int main()
 {
   int err = 0;
+  dcache_init();
+  files_init();
   // sock_init():
   skb_init();
   init_inodecache();
@@ -55,7 +63,8 @@ int main()
   struct socket* sock = NULL;
   err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
   printf("*** sock_create %d %s %p\n", err, strerror(-err), sock);
-  // struct file *newfile = sock_alloc_file(sock, O_NONBLOCK, NULL);
+  struct file *newfile = sock_alloc_file(sock, O_NONBLOCK, NULL);
+  // int fd = SyS_socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
 
   err = tcp_bind(sock);
   printf("*** tcp_bind %d\n", err);

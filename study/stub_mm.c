@@ -200,3 +200,15 @@ void truncate_inode_pages_final(struct address_space *mapping)
 {
 	printk("truncate_inode_pages_final %p\n", mapping);
 }
+
+// mm/util.c
+void kvfree(const void *addr)
+{
+	printk("kvfree %p\n", addr);
+}
+
+// mm/vmalloc.c
+void *__vmalloc(unsigned long size, gfp_t gfp_mask, pgprot_t prot)
+{
+	return zalloc(size);
+}

@@ -4,7 +4,24 @@
 #include <linux/percpu.h>
 #include <linux/rcupdate.h>
 
+// kernel/capability.c
+bool capable(int cap)
+{
+	return false;
+}
+
 // kernel/locking/mutex.c
+
+void
+__mutex_init(struct mutex *lock, const char *name, struct lock_class_key *key)
+{
+	atomic_set(&lock->count, 1);
+	spin_lock_init(&lock->wait_lock);
+	INIT_LIST_HEAD(&lock->wait_list);
+	// mutex_clear_owner(lock);
+	// debug_mutex_init(lock, name, key);
+}
+EXPORT_SYMBOL(__mutex_init);
 
 void mutex_lock(struct mutex *lock)
 {

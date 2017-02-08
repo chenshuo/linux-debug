@@ -3565,7 +3565,7 @@ static void __init dcache_init_early(void)
 		INIT_HLIST_BL_HEAD(dentry_hashtable + loop);
 }
 
-static void __init dcache_init(void)
+/*static*/ void /*__init*/ dcache_init(void)
 {
 	unsigned int loop;
 
