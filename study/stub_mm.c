@@ -156,8 +156,12 @@ void kmem_cache_destroy(struct kmem_cache *s)
 
 void *kmem_cache_alloc(struct kmem_cache *cachep, gfp_t flags)
 {
+	void *p;
 	printk("kmem_cache_alloc %s %zd\n", cachep->name, cachep->object_size);
-	return zalloc(cachep->object_size);
+	p = zalloc(cachep->object_size);
+	if (cachep->ctor)
+		cachep->ctor(p);
+	return p;
 }
 
 void kmem_cache_free(struct kmem_cache *cachep, void *objp)
