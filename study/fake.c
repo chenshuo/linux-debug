@@ -1,5 +1,6 @@
 extern void abort(void);
 extern void puts(const char*);
+
 void __alloc_pages_nodemask(void) { puts("UNDEF __alloc_pages_nodemask"); abort(); }
 
 void bpf_prog_free(void) { puts("UNDEF bpf_prog_free"); abort(); }
@@ -97,4 +98,18 @@ void ip_mc_drop_socket(void) { puts("UNDEF ip_mc_drop_socket"); abort(); }
 void ip_rt_ioctl(void) { puts("UNDEF ip_rt_ioctl"); abort(); }
 
 void splice_to_pipe(void) { puts("UNDEF splice_to_pipe"); abort(); }
+
+void bd_forget(void) { puts("UNDEF bd_forget"); abort(); }
+
+void cd_forget(void) { puts("UNDEF cd_forget"); abort(); }
+
+void inode_io_list_del(void) { puts("UNDEF inode_io_list_del"); abort(); }
+
+void list_lru_add(void) { puts("UNDEF list_lru_add"); abort(); }
+
+void list_lru_del(void) { puts("UNDEF list_lru_del"); abort(); }
+
+void __mark_inode_dirty(void) { puts("UNDEF __mark_inode_dirty"); abort(); }
+
+void write_inode_now(void) { puts("UNDEF write_inode_now"); abort(); }
 

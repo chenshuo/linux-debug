@@ -897,7 +897,6 @@ struct inode *new_inode_pseudo(struct super_block *sb)
 	return inode;
 }
 
-#if 0
 /**
  *	new_inode 	- obtain an inode
  *	@sb: superblock
@@ -2123,4 +2122,3 @@ struct timespec current_time(struct inode *inode)
 	return timespec_trunc(now, inode->i_sb->s_time_gran);
 }
 EXPORT_SYMBOL(current_time);
-#endif

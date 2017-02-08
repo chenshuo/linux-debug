@@ -1,11 +1,16 @@
 #include <linux/fs.h>
 #include <linux/splice.h>
 
-// fs/inode.c
-
-void iput(struct inode *inode)
+// fs/fs-writeback.c
+void inode_wait_for_writeback(struct inode *inode)
 {
-	printk("iput %p\n", inode);
+	printk("inode_wait_for_writeback %p\n", inode);
+}
+
+// fs/notify/fsnotify.c
+void __fsnotify_inode_delete(struct inode *inode)
+{
+	printk("__fsnotify_inode_delete %p\n", inode);
 }
 
 // fs/splice.c

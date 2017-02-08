@@ -167,7 +167,7 @@ void *kmem_cache_alloc(struct kmem_cache *cachep, gfp_t flags)
 void kmem_cache_free(struct kmem_cache *cachep, void *objp)
 {
 	// FIXME
-	printk("kmem_cache_free %p %p\n", cachep, objp);
+	printk("kmem_cache_free %s %p\n", cachep->name, objp);
 }
 
 void *__kmalloc(size_t size, gfp_t flags)
@@ -193,4 +193,10 @@ void kfree(const void *objp)
 void __percpu *__alloc_percpu(size_t size, size_t align)
 {
 	return zalloc(size);
+}
+
+// mm/truncate.c
+void truncate_inode_pages_final(struct address_space *mapping)
+{
+	printk("truncate_inode_pages_final %p\n", mapping);
 }

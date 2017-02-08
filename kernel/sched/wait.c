@@ -474,11 +474,11 @@ EXPORT_SYMBOL(__wake_up_bit);
  * may need to use a less regular barrier, such fs/inode.c's smp_mb(),
  * because spin_unlock() does not guarantee a memory barrier.
  */
-void wake_up_bit(void *word, int bit)
-{
-	__wake_up_bit(bit_waitqueue(word, bit), word, bit);
-}
-EXPORT_SYMBOL(wake_up_bit);
+// void wake_up_bit(void *word, int bit)  FIXME
+// {
+// 	__wake_up_bit(bit_waitqueue(word, bit), word, bit);
+// }
+// EXPORT_SYMBOL(wake_up_bit);
 
 /*
  * Manipulate the atomic_t address to produce a better bit waitqueue table hash
