@@ -42,6 +42,8 @@ extern int tcp_listen(struct socket *sock, int backlog);
 extern int tcp_accept(struct socket *sock, struct socket **newsock);
 extern int sock_read(struct socket *sock, void* data, int len);
 extern int sock_write(struct socket *sock, const void* data, int len);
+extern int sock_sendto(struct socket *sock, const void* data, int len,
+		       const void *dest_addr, socklen_t addrlen);
 
 extern unsigned long volatile jiffies;
 }
@@ -58,24 +60,27 @@ int main()
 
   schen_inet_init();
   schen_dst_init();
+  pcap_start("hello.pcap");
 
   int err = 0;
   struct socket* sock = NULL;
   err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
   printf("*** sock_create %d %s %p\n", err, strerror(-err), sock);
 
-  int fd = SyS_socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
-  printf("*** SyS_socket %d\n", fd);
-  /*
+  // int fd = SyS_socket(AF_INET, SOCK_DGRAM | SOCK_NONBLOCK, IPPROTO_UDP);
+  // printf("*** SyS_socket %d\n", fd);
+  struct socket* udp = NULL;
+  err = sock_create(AF_INET, SOCK_DGRAM, IPPROTO_UDP, &udp);
+  printf("*** sock_create UDP %d %s %p\n", err, strerror(-err), sock);
   struct sockaddr_in address = {
     .sin_family = AF_INET,
     .sin_port = htons(2222),
     .sin_addr = {
-      .s_addr = INADDR_ANY
+      .s_addr = htonl(INADDR_LOOPBACK)  // INADDR_ANY
     }
   };
-  err = SyS_bind(fd, (struct sockaddr *)&address, sizeof address);
-  */
+  err = sock_sendto(udp, "good", 4, &address, sizeof address);
+  // err = SyS_bind(fd, (struct sockaddr *)&address, sizeof address);
 
   err = tcp_bind(sock);
   printf("*** tcp_bind %d\n", err);
@@ -86,7 +91,6 @@ int main()
   err = tcp_accept(sock, &serversock);
   printf("*** tcp_accept %d %s %p\n", err, strerror(-err), serversock);
 
-  pcap_start("hello.pcap");
   struct socket* clientsock = NULL;
 
   err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &clientsock);

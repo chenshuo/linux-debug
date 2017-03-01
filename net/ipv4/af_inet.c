@@ -1889,23 +1889,38 @@ struct inet_protosw tcp = {
 		      INET_PROTOSW_ICSK,
 };
 
+struct inet_protosw udp = {
+	.type =       SOCK_DGRAM,
+	.protocol =   IPPROTO_UDP,
+	.prot =       &udp_prot,
+	.ops =        &inet_dgram_ops,
+	.flags =      INET_PROTOSW_PERMANENT,
+};
+
 extern int tcp_sk_init(struct net *net);
 void schen_inet_init(void)
 {
 	struct list_head *r;
 
 	proto_register(&tcp_prot, 1);
+	proto_register(&udp_prot, 1);
+
 	(void)sock_register(&inet_family_ops);
 	inet_add_protocol(&tcp_protocol, IPPROTO_TCP);
+	inet_add_protocol(&udp_protocol, IPPROTO_UDP);
 	/* Register the socket-side information for inet_create. */
 	for (r = &inetsw[0]; r < &inetsw[SOCK_MAX]; ++r)
 		INIT_LIST_HEAD(r);
 	inet_register_protosw(&tcp);
+	inet_register_protosw(&udp);
+
 	// tcp_v4_init();
 	inet_hashinfo_init(&tcp_hashinfo);
 	tcp_sk_init(&init_net);
 
 	tcp_init();
+
+	udp_init();
 }
 
 /* ------------------------------------------------------------------------ */

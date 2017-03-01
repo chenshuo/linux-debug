@@ -109,6 +109,21 @@ int sock_write(struct socket *sock, const void* data, int len)
 	return sock_sendmsg(sock, &msg);
 }
 
+int sock_sendto(struct socket *sock, const void* data, int len,
+		const struct sockaddr *dest_addr, int addrlen)
+{
+	struct iovec iov;
+	struct msghdr msg = {
+		.msg_flags = MSG_DONTWAIT,
+		.msg_name = dest_addr,
+		.msg_namelen = addrlen,
+	};
+	int err = import_single_range(WRITE, (void*)data, len, &iov, &msg.msg_iter);
+	if (unlikely(err))
+		return err;
+	return sock_sendmsg(sock, &msg);
+}
+
 int sock_read(struct socket *sock, void* data, int len)
 {
 	struct iovec iov;

@@ -85,8 +85,6 @@ void wake_up_process(void) { puts("UNDEF wake_up_process"); abort(); }
 
 void warn_slowpath_fmt(void) { puts("UNDEF warn_slowpath_fmt"); abort(); }
 
-void arp_ioctl(void) { puts("UNDEF arp_ioctl"); abort(); }
-
 void devinet_ioctl(void) { puts("UNDEF devinet_ioctl"); abort(); }
 
 void ip_mc_drop_socket(void) { puts("UNDEF ip_mc_drop_socket"); abort(); }
@@ -108,3 +106,102 @@ void list_lru_del(void) { puts("UNDEF list_lru_del"); abort(); }
 void __mark_inode_dirty(void) { puts("UNDEF __mark_inode_dirty"); abort(); }
 
 void write_inode_now(void) { puts("UNDEF write_inode_now"); abort(); }
+
+void inet_addr_type_dev_table(void) { puts("UNDEF inet_addr_type_dev_table"); abort(); }
+
+void inet_getpeer(void) { puts("UNDEF inet_getpeer"); abort(); }
+
+void inet_peer_xrlim_allow(void) { puts("UNDEF inet_peer_xrlim_allow"); abort(); }
+
+void inet_putpeer(void) { puts("UNDEF inet_putpeer"); abort(); }
+
+void inet_select_addr(void) { puts("UNDEF inet_select_addr"); abort(); }
+
+void ip_route_input_noref(void) { puts("UNDEF ip_route_input_noref"); abort(); }
+
+void ping_rcv(void) { puts("UNDEF ping_rcv"); abort(); }
+
+void __qdisc_run(void) { puts("UNDEF __qdisc_run"); abort(); }
+
+void raw_icmp_error(void) { puts("UNDEF raw_icmp_error"); abort(); }
+
+void sch_direct_xmit(void) { puts("UNDEF sch_direct_xmit"); abort(); }
+
+void __skb_get_hash(void) { puts("UNDEF __skb_get_hash"); abort(); }
+
+void call_netevent_notifiers(void) { puts("UNDEF call_netevent_notifiers"); abort(); }
+
+void free_pages(void) { puts("UNDEF free_pages"); abort(); }
+
+void full_name_hash(void) { puts("UNDEF full_name_hash"); abort(); }
+
+void __get_free_pages(void) { puts("UNDEF __get_free_pages"); abort(); }
+
+void inet_addr_onlink(void) { puts("UNDEF inet_addr_onlink"); abort(); }
+
+void inet_confirm_addr(void) { puts("UNDEF inet_confirm_addr"); abort(); }
+
+void iptunnel_metadata_reply(void) { puts("UNDEF iptunnel_metadata_reply"); abort(); }
+
+void nla_put(void) { puts("UNDEF nla_put"); abort(); }
+
+void rtnl_is_locked(void) { puts("UNDEF rtnl_is_locked"); abort(); }
+
+void rtnl_lock(void) { puts("UNDEF rtnl_lock"); abort(); }
+
+void rtnl_notify(void) { puts("UNDEF rtnl_notify"); abort(); }
+
+void rtnl_set_sk_err(void) { puts("UNDEF rtnl_set_sk_err"); abort(); }
+
+void rtnl_unlock(void) { puts("UNDEF rtnl_unlock"); abort(); }
+
+void ip_check_mc_rcu(void) { puts("UNDEF ip_check_mc_rcu"); abort(); }
+
+void ip_cmsg_recv_offset(void) { puts("UNDEF ip_cmsg_recv_offset"); abort(); }
+
+void ip_cmsg_send(void) { puts("UNDEF ip_cmsg_send"); abort(); }
+
+void ip_icmp_error(void) { puts("UNDEF ip_icmp_error"); abort(); }
+
+void ip_mc_sf_allow(void) { puts("UNDEF ip_mc_sf_allow"); abort(); }
+
+void ipv4_pktinfo_prepare(void) { puts("UNDEF ipv4_pktinfo_prepare"); abort(); }
+
+void ipv4_sk_redirect(void) { puts("UNDEF ipv4_sk_redirect"); abort(); }
+
+void ipv4_sk_update_pmtu(void) { puts("UNDEF ipv4_sk_update_pmtu"); abort(); }
+
+void PDE_DATA(void) { puts("UNDEF PDE_DATA"); abort(); }
+
+void proc_create_data(void) { puts("UNDEF proc_create_data"); abort(); }
+
+void put_cmsg(void) { puts("UNDEF put_cmsg"); abort(); }
+
+void register_pernet_subsys(void) { puts("UNDEF register_pernet_subsys"); abort(); }
+
+void remove_proc_entry(void) { puts("UNDEF remove_proc_entry"); abort(); }
+
+void seq_lseek(void) { puts("UNDEF seq_lseek"); abort(); }
+
+void seq_open_net(void) { puts("UNDEF seq_open_net"); abort(); }
+
+void seq_pad(void) { puts("UNDEF seq_pad"); abort(); }
+
+void seq_printf(void) { puts("UNDEF seq_printf"); abort(); }
+
+void seq_puts(void) { puts("UNDEF seq_puts"); abort(); }
+
+void seq_read(void) { puts("UNDEF seq_read"); abort(); }
+
+void seq_release_net(void) { puts("UNDEF seq_release_net"); abort(); }
+
+void get_task_mm(void) { puts("UNDEF get_task_mm"); abort(); }
+
+void __lock_task_sighand(void) { puts("UNDEF __lock_task_sighand"); abort(); }
+
+void mmput(void) { puts("UNDEF mmput"); abort(); }
+
+void task_cputime_adjusted(void) { puts("UNDEF task_cputime_adjusted"); abort(); }
+
+void thread_group_cputime_adjusted(void) { puts("UNDEF thread_group_cputime_adjusted"); abort(); }
+
