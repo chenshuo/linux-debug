@@ -37,15 +37,7 @@ void hrtimer_start_range_ns(void) { puts("UNDEF hrtimer_start_range_ns"); abort(
 
 void inet_addr_type(void) { puts("UNDEF inet_addr_type"); abort(); }
 
-void ip_getsockopt(void) { puts("UNDEF ip_getsockopt"); abort(); }
-
-void ip_local_error(void) { puts("UNDEF ip_local_error"); abort(); }
-
-void ip_recv_error(void) { puts("UNDEF ip_recv_error"); abort(); }
-
 void ip_rt_get_source(void) { puts("UNDEF ip_rt_get_source"); abort(); }
-
-void ip_setsockopt(void) { puts("UNDEF ip_setsockopt"); abort(); }
 
 void kill_fasync(void) { puts("UNDEF kill_fasync"); abort(); }
 
@@ -157,15 +149,7 @@ void rtnl_unlock(void) { puts("UNDEF rtnl_unlock"); abort(); }
 
 void ip_check_mc_rcu(void) { puts("UNDEF ip_check_mc_rcu"); abort(); }
 
-void ip_cmsg_recv_offset(void) { puts("UNDEF ip_cmsg_recv_offset"); abort(); }
-
-void ip_cmsg_send(void) { puts("UNDEF ip_cmsg_send"); abort(); }
-
-void ip_icmp_error(void) { puts("UNDEF ip_icmp_error"); abort(); }
-
 void ip_mc_sf_allow(void) { puts("UNDEF ip_mc_sf_allow"); abort(); }
-
-void ipv4_pktinfo_prepare(void) { puts("UNDEF ipv4_pktinfo_prepare"); abort(); }
 
 void ipv4_sk_redirect(void) { puts("UNDEF ipv4_sk_redirect"); abort(); }
 
@@ -204,4 +188,20 @@ void mmput(void) { puts("UNDEF mmput"); abort(); }
 void task_cputime_adjusted(void) { puts("UNDEF task_cputime_adjusted"); abort(); }
 
 void thread_group_cputime_adjusted(void) { puts("UNDEF thread_group_cputime_adjusted"); abort(); }
+
+void __ip_dev_find(void) { puts("UNDEF __ip_dev_find"); abort(); }
+
+void ip_mc_gsfget(void) { puts("UNDEF ip_mc_gsfget"); abort(); }
+
+void ip_mc_join_group(void) { puts("UNDEF ip_mc_join_group"); abort(); }
+
+void ip_mc_leave_group(void) { puts("UNDEF ip_mc_leave_group"); abort(); }
+
+void ip_mc_msfget(void) { puts("UNDEF ip_mc_msfget"); abort(); }
+
+void ip_mc_msfilter(void) { puts("UNDEF ip_mc_msfilter"); abort(); }
+
+void ip_mc_source(void) { puts("UNDEF ip_mc_source"); abort(); }
+
+void ip_tos2prio(void) { puts("UNDEF ip_tos2prio"); abort(); }
 

@@ -75,7 +75,8 @@ void test_udp()
 
   char buf[64] = { 0 };
   err = sock_read(sock, buf, sizeof buf);
-  printf("*** sock_read %d %s %p\n", err, strerror(-err), sock);
+  //printf("*** sock_read %d %s %p\n", err, strerror(-err), sock);
+  printf("*** '%s'\n", buf);
 }
 
 int main(int argc, char* argv[])
