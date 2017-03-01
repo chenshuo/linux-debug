@@ -64,7 +64,7 @@ int tcp_connect_lo_2222(struct socket *sock)
 	return err;
 }
 
-int tcp_bind(struct socket *sock)
+int sock_bind_any_2222(struct socket *sock)
 {
 	struct sockaddr_in address = {
 		.sin_family = AF_INET,

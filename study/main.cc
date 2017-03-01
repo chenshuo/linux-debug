@@ -33,11 +33,14 @@ void tcp_init();
 // net/ipv4/tcp_ipv4.c
 extern int tcp_v4_rcv(struct sk_buff *skb);
 
+// net/ipv4/udp.c
+extern int udp_rcv(struct sk_buff *skb);
+
 // study/helper.c
 extern struct sk_buff *output_skb;
 extern void schen_dst_init(void);
 extern int tcp_connect_lo_2222(struct socket *sock);
-extern int tcp_bind(struct socket *sock);
+extern int sock_bind_any_2222(struct socket *sock);
 extern int tcp_listen(struct socket *sock, int backlog);
 extern int tcp_accept(struct socket *sock, struct socket **newsock);
 extern int sock_read(struct socket *sock, void* data, int len);
@@ -48,7 +51,34 @@ extern int sock_sendto(struct socket *sock, const void* data, int len,
 extern unsigned long volatile jiffies;
 }
 
-int main()
+void test_udp()
+{
+  struct socket* sock = NULL;
+  int err = sock_create(AF_INET, SOCK_DGRAM, IPPROTO_UDP, &sock);
+  printf("*** sock_create UDP server %d %s %p\n", err, strerror(-err), sock);
+  err = sock_bind_any_2222(sock);
+  printf("*** sock_bind %d\n", err);
+
+  struct socket* client = NULL;
+  err = sock_create(AF_INET, SOCK_DGRAM, IPPROTO_UDP, &client);
+  printf("*** sock_create UDP client %d %s %p\n", err, strerror(-err), client);
+  struct sockaddr_in address = {
+    .sin_family = AF_INET,
+    .sin_port = htons(2222),
+    .sin_addr = {
+      .s_addr = htonl(INADDR_LOOPBACK)
+    }
+  };
+  err = sock_sendto(client, "good", 4, &address, sizeof address);
+
+  udp_rcv(output_skb);
+
+  char buf[64] = { 0 };
+  err = sock_read(sock, buf, sizeof buf);
+  printf("*** sock_read %d %s %p\n", err, strerror(-err), sock);
+}
+
+int main(int argc, char* argv[])
 {
   setbuf(stdout, NULL);
 
@@ -62,6 +92,13 @@ int main()
   schen_dst_init();
   pcap_start("hello.pcap");
 
+  if (argc > 1)
+  {
+    test_udp();
+    pcap_stop();
+    return 0;
+  }
+
   int err = 0;
   struct socket* sock = NULL;
   err = sock_create(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
@@ -69,21 +106,11 @@ int main()
 
   // int fd = SyS_socket(AF_INET, SOCK_DGRAM | SOCK_NONBLOCK, IPPROTO_UDP);
   // printf("*** SyS_socket %d\n", fd);
-  struct socket* udp = NULL;
-  err = sock_create(AF_INET, SOCK_DGRAM, IPPROTO_UDP, &udp);
-  printf("*** sock_create UDP %d %s %p\n", err, strerror(-err), sock);
-  struct sockaddr_in address = {
-    .sin_family = AF_INET,
-    .sin_port = htons(2222),
-    .sin_addr = {
-      .s_addr = htonl(INADDR_LOOPBACK)  // INADDR_ANY
-    }
-  };
-  err = sock_sendto(udp, "good", 4, &address, sizeof address);
+
   // err = SyS_bind(fd, (struct sockaddr *)&address, sizeof address);
 
-  err = tcp_bind(sock);
-  printf("*** tcp_bind %d\n", err);
+  err = sock_bind_any_2222(sock);
+  printf("*** sock_bind %d\n", err);
   err = tcp_listen(sock, 5);
   printf("*** tcp_listen %d\n", err);
 
