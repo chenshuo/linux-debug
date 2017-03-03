@@ -51,6 +51,12 @@
 int pcap_write(const char *buf, int len, int origlen);
 struct sk_buff *build_skbuff(const void* ippacket, unsigned int len);
 
+void sock_reuseport(struct socket *sock)
+{
+	struct sock *sk = sock->sk;
+	sk->sk_reuseport = 1;
+}
+
 int tcp_connect_lo_2222(struct socket *sock)
 {
 	struct sockaddr_in address = {

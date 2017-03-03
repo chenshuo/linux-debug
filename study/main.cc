@@ -23,6 +23,8 @@ int SyS_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 void skb_init(void);
 
 // net/core/sock.c
+//int sock_setsockopt(struct socket *sock, int level, int optname,
+//		    void *optval, unsigned int optlen);
 
 // net/ipv4/af_inet.c
 void schen_inet_init(void);
@@ -39,6 +41,7 @@ extern int udp_rcv(struct sk_buff *skb);
 // study/helper.c
 extern struct sk_buff *output_skb;
 extern void schen_dst_init(void);
+extern void sock_reuseport(struct socket *sock);
 extern int tcp_connect_lo_2222(struct socket *sock);
 extern int sock_bind_any_2222(struct socket *sock);
 extern int tcp_listen(struct socket *sock, int backlog);
@@ -56,7 +59,20 @@ void test_udp()
   struct socket* sock = NULL;
   int err = sock_create(AF_INET, SOCK_DGRAM, IPPROTO_UDP, &sock);
   printf("*** sock_create UDP server %d %s %p\n", err, strerror(-err), sock);
+  sock_reuseport(sock);
+  // int one = 1;
+  // err = sock_setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, &one, sizeof one);
+  // printf("*** sock_setsockopt %d\n", err);
   err = sock_bind_any_2222(sock);
+  printf("*** sock_bind %d\n", err);
+
+  struct socket* sock2 = NULL;
+  err = sock_create(AF_INET, SOCK_DGRAM, IPPROTO_UDP, &sock2);
+  printf("*** sock_create %d\n", err);
+  sock_reuseport(sock2);
+  // err = sock_setsockopt(sock2, SOL_SOCKET, SO_REUSEPORT, &one, sizeof one);
+  // printf("*** sock_setsockopt %d\n", err);
+  err = sock_bind_any_2222(sock2);
   printf("*** sock_bind %d\n", err);
 
   struct socket* client = NULL;
@@ -74,9 +90,8 @@ void test_udp()
   udp_rcv(output_skb);
 
   char buf[64] = { 0 };
-  err = sock_read(sock, buf, sizeof buf);
-  //printf("*** sock_read %d %s %p\n", err, strerror(-err), sock);
-  printf("*** '%s'\n", buf);
+  err = sock_read(sock2, buf, sizeof buf);
+  printf("*** sock_read %d '%s'\n", err, buf);
 }
 
 int main(int argc, char* argv[])
