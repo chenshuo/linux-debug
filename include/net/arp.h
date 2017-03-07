@@ -17,10 +17,11 @@ static inline u32 arp_hashfn(const void *pkey, const struct net_device *dev, u32
 	return val * hash_rnd[0];
 }
 
-static inline struct neighbour *__ipv4_neigh_lookup_noref(struct net_device *dev, u32 key)
-{
-	return ___neigh_lookup_noref(&arp_tbl, neigh_key_eq32, arp_hashfn, &key, dev);
-}
+struct neighbour *__ipv4_neigh_lookup_noref(struct net_device *dev, u32 key);
+// static inline struct neighbour *__ipv4_neigh_lookup_noref(struct net_device *dev, u32 key)
+// {
+// 	return ___neigh_lookup_noref(&arp_tbl, neigh_key_eq32, arp_hashfn, &key, dev);
+// }
 
 static inline struct neighbour *__ipv4_neigh_lookup(struct net_device *dev, u32 key)
 {

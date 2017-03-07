@@ -174,6 +174,34 @@ int ip_output_fake(struct net *net, struct sock *sk, struct sk_buff *skb)
 		panic("ip_output_fake");
 }
 
+int fake_output(struct neighbour *neigh, struct sk_buff *skb)
+{
+	if (skb->ip_summed == CHECKSUM_PARTIAL)
+		skb_checksum_help(skb);
+	pcap_write(skb->data, skb->len, skb->len);
+
+	skb_orphan(skb);
+
+	/* Before queueing this packet to netif_rx(),
+	 * make sure dst is refcounted.
+	 */
+	skb_dst_force(skb);
+
+	if (netif_rx(skb) == NET_RX_SUCCESS)
+		return NET_XMIT_SUCCESS;
+	else
+		panic("ip_output_fake");
+}
+
+struct neighbour g_neigh = {
+	.output = fake_output
+};
+
+struct neighbour *__ipv4_neigh_lookup_noref(struct net_device *dev, u32 key)
+{
+	return &g_neigh;
+}
+
 // include/net/route.h
 // struct rtable {
 //	struct dst_entry	dst;
@@ -198,7 +226,7 @@ void schen_dst_init(void)
 {
 	g_dev = alloc_netdev(0, "dummy%d", NET_NAME_UNKNOWN, ether_setup);
 	dst_init_metrics(&g_rt.dst, dst_default_metrics, true);
-	g_rt.dst.output = ip_output_fake;
+	g_rt.dst.output = ip_output;
 	g_rt.dst.input = ip_local_deliver;
 	g_rt.dst.dev = g_dev;
 	set_bit(__LINK_STATE_START, &g_dev->state);

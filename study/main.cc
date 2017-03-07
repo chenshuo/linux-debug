@@ -83,6 +83,8 @@ void test_udp()
     }
   };
   err = sock_sendto(client, "good", 4, &address, sizeof address);
+  // char output[2048] = { 0 };
+  // err = sock_sendto(client, output, sizeof output, &address, sizeof address);
 
   net_rx_action(NULL);
 
@@ -157,7 +159,10 @@ int main(int argc, char* argv[])
   err = sock_read(serversock, buf, sizeof buf);
   printf("*** sock_read %d %s %p\n", err, strerror(-err), serversock);
 
+  char output[2048] = { 0 };
   err = sock_write(clientsock, "hello", 5);
+  printf("*** sock_write %d %p\n", err, clientsock);
+  err = sock_write(clientsock, output, sizeof output);
   printf("*** sock_write %d %p\n", err, clientsock);
   net_rx_action(NULL);
 

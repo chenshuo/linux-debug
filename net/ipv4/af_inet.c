@@ -1924,6 +1924,8 @@ void schen_inet_init(void)
 
 	udp_init();
 
+	// ipfrag_init();
+
 	dev_add_pack(&ip_packet_type);
 }
 
