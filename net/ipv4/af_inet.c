@@ -1914,6 +1914,8 @@ void schen_inet_init(void)
 	inet_register_protosw(&tcp);
 	inet_register_protosw(&udp);
 
+	// ip_init();
+
 	// tcp_v4_init();
 	inet_hashinfo_init(&tcp_hashinfo);
 	tcp_sk_init(&init_net);
@@ -1921,6 +1923,8 @@ void schen_inet_init(void)
 	tcp_init();
 
 	udp_init();
+
+	dev_add_pack(&ip_packet_type);
 }
 
 /* ------------------------------------------------------------------------ */

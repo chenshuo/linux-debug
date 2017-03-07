@@ -3448,7 +3448,7 @@ static inline void ____napi_schedule(struct softnet_data *sd,
 				     struct napi_struct *napi)
 {
 	list_add_tail(&napi->poll_list, &sd->poll_list);
-	__raise_softirq_irqoff(NET_RX_SOFTIRQ);
+	// FIXME: __raise_softirq_irqoff(NET_RX_SOFTIRQ);
 }
 
 #ifdef CONFIG_RPS
@@ -5197,7 +5197,7 @@ out_unlock:
 	return work;
 }
 
-static __latent_entropy void net_rx_action(struct softirq_action *h)
+/*static __latent_entropy*/ void net_rx_action(struct softirq_action *h)
 {
 	struct softnet_data *sd = this_cpu_ptr(&softnet_data);
 	unsigned long time_limit = jiffies + 2;
@@ -8356,3 +8356,36 @@ out:
 }
 
 subsys_initcall(net_dev_init);
+
+void schen_net_dev_init(void)
+{
+	int i;
+	INIT_LIST_HEAD(&ptype_all);
+	for (i = 0; i < PTYPE_HASH_SIZE; i++)
+		INIT_LIST_HEAD(&ptype_base[i]);
+
+	/*
+	 *	Initialise the packet receive queues.
+	 */
+
+
+	for_each_possible_cpu(i) {
+		struct work_struct *flush = per_cpu_ptr(&flush_works, i);
+		struct softnet_data *sd = &per_cpu(softnet_data, i);
+
+		INIT_WORK(flush, flush_backlog);
+
+		skb_queue_head_init(&sd->input_pkt_queue);
+		skb_queue_head_init(&sd->process_queue);
+		INIT_LIST_HEAD(&sd->poll_list);
+		sd->output_queue_tailp = &sd->output_queue;
+#ifdef CONFIG_RPS
+		sd->csd.func = rps_trigger_softirq;
+		sd->csd.info = sd;
+		sd->cpu = i;
+#endif
+
+		sd->backlog.poll = process_backlog;
+		sd->backlog.weight = weight_p;
+	}
+}

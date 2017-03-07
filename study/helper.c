@@ -152,25 +152,27 @@ struct dst_entry *ipv4_dst_check(struct dst_entry *dst, u32 cookie)
 	return dst;
 }
 
+const u32 dst_default_metrics[RTAX_MAX + 1] = {
+	[RTAX_ADVMSS-1] = 1460,
+	[RTAX_MAX] = 0xdeadbeef,
+};
+
+struct net_device* g_dev;
+
 struct sk_buff *output_skb;
 int ip_output_fake(struct net *net, struct sock *sk, struct sk_buff *skb)
 {
 	if (skb->ip_summed == CHECKSUM_PARTIAL)
 		skb_checksum_help(skb);
 	output_skb = build_skbuff(skb->data, skb->len);
+	output_skb->dev = g_dev;
 	pcap_write(skb->data, skb->len, skb->len);
 	consume_skb(skb);
-	return 0;
+	if (netif_rx(output_skb) == NET_RX_SUCCESS)
+		return 0;
+	else
+		panic("ip_output_fake");
 }
-
-const u32 dst_default_metrics[RTAX_MAX + 1] = {
-	[RTAX_ADVMSS-1] = 1460,
-	[RTAX_MAX] = 0xdeadbeef,
-};
-
-struct net_device g_dev = {
-  // .nd_net = { &init_net }
-};
 
 // include/net/route.h
 // struct rtable {
@@ -187,15 +189,19 @@ struct rtable g_rt = {
 	.rt_iif = 123,
 	.rt_type = RTN_LOCAL,
 	.dst = {
-		.dev = &g_dev,
+		//.dev = &g_dev,
 		.ops = &ipv4_dst_ops,
 	},
 };
 
 void schen_dst_init(void)
 {
+	g_dev = alloc_netdev(0, "dummy%d", NET_NAME_UNKNOWN, ether_setup);
 	dst_init_metrics(&g_rt.dst, dst_default_metrics, true);
 	g_rt.dst.output = ip_output_fake;
+	g_rt.dst.input = ip_local_deliver;
+	g_rt.dst.dev = g_dev;
+	set_bit(__LINK_STATE_START, &g_dev->state);
 }
 
 struct sk_buff *build_skbuff(const void* ippacket, unsigned int len)
@@ -209,7 +215,7 @@ struct sk_buff *build_skbuff(const void* ippacket, unsigned int len)
                 // skb_set_transport_header(skb, 20);
                 // iph = ip_hdr(skb);
                 skb->transport_header = skb->network_header + 20; // iph->ihl*4;
-                __skb_pull(skb, skb_network_header_len(skb));
+                //__skb_pull(skb, skb_network_header_len(skb));
                 skb->protocol = htons(ETH_P_IP);
                 // g_rt.dst.dev = &g_dev;
                 skb_dst_set(skb, &g_rt.dst);

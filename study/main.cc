@@ -11,6 +11,10 @@ void dcache_init(void);
 // fs/file_table.c
 void files_init(void);
 
+// net/core/dev.c
+int schen_net_dev_init(void);
+void net_rx_action(struct softirq_action *h);
+
 // net/socket.c
 struct net_proto_family;
 int init_inodecache(void);
@@ -32,14 +36,7 @@ void schen_inet_init(void);
 // net/ipv4/tcp.c
 void tcp_init();
 
-// net/ipv4/tcp_ipv4.c
-extern int tcp_v4_rcv(struct sk_buff *skb);
-
-// net/ipv4/udp.c
-extern int udp_rcv(struct sk_buff *skb);
-
 // study/helper.c
-extern struct sk_buff *output_skb;
 extern void schen_dst_init(void);
 extern void sock_reuseport(struct socket *sock);
 extern int tcp_connect_lo_2222(struct socket *sock);
@@ -87,7 +84,7 @@ void test_udp()
   };
   err = sock_sendto(client, "good", 4, &address, sizeof address);
 
-  udp_rcv(output_skb);
+  net_rx_action(NULL);
 
   char buf[64] = { 0 };
   err = sock_read(sock2, buf, sizeof buf);
@@ -103,7 +100,7 @@ int main(int argc, char* argv[])
   // sock_init():
   skb_init();
   init_inodecache();
-
+  schen_net_dev_init();
   schen_inet_init();
   schen_dst_init();
   pcap_start("hello.pcap");
@@ -144,13 +141,14 @@ int main(int argc, char* argv[])
   printf("    tcp_connect %d %s %p\n", err, strerror(-err), clientsock);
   jiffies += 10000;
   printf("*** server receive SYN\n");
-  tcp_v4_rcv(output_skb);
+  net_rx_action(NULL);
+
   jiffies += 10000;
   printf("*** client receive SYN+ACK\n");
-  tcp_v4_rcv(output_skb);
+  net_rx_action(NULL);
   jiffies += 10000;
   printf("*** server receive ACK\n");
-  tcp_v4_rcv(output_skb);
+  net_rx_action(NULL);
 
   err = tcp_accept(sock, &serversock);
   printf("*** tcp_accept %d %p\n", err, serversock);
@@ -161,10 +159,11 @@ int main(int argc, char* argv[])
 
   err = sock_write(clientsock, "hello", 5);
   printf("*** sock_write %d %p\n", err, clientsock);
-  tcp_v4_rcv(output_skb);
+  net_rx_action(NULL);
 
   err = sock_read(serversock, buf, sizeof buf);
   printf("*** sock_read %d %p %s\n", err, serversock, buf);
 
+  net_rx_action(NULL);
   pcap_stop();
 }

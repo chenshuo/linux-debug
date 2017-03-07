@@ -214,3 +214,8 @@ void *__vmalloc(unsigned long size, gfp_t gfp_mask, pgprot_t prot)
 {
 	return zalloc(size);
 }
+
+void *vzalloc(unsigned long size)
+{
+	return zalloc(size);
+}

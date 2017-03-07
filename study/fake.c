@@ -115,8 +115,6 @@ void ping_rcv(void) { puts("UNDEF ping_rcv"); abort(); }
 
 void __qdisc_run(void) { puts("UNDEF __qdisc_run"); abort(); }
 
-void raw_icmp_error(void) { puts("UNDEF raw_icmp_error"); abort(); }
-
 void sch_direct_xmit(void) { puts("UNDEF sch_direct_xmit"); abort(); }
 
 void __skb_get_hash(void) { puts("UNDEF __skb_get_hash"); abort(); }
@@ -205,3 +203,12 @@ void ip_mc_source(void) { puts("UNDEF ip_mc_source"); abort(); }
 
 void ip_tos2prio(void) { puts("UNDEF ip_tos2prio"); abort(); }
 
+void kmem_cache_free_bulk(void) { puts("UNDEF kmem_cache_free_bulk"); abort(); }
+
+void free_percpu(void) { puts("UNDEF free_percpu"); abort(); }
+
+void kobject_put(void) { puts("UNDEF kobject_put"); abort(); }
+
+void queue_work_on(void) { puts("UNDEF queue_work_on"); abort(); }
+
+void system_wq(void) { puts("UNDEF system_wq"); abort(); }
