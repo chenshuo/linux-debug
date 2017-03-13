@@ -134,6 +134,7 @@ static void inetpeer_gc_worker(struct work_struct *work)
 /* Called from ip_output.c:ip_init  */
 void __init inet_initpeers(void)
 {
+#if 0
 	struct sysinfo si;
 
 	/* Use the straight interface to information about memory. */
@@ -148,13 +149,13 @@ void __init inet_initpeers(void)
 		inet_peer_threshold >>= 1; /* about 512KB */
 	if (si.totalram <= (8192*1024)/PAGE_SIZE)
 		inet_peer_threshold >>= 2; /* about 128KB */
-
+#endif
 	peer_cachep = kmem_cache_create("inet_peer_cache",
 			sizeof(struct inet_peer),
 			0, SLAB_HWCACHE_ALIGN | SLAB_PANIC,
 			NULL);
 
-	INIT_DEFERRABLE_WORK(&gc_work, inetpeer_gc_worker);
+	//FIXME: INIT_DEFERRABLE_WORK(&gc_work, inetpeer_gc_worker);
 }
 
 #define rcu_deref_locked(X, BASE)				\

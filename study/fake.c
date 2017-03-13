@@ -101,12 +101,6 @@ void write_inode_now(void) { puts("UNDEF write_inode_now"); abort(); }
 
 void inet_addr_type_dev_table(void) { puts("UNDEF inet_addr_type_dev_table"); abort(); }
 
-void inet_getpeer(void) { puts("UNDEF inet_getpeer"); abort(); }
-
-void inet_peer_xrlim_allow(void) { puts("UNDEF inet_peer_xrlim_allow"); abort(); }
-
-void inet_putpeer(void) { puts("UNDEF inet_putpeer"); abort(); }
-
 void inet_select_addr(void) { puts("UNDEF inet_select_addr"); abort(); }
 
 void ip_route_input_noref(void) { puts("UNDEF ip_route_input_noref"); abort(); }

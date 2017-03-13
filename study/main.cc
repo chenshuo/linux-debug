@@ -82,13 +82,18 @@ void test_udp()
       .s_addr = htonl(INADDR_LOOPBACK)
     }
   };
-  err = sock_sendto(client, "good", 4, &address, sizeof address);
-  // char output[2048] = { 0 };
-  // err = sock_sendto(client, output, sizeof output, &address, sizeof address);
 
+  err = sock_sendto(client, "good", 4, &address, sizeof address);
   net_rx_action(NULL);
 
-  char buf[64] = { 0 };
+  char output[2048] = { 0 };
+  err = sock_sendto(client, output, sizeof output, &address, sizeof address);
+  net_rx_action(NULL);
+
+  char buf[3000] = { 0 };
+  err = sock_read(sock2, buf, sizeof buf);
+  printf("*** sock_read %d '%s'\n", err, buf);
+
   err = sock_read(sock2, buf, sizeof buf);
   printf("*** sock_read %d '%s'\n", err, buf);
 }

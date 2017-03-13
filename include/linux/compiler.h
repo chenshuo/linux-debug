@@ -444,7 +444,7 @@ static __always_inline void __write_once_size(volatile void *p, void *res, int s
 
 /* Simple shorthand for a section definition */
 #ifndef __section
-# define __section(S) __attribute__ ((__section__(#S)))
+# define __section(S) // FIXME __attribute__ ((__section__(#S)))
 #endif
 
 #ifndef __visible

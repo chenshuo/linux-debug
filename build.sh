@@ -94,6 +94,7 @@ SRC+="net/ipv4/inet_connection_sock.o "
 SRC+="net/ipv4/inet_fragment.o "
 SRC+="net/ipv4/inet_hashtables.o "
 SRC+="net/ipv4/inet_timewait_sock.o "
+SRC+="net/ipv4/inetpeer.o "
 SRC+="net/ipv4/ip_fragment.o "
 SRC+="net/ipv4/ip_input.o "
 SRC+="net/ipv4/ip_options.o "
@@ -125,7 +126,7 @@ SRC+="study/fake.o "
 SRC+="study/helper.o "
 
 set -x
-make ARCH=um $SRC $*
+$L make ARCH=um $SRC $*
 gcc -m32 -Wall -g -c study/pcap.c -o study/pcap.o
 g++ -m32 -g study/main.cc study/lib.cc study/pcap.o -Wall -Wl,--gc-sections $SRC
 

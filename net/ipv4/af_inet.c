@@ -1898,6 +1898,7 @@ struct inet_protosw udp = {
 };
 
 extern int tcp_sk_init(struct net *net);
+extern void inet_initpeers(void);
 void schen_inet_init(void)
 {
 	struct list_head *r;
@@ -1915,6 +1916,13 @@ void schen_inet_init(void)
 	inet_register_protosw(&udp);
 
 	// ip_init();
+	{
+	// ipv4_inetpeer_init();  // route.c
+	struct inet_peer_base *bp = kmalloc(sizeof(*bp), GFP_KERNEL);
+	inet_peer_base_init(bp);
+	init_net.ipv4.peers = bp;
+	}
+	inet_initpeers();
 
 	// tcp_v4_init();
 	inet_hashinfo_init(&tcp_hashinfo);
@@ -1924,7 +1932,7 @@ void schen_inet_init(void)
 
 	udp_init();
 
-	// ipfrag_init();
+	ipfrag_init();
 
 	dev_add_pack(&ip_packet_type);
 }

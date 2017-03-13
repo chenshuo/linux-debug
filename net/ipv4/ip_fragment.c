@@ -104,7 +104,7 @@ struct ip4_create_arg {
 
 static unsigned int ipqhashfn(__be16 id, __be32 saddr, __be32 daddr, u8 prot)
 {
-	net_get_random_once(&ip4_frags.rnd, sizeof(ip4_frags.rnd));
+	//FIXME: net_get_random_once(&ip4_frags.rnd, sizeof(ip4_frags.rnd));
 	return jhash_3words((__force u32)id << 16 | prot,
 			    (__force u32)saddr, (__force u32)daddr,
 			    ip4_frags.rnd);
@@ -865,7 +865,7 @@ static int __net_init ipv4_frags_init_net(struct net *net)
 	res = inet_frags_init_net(&net->ipv4.frags);
 	if (res)
 		return res;
-	res = ip4_frags_ns_ctl_register(net);
+	//FIXME: res = ip4_frags_ns_ctl_register(net);
 	if (res)
 		inet_frags_uninit_net(&net->ipv4.frags);
 	return res;
@@ -873,7 +873,7 @@ static int __net_init ipv4_frags_init_net(struct net *net)
 
 static void __net_exit ipv4_frags_exit_net(struct net *net)
 {
-	ip4_frags_ns_ctl_unregister(net);
+	//FIXME: ip4_frags_ns_ctl_unregister(net);
 	inet_frags_exit_net(&net->ipv4.frags, &ip4_frags);
 }
 
@@ -884,8 +884,9 @@ static struct pernet_operations ip4_frags_ops = {
 
 void __init ipfrag_init(void)
 {
-	ip4_frags_ctl_register();
-	register_pernet_subsys(&ip4_frags_ops);
+	//FIXME: ip4_frags_ctl_register();
+	//FIXME: register_pernet_subsys(&ip4_frags_ops);
+	ipv4_frags_init_net(&init_net);  // FIXME
 	ip4_frags.hashfn = ip4_hashfn;
 	ip4_frags.constructor = ip4_frag_init;
 	ip4_frags.destructor = ip4_frag_free;
