@@ -128,5 +128,5 @@ SRC+="study/helper.o "
 set -x
 $L make ARCH=um $SRC $*
 gcc -m32 -Wall -g -c study/pcap.c -o study/pcap.o
-g++ -m32 -g study/main.cc study/lib.cc study/pcap.o -Wall -Wl,--gc-sections $SRC
+g++ -m32 -g study/main.cc study/lib.cc study/pcap.o -Wall -Wl,--gc-sections $SRC -o tcp
 
