@@ -33,13 +33,13 @@ static __always_inline unsigned long __mod_tree_size(struct latch_tree_node *n)
 	return (unsigned long)layout->size;
 }
 
-static __always_inline bool
+static bool
 mod_tree_less(struct latch_tree_node *a, struct latch_tree_node *b)
 {
 	return __mod_tree_val(a) < __mod_tree_val(b);
 }
 
-static __always_inline int
+static int
 mod_tree_comp(void *key, struct latch_tree_node *n)
 {
 	unsigned long val = (unsigned long)key;
