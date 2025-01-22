@@ -8,6 +8,8 @@
 
 obj-y				:= devres.o socket.o core/
 
+CFLAGS_socket.o = -O0
+
 obj-$(CONFIG_COMPAT)		+= compat.o
 
 # LLC has to be linked before the files in net/802/

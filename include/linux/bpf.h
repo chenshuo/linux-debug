@@ -3015,7 +3015,8 @@ int bpf_offload_dev_netdev_register(struct bpf_offload_dev *offdev,
 				    struct net_device *netdev);
 void bpf_offload_dev_netdev_unregister(struct bpf_offload_dev *offdev,
 				       struct net_device *netdev);
-bool bpf_offload_dev_match(struct bpf_prog *prog, struct net_device *netdev);
+static inline
+bool bpf_offload_dev_match(struct bpf_prog *prog, struct net_device *netdev) { return true; }
 
 void unpriv_ebpf_notify(int new_state);
 

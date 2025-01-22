@@ -27,7 +27,7 @@ size_t copy_to_user_iter(void __user *iter_to, size_t progress,
 	return len;
 }
 
-static __always_inline
+static // __always_inline
 size_t copy_to_user_iter_nofault(void __user *iter_to, size_t progress,
 				 size_t len, void *from, void *priv2)
 {
@@ -188,7 +188,7 @@ size_t _copy_to_iter(const void *addr, size_t bytes, struct iov_iter *i)
 EXPORT_SYMBOL(_copy_to_iter);
 
 #ifdef CONFIG_ARCH_HAS_COPY_MC
-static __always_inline
+static // __always_inline
 size_t copy_to_user_iter_mc(void __user *iter_to, size_t progress,
 			    size_t len, void *from, void *priv2)
 {
@@ -200,7 +200,7 @@ size_t copy_to_user_iter_mc(void __user *iter_to, size_t progress,
 	return len;
 }
 
-static __always_inline
+static // __always_inline
 size_t memcpy_to_iter_mc(void *iter_to, size_t progress,
 			 size_t len, void *from, void *priv2)
 {
@@ -261,7 +261,7 @@ size_t _copy_from_iter(void *addr, size_t bytes, struct iov_iter *i)
 }
 EXPORT_SYMBOL(_copy_from_iter);
 
-static __always_inline
+static // __always_inline
 size_t copy_from_user_iter_nocache(void __user *iter_from, size_t progress,
 				   size_t len, void *to, void *priv2)
 {
@@ -280,14 +280,14 @@ size_t _copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i)
 EXPORT_SYMBOL(_copy_from_iter_nocache);
 
 #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
-static __always_inline
+static // __always_inline
 size_t copy_from_user_iter_flushcache(void __user *iter_from, size_t progress,
 				      size_t len, void *to, void *priv2)
 {
 	return __copy_from_user_flushcache(to + progress, iter_from, len);
 }
 
-static __always_inline
+static // __always_inline
 size_t memcpy_from_iter_flushcache(void *iter_from, size_t progress,
 				   size_t len, void *to, void *priv2)
 {
@@ -442,7 +442,7 @@ size_t zero_to_user_iter(void __user *iter_to, size_t progress,
 	return clear_user(iter_to, len);
 }
 
-static __always_inline
+static // __always_inline
 size_t zero_to_iter(void *iter_to, size_t progress,
 		    size_t len, void *priv, void *priv2)
 {
